@@ -98,7 +98,7 @@ body {
   position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 2;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-/* Close button */
+/* Close ✕ button (top-right corner) */
 .modal-close {
   position: absolute;
   top: -14px; right: -14px;
@@ -117,6 +117,20 @@ body {
   background: var(--gold-light);
   transform: scale(1.12) rotate(90deg);
 }
+/* Dismiss CTA below the poster */
+.modal-dismiss {
+  display: block; width: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ivory);
+  background: var(--crimson);
+  border: none;
+  padding: 15px 24px;
+  cursor: pointer;
+  transition: background .25s;
+  margin-top: 1px;
+}
+.modal-dismiss:hover { background: var(--crimson2); }
 
 /* ══════════════════════════════════════════
    RSVP SECTION (cream)
@@ -431,8 +445,8 @@ body {
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="modal-box">
     <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
-    <!-- Upload grand-opening.jpg to the repo root on GitHub -->
     <img src="../grand-opening.jpg" class="modal-img" alt="Grand Opening — Amorè N' More">
+    <button class="modal-dismiss" id="modal-dismiss">ဖိတ်ကြားလွှာအကြောင်းပြန်မည်</button>
   </div>
 </div>
 
@@ -554,14 +568,16 @@ body {
   /* ── Show popup when video ends ── */
   var video   = document.getElementById('hero-video');
   var modal   = document.getElementById('opening-modal');
-  var closeBtn = document.getElementById('modal-close');
-  var overlay  = document.getElementById('modal-overlay');
+  var closeBtn  = document.getElementById('modal-close');
+  var dismissBtn = document.getElementById('modal-dismiss');
+  var overlay   = document.getElementById('modal-overlay');
 
   function openModal() { modal.classList.add('show'); }
   function closeModal() { modal.classList.remove('show'); }
 
   video.addEventListener('ended', openModal);
   closeBtn.addEventListener('click', closeModal);
+  dismissBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', closeModal);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeModal();
