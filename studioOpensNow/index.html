@@ -147,9 +147,25 @@ body {
 .d5 { transition-delay: .54s; } .d6 { transition-delay: .66s; }
 
 .rsvp-eye {
+  margin-bottom: 22px;
+}
+.rsvp-eye-main {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: #A08050; margin-bottom: 10px;
+  font-size: clamp(26px, 5vw, 38px); font-style: italic; font-weight: 300;
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--crimson);
+  display: block; margin-bottom: 10px;
+}
+.rsvp-eye-orn {
+  display: flex; align-items: center; justify-content: flex-start; gap: 10px;
+  margin-bottom: 10px;
+}
+.rsvp-eye-orn-line { flex: 0 0 40px; height: 1px; background: #C9A96E; opacity: .55; }
+.rsvp-eye-orn-dot  { width: 4px; height: 4px; background: #C9A96E; transform: rotate(45deg); opacity: .7; }
+.rsvp-eye-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9px, 1.6vw, 11px); letter-spacing: 5px; text-transform: uppercase;
+  color: #A08050; display: block;
 }
 .rsvp-title {
   font-family: 'Noto Serif Myanmar', serif;
@@ -369,7 +385,14 @@ body {
   <div class="rsvp-inner">
 
     <div class="reveal">
-      <div class="rsvp-eye">Studio Grand Opening &nbsp;·&nbsp; Saturday 27 June 2026</div>
+      <div class="rsvp-eye">
+        <span class="rsvp-eye-main">Studio Grand Opening</span>
+        <div class="rsvp-eye-orn">
+          <div class="rsvp-eye-orn-line"></div>
+          <div class="rsvp-eye-orn-dot"></div>
+        </div>
+        <span class="rsvp-eye-date">Saturday &nbsp;·&nbsp; 27 June 2026</span>
+      </div>
       <div class="rsvp-title">ကျွန်ုပ်တို့၏ Studio ဖွင့်ပွဲသို့ ဖိတ်ကြားအပ်ပါသည်</div>
       <div class="rsvp-services">Preweddings &nbsp;·&nbsp; Photo Studio &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Dress Rental &nbsp;·&nbsp; Makeup &amp; Styling &nbsp;·&nbsp; Wedding Planning</div>
       <div class="rsvp-sub">
