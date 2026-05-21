@@ -493,9 +493,12 @@ body {
     fetch('../config.json')
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
-        var url = cfg.googleScriptUrl + '?' + new URLSearchParams(data).toString();
-        console.log('[RSVP] Sending to:', url);
-        return fetch(url, { method: 'GET', mode: 'no-cors' });
+        return fetch(cfg.googleScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data).toString()
+        });
       })
       .then(function () {
         flash('✓ RSVP လက်ခံပြီးပါပြီ — ကျေးဇူးတင်ပါတယ်', true);
