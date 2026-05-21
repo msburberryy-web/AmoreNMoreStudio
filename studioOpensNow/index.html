@@ -493,11 +493,9 @@ body {
     fetch('../config.json')
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
-        return fetch(cfg.googleScriptUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: new URLSearchParams(data)
-        });
+        var url = cfg.googleScriptUrl + '?' + new URLSearchParams(data).toString();
+        console.log('[RSVP] Sending to:', url);
+        return fetch(url, { method: 'GET', mode: 'no-cors' });
       })
       .then(function () {
         flash('✓ RSVP လက်ခံပြီးပါပြီ — ကျေးဇူးတင်ပါတယ်', true);
