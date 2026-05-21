@@ -18,16 +18,15 @@
 ├── grand-opening.jpg           ← (TODO) Add the Grand Opening flyer image here
 ├── README.md                   ← You are here
 │
-├── studioOpensNow/
-│   └── index.html              ← Full event page:
-│                                    • Silk curtain reveal over grand-opening.jpg
-│                                    • RSVP form (name, email/phone, time slot, message, questions)
-│                                    • Event details section (date, time, address, quote)
-│
-└── _archive/
-    └── index.html              ← Original full wedding studio service page
-                                   (preserved, not publicly linked)
+└── studioOpensNow/
+    └── index.html              ← Full event page:
+                                     • Silk curtain reveal over grand-opening.jpg
+                                     • RSVP form (name, email/phone, time slot, message, questions)
+                                     • Event details section (date, time, address, quote)
 ```
+
+> The original full wedding studio service page is stored on the
+> **`archive/old-service-page`** git branch — not deployed, not publicly reachable.
 
 ---
 
