@@ -44,126 +44,68 @@ body {
 .hero-video {
   display: block;
   width: 100%;
-  max-height: 100vh;
-  object-fit: cover;
-  object-position: center top;
-  background: #1a0f08; /* shown while video loads */
-}
-/* Gold rod — thicker, with cylindrical shadow */
-.rod {
-  position: absolute; top: 0; left: 0; right: 0; height: 8px; z-index: 6;
-  background: linear-gradient(to bottom,
-    #f5e8c8 0%, #E8D5B0 30%, #C9A96E 60%, #9A7840 100%
-  );
-  box-shadow: 0 3px 10px rgba(0,0,0,0.55), 0 1px 3px rgba(201,169,110,0.4);
+  height: auto;
+  background: #1a0f08;
 }
 
-/* ── Theatrical cartoon curtains ── */
-.curtain {
-  position: absolute; top: 0; bottom: 0;
-  width: 52%; z-index: 4;
-  will-change: transform;
-  transition: transform 2.0s cubic-bezier(0.76, 0, 0.18, 1);
+/* ══════════════════════════════════════════
+   GRAND OPENING POPUP MODAL
+══════════════════════════════════════════ */
+.modal {
+  position: fixed; inset: 0; z-index: 900;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .55s ease;
 }
+.modal.show { opacity: 1; pointer-events: all; }
 
-/* Gathering shadow + pleat lines at the top */
-.curtain::before {
+.modal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(10, 6, 3, 0.88);
+  cursor: pointer;
+}
+.modal-box {
+  position: relative; z-index: 1;
+  max-width: min(680px, 92vw);
+  transform: translateY(18px) scale(.97);
+  transition: transform .55s ease;
+}
+.modal.show .modal-box {
+  transform: translateY(0) scale(1);
+}
+.modal-img {
+  display: block;
+  width: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.70), 0 0 0 1px rgba(201,169,110,0.18);
+}
+/* Gold top bar on the poster */
+.modal-box::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 70px;
-  z-index: 2; pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to right,
-      rgba(0,0,0,.55) 0px,  rgba(0,0,0,0) 3px,
-      rgba(0,0,0,0)   18px, rgba(0,0,0,.45) 21px,
-      rgba(0,0,0,0)   24px, rgba(0,0,0,0)   42px,
-      rgba(0,0,0,.38) 45px, rgba(0,0,0,0)   48px
-    ),
-    linear-gradient(to bottom, rgba(0,0,0,.60) 0%, rgba(0,0,0,.10) 60%, transparent 100%);
+  position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 2;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-
-/* Diagonal gloss sheen */
-.curtain::after {
-  content: '';
-  position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background: linear-gradient(
-    155deg,
-    rgba(255,255,255,.13) 0%,
-    rgba(255,255,255,.04) 35%,
-    transparent 55%,
-    rgba(0,0,0,.06) 100%
-  );
+/* Close button */
+.modal-close {
+  position: absolute;
+  top: -14px; right: -14px;
+  width: 34px; height: 34px;
+  background: var(--gold);
+  border: none; border-radius: 50%;
+  color: var(--ink);
+  font-size: 13px; font-weight: 700;
+  line-height: 1;
+  cursor: pointer; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.50);
+  transition: background .2s, transform .2s;
 }
-
-/* Left curtain */
-.curtain-l {
-  left: 0;
-  background:
-    /* deep inner-edge shadow (right side = curtain centre) */
-    linear-gradient(to left,
-      rgba(0,0,0,.70) 0%, rgba(0,0,0,.20) 5%, transparent 20%
-    ),
-    /* bold cartoon folds */
-    repeating-linear-gradient(to right,
-      #200505  0px,
-      #3D0C0C  12px,
-      #6A1616  28px,
-      #8C2020  44px,
-      #B03535  55px,   /* catch-light peak of fold */
-      #8C2020  66px,
-      #6A1616  82px,
-      #3D0C0C  95px,
-      #200505  104px
-    );
-  /* scalloped hem — wavy bottom edge */
-  clip-path: polygon(
-    0% 0%, 100% 0%, 100% 83%,
-    96% 88%, 92% 83%, 88% 90%,
-    84% 84%, 80% 92%, 76% 86%,
-    72% 93%, 68% 87%, 64% 94%,
-    60% 88%, 56% 95%, 52% 89%,
-    48% 96%, 44% 90%, 40% 97%,
-    36% 91%, 32% 97%, 27% 91%,
-    22% 97%, 17% 91%, 12% 96%,
-    7%  90%, 3%  95%, 0%  89%
-  );
+.modal-close:hover {
+  background: var(--gold-light);
+  transform: scale(1.12) rotate(90deg);
 }
-
-/* Right curtain — mirror */
-.curtain-r {
-  right: 0;
-  background:
-    /* deep inner-edge shadow (left side = curtain centre) */
-    linear-gradient(to right,
-      rgba(0,0,0,.70) 0%, rgba(0,0,0,.20) 5%, transparent 20%
-    ),
-    /* bold cartoon folds */
-    repeating-linear-gradient(to left,
-      #200505  0px,
-      #3D0C0C  12px,
-      #6A1616  28px,
-      #8C2020  44px,
-      #B03535  55px,
-      #8C2020  66px,
-      #6A1616  82px,
-      #3D0C0C  95px,
-      #200505  104px
-    );
-  clip-path: polygon(
-    0% 0%, 100% 0%, 100% 89%,
-    97% 95%, 93% 90%, 89% 97%,
-    85% 91%, 81% 96%, 77% 90%,
-    73% 97%, 69% 91%, 65% 96%,
-    61% 89%, 57% 95%, 53% 90%,
-    49% 97%, 45% 91%, 41% 96%,
-    37% 90%, 33% 97%, 29% 91%,
-    24% 97%, 19% 91%, 14% 96%,
-    9%  90%, 4%  95%, 0%  83%
-  );
-}
-
-.curtain-l.open { transform: translateX(-100%); }
-.curtain-r.open { transform: translateX(100%); }
 
 /* ══════════════════════════════════════════
    RSVP SECTION (dark)
@@ -422,15 +364,22 @@ body {
 </head>
 <body>
 
-<!-- ══ HERO — silk curtain reveal ══ -->
+<!-- ══ HERO VIDEO — curtain reveal baked into the video ══ -->
 <div class="hero">
-  <div class="rod"></div>
   <!-- Upload grand-opening.mp4 to the repo root on GitHub -->
-  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+  <video id="hero-video" class="hero-video" autoplay muted playsinline preload="auto">
     <source src="../grand-opening.mp4" type="video/mp4">
   </video>
-  <div class="curtain curtain-l"></div>
-  <div class="curtain curtain-r"></div>
+</div>
+
+<!-- ══ GRAND OPENING POPUP — appears when video ends ══ -->
+<div id="opening-modal" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <!-- Upload grand-opening.jpg to the repo root on GitHub -->
+    <img src="../grand-opening.jpg" class="modal-img" alt="Grand Opening — Amorè N' More">
+  </div>
 </div>
 
 <!-- ══ RSVP FORM ══ -->
@@ -555,13 +504,20 @@ body {
 <script>
 (function () {
 
-  /* ── Curtain open on load ── */
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.querySelectorAll('.curtain').forEach(function (c) {
-        c.classList.add('open');
-      });
-    }, 500);
+  /* ── Show popup when video ends ── */
+  var video   = document.getElementById('hero-video');
+  var modal   = document.getElementById('opening-modal');
+  var closeBtn = document.getElementById('modal-close');
+  var overlay  = document.getElementById('modal-overlay');
+
+  function openModal() { modal.classList.add('show'); }
+  function closeModal() { modal.classList.remove('show'); }
+
+  video.addEventListener('ended', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeModal();
   });
 
   /* ── Scroll reveal ── */
