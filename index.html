@@ -3,1211 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amorè N' More — Wedding Salon</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+Myanmar:wght@400;700&family=Noto+Sans+Myanmar:wght@300;400;500&family=TharLon&family=Myanmar+Khyay&display=swap" rel="stylesheet">
+<title>Amorè N' More — Wedding Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:ital,wght@0,400;1,400&family=Noto+Sans+Myanmar:wght@300;400&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & BASE ── */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
 :root {
   --gold:       #C9A96E;
   --gold-light: #E8D5B0;
   --gold-pale:  #F6EDD9;
-  --gold-dark:  #9A7840;
-  --gold-deep:  #6B5228;
   --ink:        #0D0A07;
   --ink2:       #1C1410;
-  --umber:      #3A2718;
   --cream:      #FAF6F0;
-  --ivory:      #F4EDE3;
-  --text:       #2A1E12;
-  --muted:      #7A6050;
-  --w30:        rgba(255,255,255,0.30);
-  --w50:        rgba(255,255,255,0.50);
-  --w65:        rgba(255,255,255,0.65);
-  --g10:        rgba(201,169,110,0.10);
-  --g20:        rgba(201,169,110,0.20);
-  --g35:        rgba(201,169,110,0.35);
 }
 
-html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@keyframes float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes shimmer { 0%{background-position:-300% center} 100%{background-position:300% center} }
+@keyframes rise    { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
 body {
-  background: #E8E0D6;
-  font-family: 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
-  font-weight: 300;
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  display: flex;
-  justify-content: center;
-  padding: 32px 16px 48px;
-}
-
-/* ── ANIMATIONS ── */
-@keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
-@keyframes spin     { to{transform:translate(-50%,-50%) rotate(360deg)} }
-@keyframes spinR    { to{transform:translate(-50%,-50%) rotate(-360deg)} }
-@keyframes draw     { from{width:0;opacity:0} to{width:100%;opacity:1} }
-@keyframes shimmer  { 0%{background-position:-300% center} 100%{background-position:300% center} }
-@keyframes rise     { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-
-.r1{animation:rise .8s  .00s both}
-.r2{animation:rise .8s  .15s both}
-.r3{animation:rise .8s  .28s both}
-.r4{animation:rise .8s  .40s both}
-.r5{animation:rise .8s  .52s both}
-.r6{animation:rise .8s  .64s both}
-
-/* ══════════════════════════════════════════
-   SHEET  (A4 proportion, max 900px wide)
-══════════════════════════════════════════ */
-.sheet {
-  width: 100%;
-  max-width: 900px;
-  background: var(--cream);
-  box-shadow: 0 24px 80px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.14);
-  display: flex;
-  flex-direction: column;
-}
-
-/* ══════════════════════════════════════════
-   COVER PANEL
-══════════════════════════════════════════ */
-.cover {
-  position: relative;
-  overflow: hidden;
   background: var(--ink);
-  min-height: 420px;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 64px 56px 56px;
-}
-
-/* layered atmosphere */
-.cover-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 120% 70% at 50% -10%, rgba(201,169,110,0.22) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 60% at  0% 60%,  rgba(201,169,110,0.07) 0%, transparent 52%),
-    radial-gradient(ellipse 60% 60% at 100% 60%, rgba(201,169,110,0.07) 0%, transparent 52%),
-    radial-gradient(ellipse 90% 50% at 50% 115%, rgba(201,169,110,0.13) 0%, transparent 55%),
-    linear-gradient(162deg, #0D0A07 0%, #1C1208 40%, #2A1A0D 65%, #0D0A07 100%);
-}
-
-/* rings */
-.cring {
-  position: absolute; border-radius: 50%;
-  border: 1px solid rgba(201,169,110,0.07);
-  top: 50%; left: 50%;
-  pointer-events: none;
-}
-.cr1 { width:760px;height:760px; transform:translate(-50%,-50%); animation: spin  72s linear infinite; }
-.cr2 { width:560px;height:560px; border-color:rgba(201,169,110,0.05); transform:translate(-50%,-50%); animation: spinR 52s linear infinite; }
-.cr3 { width:360px;height:360px; border-color:rgba(201,169,110,0.11); transform:translate(-50%,-50%); animation: spin  38s linear infinite; }
-
-/* frames */
-.cf1 { position:absolute; inset:16px;  border:1px solid rgba(201,169,110,0.19); pointer-events:none; z-index:2; }
-.cf2 { position:absolute; inset:27px;  border:1px solid rgba(201,169,110,0.08); pointer-events:none; z-index:2; }
-
-/* corners */
-.cc  { position:absolute; z-index:3; width:34px; height:34px; border-color:rgba(201,169,110,0.55); border-style:solid; }
-.cc.tl{ top:21px;  left:21px;  border-width:1.5px 0 0 1.5px; }
-.cc.tr{ top:21px;  right:21px; border-width:1.5px 1.5px 0 0; }
-.cc.bl{ bottom:21px; left:21px;  border-width:0 0 1.5px 1.5px; }
-.cc.br{ bottom:21px; right:21px; border-width:0 1.5px 1.5px 0; }
-
-/* side accent lines */
-.cside {
-  position:absolute; top:50%; transform:translateY(-50%);
-  width:1px; height:160px;
-  background: linear-gradient(180deg, transparent, rgba(201,169,110,0.25), transparent);
-  z-index:2;
-}
-.cside.l{ left:50px; } .cside.r{ right:50px; }
-
-/* botanical SVG flourishes */
-.flora {
-  position: absolute; left:50%; pointer-events:none; z-index:2;
-  width: 340px; opacity: 0.28;
-}
-.flora.top { top:-1px; transform: translateX(-50%); }
-.flora.bot { bottom:-1px; transform: translateX(-50%) rotate(180deg); }
-
-.cover-inner { position:relative; z-index:4; max-width:560px; }
-
-.c-eye {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 9px; letter-spacing: 9px;
-  color: var(--gold); text-transform: uppercase; opacity: .8;
-  margin-bottom: 26px;
-}
-
-.c-orn {
-  display: flex; align-items: center; justify-content: center;
-  gap: 14px; margin-bottom: 20px;
-}
-.c-orn-l { height:1px; width:54px; background: linear-gradient(90deg,transparent,var(--gold)); }
-.c-orn-l.r { background: linear-gradient(90deg,var(--gold),transparent); }
-.c-orn-d {
-  width:9px; height:9px;
-  border: 1.5px solid var(--gold); transform: rotate(45deg); opacity:.72;
-  position: relative;
-}
-.c-orn-d::after { content:''; position:absolute; inset:2px; background:rgba(201,169,110,0.3); }
-
-.c-brand {
-  font-family: 'Playfair Display', serif;
-  font-size: 62px; font-style: italic; font-weight: 400;
-  line-height: 1; letter-spacing: 1px; margin-bottom: 0;
-  background: linear-gradient(90deg,
-    var(--gold-dark) 0%, var(--gold-light) 32%,
-    #FFF9F0 50%,
-    var(--gold-light) 68%, var(--gold-dark) 100%);
-  background-size: 300% auto;
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: float 5s ease-in-out infinite, shimmer 6s linear infinite;
-}
-
-.c-sub1 {
-  font-family: 'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size: 12px; letter-spacing: 5px;
-  color: rgba(201,169,110,0.52);
-  margin-top: 7px; margin-bottom: 3px;
-}
-.c-sub2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 10px; letter-spacing: 3px;
-  color: rgba(255,255,255,0.16);
-  margin-bottom: 30px;
-}
-
-.c-rule {
-  display: flex; align-items: center; justify-content: center;
-  gap: 11px; margin-bottom: 26px;
-}
-.c-rule-l {
-  height:1px; width:0;
-  background: linear-gradient(90deg,transparent,var(--gold),transparent);
-  animation: draw 1.3s .4s ease forwards;
-}
-.c-rule-star { color:var(--gold); font-size:12px; opacity:.5; }
-
-.c-title {
-  font-family: 'Noto Serif Myanmar', serif;
-  font-size: 20px; font-weight: 700;
-  color: #fff; line-height: 1.9;
-  margin-bottom: 11px;
-}
-.c-title em { font-style:italic; font-weight:400; color:var(--gold-light); }
-
-.c-tagline {
   font-family: 'Noto Sans Myanmar', sans-serif;
-  font-size: 10.5px; font-weight:300;
-  color: rgba(255,255,255,0.40);
-  line-height: 2.2; margin-bottom: 26px;
-  letter-spacing: .3px;
-}
-
-.c-pills {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 7px;
-}
-.c-pill {
-  font-family: 'Noto Sans Myanmar', sans-serif;
-  font-size: 9px; font-weight: 400;
-  color: var(--gold-light);
-  border: 1px solid rgba(201,169,110,0.26);
-  padding: 4px 12px;
-  background: rgba(201,169,110,0.06);
-  letter-spacing: .2px;
-  transition: background .3s, border-color .3s;
-  cursor: default;
-}
-.c-pill:hover { background:rgba(201,169,110,0.15); border-color:rgba(201,169,110,0.5); }
-
-/* ══════════════════════════════════════════
-   CONTENT GRID
-══════════════════════════════════════════ */
-.content {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* thin gold divider between sections */
-.gdiv {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
-}
-
-/* ── SECTION HEADER ── */
-.shead {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 8.5px; letter-spacing: 5.5px;
-  color: var(--gold-dark); text-transform: uppercase;
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 0;
-}
-.shead::before { content:''; width:18px; height:1px; background:var(--gold); flex-shrink:0; }
-.shead::after  { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(201,169,110,0.3),transparent); }
-
-/* ─────────────────────────────────
-   ROW 1 : Studio (dark left + 2 ivory right)
-───────────────────────────────── */
-.studio-row {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 0;
-}
-
-.studio-main {
-  background: var(--umber);
-  padding: 28px 26px;
-  position: relative; overflow: hidden;
-  grid-row: span 2;
-}
-.studio-main::before {
-  content:'';
-  position:absolute; bottom:0; right:0;
-  width:220px; height:220px;
-  background: radial-gradient(ellipse at bottom right, rgba(201,169,110,0.13) 0%, transparent 65%);
-}
-.studio-main::after {
-  content:'✦';
-  position:absolute; bottom:14px; right:18px;
-  font-size:88px; opacity:.04; color:var(--gold-light); line-height:1;
-}
-.snum {
-  font-family:'Playfair Display',serif;
-  font-size:48px; font-style:italic; font-weight:300;
-  color:rgba(201,169,110,0.12); line-height:1;
-  position:absolute; top:12px; right:16px;
-}
-.sbar { width:32px; height:2px; background:linear-gradient(90deg,var(--gold-dark),var(--gold)); margin-bottom:16px; }
-.stag {
-  font-family:'Cormorant Garamond',serif;
-  font-size:8px; letter-spacing:3.5px; color:var(--gold);
-  text-transform:uppercase; margin-bottom:8px;
-}
-.stitle {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:15px; font-weight:400; color:#fff;
-  line-height:1.75; margin-bottom:11px;
-}
-.sdesc {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:9.5px; color:rgba(255,255,255,0.55); line-height:2.0;
-}
-.sbadges { display:flex; flex-wrap:wrap; gap:5px; margin-top:13px; }
-.sbadge {
-  font-family:'Cormorant Garamond',serif;
-  font-size:8.5px; letter-spacing:1px;
-  background:rgba(201,169,110,0.08); color:var(--gold-light);
-  border:1px solid rgba(201,169,110,0.18); padding:2px 9px;
-}
-
-.studio-side {
-  background: var(--ivory);
-  border-left: 1px solid rgba(201,169,110,0.18);
-  border-bottom: 1px solid rgba(201,169,110,0.18);
-  padding: 20px 18px;
-  position: relative; overflow: hidden;
-  transition: background .3s, border-color .3s;
-}
-.studio-side:hover { background:#fff; border-color:rgba(201,169,110,0.4); }
-.ss-num {
-  font-family:'Playfair Display',serif;
-  font-size:34px; font-style:italic; font-weight:300;
-  color:rgba(201,169,110,0.09);
-  position:absolute; top:8px; right:12px; line-height:1;
-}
-.ss-ico  { font-size:18px; margin-bottom:7px; display:block; }
-.ss-tag  {
-  font-family:'Cormorant Garamond',serif;
-  font-size:7.5px; letter-spacing:2.5px; color:var(--gold-dark);
-  text-transform:uppercase; margin-bottom:4px;
-}
-.ss-title {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:11.5px; font-weight:400; color:var(--umber);
-  margin-bottom:4px; line-height:1.7;
-}
-.ss-desc {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:9px; color:var(--muted); line-height:1.9;
-}
-
-/* ─────────────────────────────────
-   ROW 2 : Dress banner (dark)
-───────────────────────────────── */
-.dress-row {
-  background: var(--ink2);
-  border-top: 1px solid rgba(201,169,110,0.14);
-  padding: 20px 26px;
-  display: grid;
-  grid-template-columns: 58px 1fr;
-  gap: 18px; align-items: start;
-  position: relative; overflow: hidden;
-}
-.dress-row::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.dress-ico {
-  width:58px; height:58px;
-  background:rgba(201,169,110,0.07);
-  border:1px solid rgba(201,169,110,0.18);
-  display:flex; align-items:center; justify-content:center;
-  font-size:26px; flex-shrink:0;
-}
-.d-eye {
-  font-family:'Cormorant Garamond',serif;
-  font-size:8px; letter-spacing:3.5px; color:var(--gold);
-  text-transform:uppercase; margin-bottom:4px;
-}
-.d-title {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:13px; font-weight:400; color:#fff;
-  line-height:1.7; margin-bottom:5px;
-}
-.d-sub {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:9px; color:rgba(255,255,255,0.40);
-  line-height:1.85; margin-bottom:9px;
-}
-.d-chips { display:flex; flex-wrap:wrap; gap:5px; }
-.d-chip {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:8.5px; color:rgba(255,255,255,0.55);
-  border:1px solid rgba(201,169,110,0.16);
-  padding:2px 9px; background:rgba(201,169,110,0.05);
-  transition:background .2s,color .2s; cursor:default;
-}
-.d-chip:hover { background:rgba(201,169,110,0.18); color:var(--gold-light); }
-
-/* ─────────────────────────────────
-   ROW 3 : Spaces 2×2 grid
-───────────────────────────────── */
-.spaces-wrap {
-  background: var(--cream);
-  padding: 20px 26px 0;
-  position: relative;
-}
-.spaces-wrap::before {
-  content:''; position:absolute; inset:0;
-  background-image: radial-gradient(circle, rgba(201,169,110,0.032) 1px, transparent 1px);
-  background-size: 28px 28px; pointer-events:none;
-}
-.spaces-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3px;
-  position: relative; z-index:1;
-  margin-top: 12px;
-}
-.sp {
-  background: #fff;
-  border: 1px solid rgba(201,169,110,0.17);
-  padding: 18px 16px;
-  position: relative; overflow: hidden;
-  transition: border-color .3s, box-shadow .3s;
-}
-.sp::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg,var(--gold-dark),var(--gold));
-  transform: scaleX(0); transform-origin:left; transition: transform .4s;
-}
-.sp::after {
-  content: attr(data-n);
-  position:absolute; bottom:8px; right:11px;
-  font-family:'Playfair Display',serif;
-  font-size:42px; font-style:italic; font-weight:300;
-  color:rgba(201,169,110,0.055); line-height:1;
-}
-.sp:hover::before { transform:scaleX(1); }
-.sp:hover { border-color:rgba(201,169,110,0.45); box-shadow:0 5px 22px rgba(201,169,110,0.07); }
-.sp-ico  { font-size:18px; margin-bottom:8px; display:block; }
-.sp-tag  {
-  font-family:'Cormorant Garamond',serif;
-  font-size:7.5px; letter-spacing:2.5px; color:var(--gold);
-  text-transform:uppercase; margin-bottom:4px;
-}
-.sp-title {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:11.5px; font-weight:400; color:var(--umber);
-  margin-bottom:5px; line-height:1.7;
-}
-.sp-desc {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:9px; color:var(--muted); line-height:1.9;
-}
-
-/* ─────────────────────────────────
-   ROW 4 : Reservation  +  Team  (side-by-side dark strip)
-───────────────────────────────── */
-.midrow {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 0;
-  margin-top: 3px;
-}
-
-/* Reservation panel */
-.resv {
-  background: var(--ink2);
-  padding: 22px 20px;
-  position: relative; overflow:hidden;
-  border-right:1px solid rgba(201,169,110,0.12);
-}
-.resv::before {
-  content:''; position:absolute; top:0;left:0;right:0; height:2px;
-  background: linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.resv-eye {
-  font-family:'Cormorant Garamond',serif;
-  font-size:8px; letter-spacing:3.5px; color:var(--gold);
-  text-transform:uppercase; margin-bottom:7px;
-}
-.resv-title {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:12.5px; font-weight:400; color:#fff;
-  line-height:1.85; margin-bottom:8px;
-}
-.resv-desc {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:9px; color:rgba(255,255,255,0.46);
-  line-height:1.95;
-}
-.resv-desc strong { color:var(--gold-light); font-weight:400; }
-.resv-quote {
-  margin-top:14px;
-  padding-top:12px;
-  border-top:1px solid rgba(201,169,110,0.12);
-}
-.resv-q-text {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:11px; color:var(--gold-light);
-  line-height:1.85;
-}
-
-/* Team panel */
-.team {
-  background: var(--umber);
-  padding: 22px 20px;
-  position: relative; overflow:hidden;
-}
-.team::before {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 90% 70% at 100% 0%, rgba(201,169,110,0.09) 0%, transparent 60%);
-}
-.team::after {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background: linear-gradient(90deg,transparent,rgba(201,169,110,0.28),transparent);
-}
-.team-eye {
-  font-family:'Cormorant Garamond',serif;
-  font-size:8px; letter-spacing:3.5px; color:var(--gold);
-  text-transform:uppercase; margin-bottom:6px; position:relative; z-index:1;
-}
-.team-title {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:13px; font-weight:400; color:#fff;
-  line-height:1.75; margin-bottom:6px; position:relative; z-index:1;
-}
-.team-sub {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:9px; color:rgba(255,255,255,0.44);
-  line-height:1.9; margin-bottom:13px;
-  position:relative; z-index:1;
-}
-.team-sub strong { color:var(--gold-light); font-weight:400; }
-.team-roles {
-  display: grid; grid-template-columns: repeat(2,1fr);
-  gap: 3px; position:relative; z-index:1;
-}
-.tr {
-  background:rgba(0,0,0,0.20);
-  border:1px solid rgba(201,169,110,0.09);
-  padding:10px 10px;
-  position:relative; overflow:hidden;
-  transition: background .3s;
-}
-.tr::before {
-  content:''; position:absolute; top:0;left:0;right:0; height:1px;
-  background: linear-gradient(90deg,transparent,rgba(201,169,110,0.3),transparent);
-}
-.tr:hover { background:rgba(201,169,110,0.07); }
-.tr-ico   { font-size:15px; margin-bottom:5px; }
-.tr-title {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:10px; font-weight:700; color:var(--gold-light);
-  margin-bottom:3px; line-height:1.55;
-}
-.tr-desc {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:8.5px; color:rgba(255,255,255,0.34); line-height:1.7;
-}
-
-/* ─────────────────────────────────
-   ROW 5 : Journey
-───────────────────────────────── */
-.journey {
-  background: var(--ivory);
-  padding: 18px 26px;
-  position: relative; overflow:hidden;
-  border-top:1px solid rgba(201,169,110,0.15);
-}
-.journey::before {
-  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
-  background: linear-gradient(180deg,transparent,var(--gold),transparent);
-}
-.j-steps {
-  display:flex; align-items:flex-start;
-  position:relative; margin-top:10px;
-}
-.j-steps::before {
-  content:''; position:absolute; top:13px; left:13px; right:13px; height:1px;
-  background: linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-dark));
-  z-index:0;
-}
-.j-step {
-  flex:1; display:flex; flex-direction:column;
-  align-items:center; text-align:center; gap:6px;
-  position:relative; z-index:1;
-}
-.j-n {
-  width:26px; height:26px;
-  background:var(--ink2); border:1.5px solid var(--gold); border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Playfair Display',serif; font-size:10px; color:var(--gold);
-}
-.j-l {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:8.5px; color:var(--muted); line-height:1.6; padding:0 3px;
-}
-
-/* ─────────────────────────────────
-   ROW 6 : Contact footer
-───────────────────────────────── */
-.footer {
-  background: var(--ink);
-  padding: 22px 30px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center; gap: 24px;
-  position: relative; overflow:hidden;
-}
-.footer::before {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 60% 90% at 0% 50%, rgba(201,169,110,0.07) 0%, transparent 60%);
-}
-.footer::after {
-  content:''; position:absolute; top:0; left:0; right:0; height:1.5px;
-  background: linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.f-left  { position:relative; z-index:1; }
-.f-brand {
-  font-family:'Playfair Display',serif;
-  font-size:24px; font-style:italic; color:var(--gold-light);
-  margin-bottom:2px;
-}
-.f-salon {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:9px; letter-spacing:4px;
-  color:rgba(201,169,110,0.42); margin-bottom:10px;
-}
-.f-tagline {
-  font-family:'TharLon','Noto Sans Myanmar',sans-serif;
-  font-size:10.5px; color:rgba(255,255,255,0.30);
-  line-height:1.9; max-width:310px;
-}
-.f-right {
-  display:flex; flex-direction:column; gap:7px;
-  text-align:right; position:relative; z-index:1;
-}
-.f-row {
-  display:flex; align-items:center; justify-content:flex-end; gap:8px;
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:10.5px; color:rgba(255,255,255,0.60);
-}
-.f-lbl {
-  font-family:'Cormorant Garamond',serif;
-  font-size:8px; letter-spacing:2.5px; color:var(--gold); text-transform:uppercase;
-}
-.f-cta {
-  font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:8.5px; color:var(--gold-light);
-  border:1px solid rgba(201,169,110,0.30); padding:6px 14px;
-  background:rgba(201,169,110,0.07); margin-top:2px;
-  cursor:default; transition: background .3s;
-}
-.f-cta:hover { background:rgba(201,169,110,0.14); }
-
-/* ══════════════════════════════════════════
-   RSVP — CURTAIN HERO
-══════════════════════════════════════════ */
-.rsvp-hero {
-  position: relative;
-  overflow: hidden;
-  background: #ede7de;
-  line-height: 0;
-}
-.rsvp-hero-img {
-  display: block;
-  width: 100%;
-  max-height: 720px;
-  object-fit: cover;
-  object-position: center top;
-}
-/* Gold rod across the top */
-.rsvp-rod {
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 5px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(201,169,110,.35) 15%,
-    rgba(201,169,110,.90) 35%,
-    #E8D5B0 50%,
-    rgba(201,169,110,.90) 65%,
-    rgba(201,169,110,.35) 85%,
-    transparent 100%
-  );
-  z-index: 5;
-}
-/* Silk curtains */
-.curtain {
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 51%;
-  z-index: 4;
-  will-change: transform;
-  transition: transform 1.8s cubic-bezier(0.76, 0, 0.18, 1);
-}
-.curtain-l {
-  left: 0;
-  background:
-    repeating-linear-gradient(
-      to right,
-      rgba(255,255,255,.24) 0px, rgba(240,234,222,0) 5px,
-      rgba(255,255,255,.10) 12px, rgba(240,234,222,0) 18px,
-      rgba(255,255,255,.18) 26px, rgba(240,234,222,0) 32px
-    ),
-    linear-gradient(to right, #ece5d9, #e3dbd0, #ece5d9, #ddd5c9);
-}
-.curtain-r {
-  right: 0;
-  background:
-    repeating-linear-gradient(
-      to left,
-      rgba(255,255,255,.24) 0px, rgba(240,234,222,0) 5px,
-      rgba(255,255,255,.10) 12px, rgba(240,234,222,0) 18px,
-      rgba(255,255,255,.18) 26px, rgba(240,234,222,0) 32px
-    ),
-    linear-gradient(to left, #ece5d9, #e3dbd0, #ece5d9, #ddd5c9);
-}
-.curtain-l.open { transform: translateX(-100%); }
-.curtain-r.open { transform: translateX(100%); }
-
-/* ══════════════════════════════════════════
-   RSVP — FORM (scroll reveal)
-══════════════════════════════════════════ */
-.rsvp-form-section {
-  background: var(--ink);
-  position: relative;
   overflow: hidden;
 }
-.rsvp-form-section::before {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,169,110,0.08) 0%, transparent 65%);
+
+/* Subtle radial glow */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,169,110,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
-.rsvp-form-section::after {
-  content:''; position:absolute; top:0; left:0; right:0; height:1.5px;
+
+/* Rotating ring decorations */
+.ring {
+  position: fixed;
+  border-radius: 50%;
+  border: 1px solid rgba(201,169,110,0.10);
+  transform: translate(-50%,-50%);
+  left: 50%; top: 50%;
+  pointer-events: none;
+}
+.ring-1 { width: 520px; height: 520px; border-color: rgba(201,169,110,0.08); }
+.ring-2 { width: 760px; height: 760px; border-color: rgba(201,169,110,0.05); }
+.ring-3 { width: 1020px; height: 1020px; border-color: rgba(201,169,110,0.03); }
+
+/* Top gold line */
+.top-line {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
-/* Scroll-reveal base state */
-.rsvp-reveal {
-  opacity: 0;
-  transform: translateY(34px);
-  transition: opacity .95s ease, transform .95s ease;
-}
-.rsvp-reveal.rsvp-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.rsvp-reveal.delay-1 { transition-delay: .10s; }
-.rsvp-reveal.delay-2 { transition-delay: .22s; }
-.rsvp-reveal.delay-3 { transition-delay: .34s; }
-.rsvp-reveal.delay-4 { transition-delay: .46s; }
-.rsvp-reveal.delay-5 { transition-delay: .58s; }
-
-.rsvp-body {
-  padding: 42px 44px 54px;
+.card {
+  text-align: center;
+  padding: 0 24px;
   position: relative; z-index: 1;
 }
-.rsvp-eye {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 8.5px; letter-spacing: 4px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 6px;
-}
-.rsvp-title {
+
+.brand {
   font-family: 'Playfair Display', serif;
-  font-size: 22px; font-style: italic; font-weight: 400;
+  font-size: clamp(28px, 6vw, 44px);
+  font-style: italic;
+  font-weight: 400;
   color: var(--gold-light);
-  line-height: 1.35; margin-bottom: 6px;
+  animation: rise .9s .1s both;
+  margin-bottom: 4px;
 }
-.rsvp-sub {
-  font-family: 'TharLon', 'Noto Sans Myanmar', sans-serif;
-  font-size: 10.5px; color: rgba(255,255,255,0.38);
-  line-height: 1.90; margin-bottom: 30px; max-width: 500px;
-}
-.rsvp-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 22px;
-}
-.rsvp-field { display: flex; flex-direction: column; gap: 6px; }
-.rsvp-field.full { grid-column: 1 / -1; }
-.rsvp-label {
+
+.brand-sub {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase;
+  font-size: clamp(8px, 1.8vw, 11px);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(201,169,110,0.45);
+  animation: rise .9s .25s both;
+  margin-bottom: 52px;
+}
+
+/* Ornament */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 52px;
+  animation: rise .9s .35s both;
+}
+.ornament-line {
+  width: 70px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.40));
+}
+.ornament-line.r {
+  background: linear-gradient(90deg, rgba(201,169,110,0.40), transparent);
+}
+.ornament-diamond {
+  width: 5px; height: 5px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  opacity: 0.60;
+}
+
+.coming-soon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9px, 2vw, 12px);
+  letter-spacing: 6px;
+  text-transform: uppercase;
   color: var(--gold);
+  animation: rise .9s .42s both;
+  margin-bottom: 22px;
 }
-.rsvp-input, .rsvp-textarea {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(201,169,110,0.22);
+
+.headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(18px, 4vw, 28px);
+  font-style: italic;
+  font-weight: 400;
   color: rgba(255,255,255,0.82);
-  font-family: 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
-  font-size: 11px; font-weight: 300;
-  padding: 10px 13px;
-  outline: none;
-  transition: border-color .25s, background .25s;
-  width: 100%;
+  line-height: 1.5;
+  animation: rise .9s .50s both;
+  margin-bottom: 20px;
 }
-.rsvp-input:focus, .rsvp-textarea:focus {
-  border-color: rgba(201,169,110,0.60);
-  background: rgba(255,255,255,0.07);
-}
-.rsvp-input::placeholder, .rsvp-textarea::placeholder {
-  color: rgba(255,255,255,0.22); font-size: 10.5px;
-}
-.rsvp-textarea { resize: vertical; min-height: 80px; }
 
-/* Time slots */
-.rsvp-slots { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
-.rsvp-slot { display: none; }
-.rsvp-slot + label {
-  font-family: 'TharLon', 'Myanmar Khyay', 'Noto Serif Myanmar', serif;
-  font-size: 13px; letter-spacing: 1px;
-  color: rgba(201,169,110,0.70);
-  border: 1px solid rgba(201,169,110,0.24);
-  padding: 9px 20px;
-  cursor: pointer;
-  transition: background .22s, border-color .22s, color .22s;
-  user-select: none;
+.sub {
+  font-family: 'Noto Sans Myanmar', sans-serif;
+  font-size: clamp(10px, 2vw, 12px);
+  font-weight: 300;
+  color: rgba(255,255,255,0.32);
+  line-height: 2.0;
+  animation: rise .9s .58s both;
+  margin-bottom: 52px;
 }
-.rsvp-slot:checked + label {
-  background: rgba(201,169,110,0.16);
-  border-color: var(--gold);
-  color: var(--gold-light);
-}
-.rsvp-slot + label:hover { border-color: rgba(201,169,110,0.50); color: var(--gold-light); }
 
-/* Submit row */
-.rsvp-submit-row {
-  grid-column: 1 / -1;
-  display: flex; align-items: center; justify-content: flex-end;
-  gap: 18px; margin-top: 6px;
+/* Floating petal */
+.petal {
+  font-size: 22px;
+  display: block;
+  animation: float 4s ease-in-out infinite, rise .9s .68s both;
+  margin-bottom: 48px;
 }
-.rsvp-status {
+
+.contact {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 11.5px; letter-spacing: 1px; font-style: italic;
-  color: var(--gold-light);
-  opacity: 0; transition: opacity .5s;
+  font-size: clamp(9px, 1.8vw, 11px);
+  letter-spacing: 2px;
+  color: rgba(201,169,110,0.42);
+  animation: rise .9s .74s both;
+  line-height: 2.2;
 }
-.rsvp-status.show { opacity: 1; }
-.rsvp-btn {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
-  color: var(--gold-light);
-  background: rgba(201,169,110,0.09);
-  border: 1px solid rgba(201,169,110,0.38);
-  padding: 12px 32px;
-  cursor: pointer;
-  transition: background .25s, border-color .25s, opacity .2s;
+.contact a {
+  color: rgba(201,169,110,0.55);
+  text-decoration: none;
+  transition: color .2s;
 }
-.rsvp-btn:hover { background: rgba(201,169,110,0.18); border-color: var(--gold); }
-.rsvp-btn:disabled { opacity: 0.40; cursor: default; }
-.rsvp-divider {
-  grid-column: 1 / -1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.18), transparent);
-}
-
-/* ── PRINT ── */
-@media print {
-  body { background:white; padding:0; }
-  .sheet { box-shadow:none; max-width:100%; }
-  @page { margin:0; }
-}
+.contact a:hover { color: var(--gold-light); }
 </style>
 </head>
 <body>
-<div class="sheet">
+  <div class="top-line"></div>
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
 
-  <!-- ══ COVER ══ -->
-  <div class="cover">
-    <div class="cover-bg"></div>
-    <div class="cring cr1"></div>
-    <div class="cring cr2"></div>
-    <div class="cring cr3"></div>
+  <div class="card">
+    <div class="brand">Amorè N' More</div>
+    <div class="brand-sub">Wedding Studio &nbsp;·&nbsp; Tokyo</div>
 
-    <!-- Botanical top -->
-    <svg class="flora top" viewBox="0 0 340 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M170 2 C148 22 90 28 0 22"   stroke="rgba(201,169,110,.55)" stroke-width=".6"/>
-      <path d="M170 2 C192 22 250 28 340 22" stroke="rgba(201,169,110,.55)" stroke-width=".6"/>
-      <path d="M170 2 C158 34 124 45 68 40"  stroke="rgba(201,169,110,.3)"  stroke-width=".5"/>
-      <path d="M170 2 C182 34 216 45 272 40" stroke="rgba(201,169,110,.3)"  stroke-width=".5"/>
-      <path d="M170 2 C165 42 152 53 124 49" stroke="rgba(201,169,110,.16)" stroke-width=".5"/>
-      <path d="M170 2 C175 42 188 53 216 49" stroke="rgba(201,169,110,.16)" stroke-width=".5"/>
-      <circle cx="170" cy="2"  r="2.4" fill="rgba(201,169,110,.65)"/>
-      <circle cx="68"  cy="40" r="1.4" fill="rgba(201,169,110,.38)"/>
-      <circle cx="272" cy="40" r="1.4" fill="rgba(201,169,110,.38)"/>
-      <ellipse cx="170" cy="20" rx="6.5" ry="3.2" fill="none" stroke="rgba(201,169,110,.25)" stroke-width=".5"/>
-      <ellipse cx="170" cy="20" rx="3.2" ry="6.5" fill="none" stroke="rgba(201,169,110,.18)" stroke-width=".5"/>
-      <ellipse cx="102" cy="32" rx="4"   ry="1.8" fill="none" stroke="rgba(201,169,110,.16)" stroke-width=".5"/>
-      <ellipse cx="238" cy="32" rx="4"   ry="1.8" fill="none" stroke="rgba(201,169,110,.16)" stroke-width=".5"/>
-    </svg>
-
-    <!-- Botanical bottom -->
-    <svg class="flora bot" viewBox="0 0 340 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M170 2 C148 22 90 28 0 22"   stroke="rgba(201,169,110,.55)" stroke-width=".6"/>
-      <path d="M170 2 C192 22 250 28 340 22" stroke="rgba(201,169,110,.55)" stroke-width=".6"/>
-      <path d="M170 2 C158 34 124 45 68 40"  stroke="rgba(201,169,110,.3)"  stroke-width=".5"/>
-      <path d="M170 2 C182 34 216 45 272 40" stroke="rgba(201,169,110,.3)"  stroke-width=".5"/>
-      <circle cx="170" cy="2"  r="2.4" fill="rgba(201,169,110,.65)"/>
-      <circle cx="68"  cy="40" r="1.4" fill="rgba(201,169,110,.38)"/>
-      <circle cx="272" cy="40" r="1.4" fill="rgba(201,169,110,.38)"/>
-      <ellipse cx="170" cy="20" rx="6.5" ry="3.2" fill="none" stroke="rgba(201,169,110,.25)" stroke-width=".5"/>
-      <ellipse cx="170" cy="20" rx="3.2" ry="6.5" fill="none" stroke="rgba(201,169,110,.18)" stroke-width=".5"/>
-    </svg>
-
-    <div class="cf1"></div><div class="cf2"></div>
-    <div class="cc tl"></div><div class="cc tr"></div>
-    <div class="cc bl"></div><div class="cc br"></div>
-    <div class="cside l"></div><div class="cside r"></div>
-
-    <div class="cover-inner">
-      <div class="c-eye r1">Wedding Salon · Tokyo</div>
-      <div class="c-orn r2">
-        <div class="c-orn-l r"></div><div class="c-orn-d"></div><div class="c-orn-l"></div>
-      </div>
-      <div class="c-brand r2">Amorè N' More</div>
-      <div class="c-sub2 r3">株式会社 StartUp</div>
-      <div class="c-rule r4">
-        <div class="c-rule-l" style="width:64px;"></div>
-        <span class="c-rule-star">✦</span>
-        <div class="c-rule-l" style="width:64px;"></div>
-      </div>
-      <div class="c-title r4">
-        သင့်ရဲ့ Story. သင့်ရဲ့ Style. သင့်ရဲ့ Beautiful Day.<br>
-      </div>
-      <div class="c-tagline r5">
-        Photo Studio · Videography · Dress Rental · Makeup &amp; Styling · Wedding Planning<br>
-        ပြီးပြည့်စုံတဲ့ Bridal Experience တစ်ခုကို တစ်နေရာတည်းမှာ အလှပဆုံး ဖန်တီးပေးနေပါပြီ
-      </div>
-      <div class="c-pills r6">
-        <span class="c-pill">📸 Photo &amp; Video Studio</span>
-        <span class="c-pill">👗 Dress Rental</span>
-        <span class="c-pill">💄 Makeup &amp; Styling</span>
-        <span class="c-pill">💐 Accessories</span>
-        <span class="c-pill">☕ Consultation</span>
-        <span class="c-pill">🤍 Wedding Planning</span>
-      </div>
-    </div>
-  </div><!-- /cover -->
-
-  <!-- ══ CONTENT ══ -->
-  <div class="content">
-
-    <!-- STUDIO -->
-    <div class="studio-row">
-      <div class="studio-main">
-        <div class="snum">01</div>
-        <div class="sbar"></div>
-        <div class="stag">Signature Space · Bitheik Style</div>
-        <div class="stitle">မြန်မာ့ရိုးရာ ဘိသိက် Style<br>Photo Studio</div>
-        <div class="sdesc">အနောက်တိုင်းစတိုင်သာမက မြန်မာ့ရိုးရာ ဘိသိက်အငွေ့အသက်နဲ့ ရိုက်ချင်သူတွေအတွက်လည်း ဘိသိက်မင်္ဂလာများနဲ့ သေသပ်စွာ ဖန်တီးထားတဲ့ Studio ဖြစ်ပါတယ်။ ရိုးရာအလှတရားနဲ့ Professional Backdrop တွေ ပေါင်းစပ်ပေးထားတာမို့ Pre-wedding Shoot, Portrait Session နဲ့ Wedding Day မှတ်တမ်းများ အတွက် အထူးသင့်လျော်ပါတယ်။</div>
-        <div class="sbadges">
-          <span class="sbadge">Myanmar Traditional</span>
-          <span class="sbadge">Western</span>
-          <span class="sbadge">Japanese Kimono</span>
-        </div>
-      </div>
-      <div class="studio-side">
-        <div class="ss-num">02</div>
-        <span class="ss-ico">🏛️</span>
-        <div class="ss-tag">Studio Rental</div>
-        <div class="ss-title">Hourly Studio Rental</div>
-        <div class="ss-desc">Photo Shoot တွေ, Content Creation တွေ အတွက် နာရီအလိုက် ငှားရမ်းနိုင်ပါတယ်။ Professional Lighting နဲ့ Gear တွေ အပြည့်အစုံ ပါရှိပါတယ်။</div>
-      </div>
-      <div class="studio-side" style="border-bottom:none;">
-        <div class="ss-num">03</div>
-        <span class="ss-ico">🌸</span>
-        <div class="ss-tag">Outdoor &amp; Events</div>
-        <div class="ss-title">Sets for Every Purpose</div>
-        <div class="ss-desc">Studio Shoot, Outdoor Location တွေနဲ့ Casual Event တွေ အတွက် ရည်ရွယ်ချက်အလိုက် စိတ်ကြိုက် ရွေးချယ်နိုင်တဲ့ ဝတ်စုံ Set တွေ အများကြီး ရှိပါတယ်။</div>
-      </div>
-    </div><!-- /studio-row -->
-
-    <div class="gdiv"></div>
-
-    <!-- DRESS -->
-    <div class="dress-row">
-      <div class="dress-ico">👗</div>
-      <div>
-        <div class="d-eye">Dress &amp; Costume Rental</div>
-        <div class="d-title">Western · Myanmar Traditional · Kimono</div>
-        <div class="d-sub">Wedding Day · Pre-shoot · Events — ပွဲတိုင်းအတွက် သင့်တော်တဲ့ Outfit တွေ ရှိပါတယ်</div>
-        <div class="d-chips">
-          <span class="d-chip">👗 Western Bridal Gowns</span>
-          <span class="d-chip">👘 Myanmar Traditional (Bitheik)</span>
-          <span class="d-chip">🎎 Kimono &amp; Furisode</span>
-          <span class="d-chip">🤵 Men's Formal Wear</span>
-          <span class="d-chip">🌸 Outdoor-ready Styles</span>
-          <span class="d-chip">🎉 Event &amp; Party Wear</span>
-        </div>
-      </div>
-    </div><!-- /dress-row -->
-
-    <!-- SPACES -->
-    <div class="spaces-wrap">
-      <div class="shead">Our Spaces</div>
-      <div class="spaces-grid">
-        <div class="sp" data-n="01">
-          <span class="sp-ico">💄</span>
-          <div class="sp-tag">Makeup Room</div>
-          <div class="sp-title">Professional Makeup Room<br>— ၃ ဦးတစ်ပြိုင်နက် ပြင်ဆင်နိုင်သည်</div>
-          <div class="sp-desc">Burmese, Thai, Korean နဲ့ Douyin (C-beauty) Look တွေကို နောက်ဆုံးပေါ် Trend တွေ အတိုင်း ကျွမ်းကျင်စွာ ပြင်ဆင်ပေးနေပါတယ်။ Rehearsal ပြင်ဆင်ခြင်း၊ အရံများ အတွက်ပြင်ဆင်ခြင်းများလည်း ဆောင်ရွက်နိုင်ပါတယ်။</div>
-        </div>
-        <div class="sp" data-n="02">
-          <span class="sp-ico">🪞</span>
-          <div class="sp-tag">Dressing Room</div>
-          <div class="sp-title">Private Dressing Room<br>— စိတ်ကြိုက် ဝတ်စုံ စမ်းသပ်ပါ</div>
-          <div class="sp-desc">သင်နှစ်သက်တဲ့ Dress တွေကို အေးအေးဆေးဆေး စမ်းသပ်နိုင်တဲ့ သီးသန့်နေရာ ဖြစ်ပါတယ်။ Fitting နဲ့ Styling အတွက်လည်း ဝန်ထမ်းတွေက အနီးကပ် ကူညီပေးမှာပါ။</div>
-        </div>
-        <div class="sp" data-n="03">
-          <span class="sp-ico">💐</span>
-          <div class="sp-tag">Accessories</div>
-          <div class="sp-title">Bouquets, Jewelry<br>&amp; Hair Accessories</div>
-          <div class="sp-desc">ဝတ်စုံနဲ့ လိုက်ဖက်တဲ့ လက်ဝတ်ရတနာ, ပန်းစည်းနဲ့ ဆံပင်အလှဆင်ပစ္စည်းတွေကို စိတ်ကြိုက်ရွေးချယ်ကာ သင့်ရဲ့ Look ကို အပြည့်အစုံ ဖန်တီးနိုင်ပါတယ်။</div>
-        </div>
-        <div class="sp" data-n="04">
-          <span class="sp-ico">☕</span>
-          <div class="sp-tag">Consultation Space</div>
-          <div class="sp-title">Relaxed Consultation<br>— သင့်ခရီးစဉ်ကို ဒီမှာ စတင်ပါ</div>
-          <div class="sp-desc">Wedding Planner နဲ့ အေးအေးဆေးဆေး ထိုင်ပြီး သင့်ရဲ့ Vision တွေကို ဆွေးနွေးနိုင်တဲ့ နေရာလေး ဖြစ်ပါတယ်။ သင့်အိပ်မက်တွေကို အကောင်အထည်ဖော်ဖို့ ဒီမှာ စတင်လိုက်ပါ။</div>
-        </div>
-      </div>
-    </div><!-- /spaces-wrap -->
-
-    <!-- RESERVATION + TEAM -->
-    <div class="midrow">
-
-      <div class="resv">
-        <div class="resv-eye">Important Note</div>
-        <div class="resv-title">By Appointment Only<br>— ကြိုတင် ဘိုကင်လုပ်ပေးပါ</div>
-        <div class="resv-desc">ကျွန်ုပ်တို့က Client တိုင်းကို အလေးပေး ဝန်ဆောင်မှုပေးနိုင်ဖို့ Reservation Basis နဲ့ပဲ လုပ်ဆောင်ပါတယ်။ လာရောက်လိုပါက <strong>Facebook Page</strong> သို့မဟုတ် <strong>Email</strong> ကတစ်ဆင့် ကြိုတင် ရက်ချိန်းယူပေးပါ။</div>
-        <div class="resv-quote">
-          <div class="resv-q-text">"သတို့သမီးတိုင်းဟာ အထူးခြားဆုံး ဂရုစိုက်မှုနဲ့ ထိုက်တန်ပါတယ်။"</div>
-        </div>
-      </div>
-
-      <div class="team">
-        <div class="team-eye">Our Team</div>
-        <div class="team-title">သင့်ရဲ့ လိုလားချက်ကို နားထောင်ပြီး<br>အကောင်းဆုံး ပုံဖော်ပေးမှာပါ</div>
-        <div class="team-sub">ကျွန်ုပ်တို့အဖွဲ့က <strong>လက်တွေ့ကျတဲ့ အလှတရားအဖြစ် ဖန်တီးပေးပါတယ်</strong> — Photographer, Videographer, Makeup Artist နဲ့ Vendor အားလုံး <strong>Team တစ်ခုတည်းအဖြစ်</strong> အတူတူ အလုပ်လုပ်ပေးမှာပါ</div>
-        <div class="team-roles">
-          <div class="tr"><div class="tr-ico">📋</div><div class="tr-title">Wedding Planner</div><div class="tr-desc">ပထမဆုံးတွေ့ဆုံချိန်ကနေ Wedding Day အထိ အသေးစိတ် ကူညီသည်</div></div>
-          <div class="tr"><div class="tr-ico">🌸</div><div class="tr-title">Wedding Producer</div><div class="tr-desc">Vision တွေကို Visuals အဖြစ် ပြောင်းလဲ၍ အဖွဲ့သား အားလုံး ညှိနှိုင်းသည်</div></div>
-          <div class="tr"><div class="tr-ico">📸</div><div class="tr-title">Photographer &amp; Videographer</div><div class="tr-desc">Studio, Pre-shoot နဲ့ Wedding Day In-house Team</div></div>
-          <div class="tr"><div class="tr-ico">💄</div><div class="tr-title">Makeup Artist</div><div class="tr-desc">Burmese, Thai, Korean, Douyin, Japanese Style ကျွမ်းကျင်သူများ</div></div>
-        </div>
-      </div>
-
-    </div><!-- /midrow -->
-
-    <!-- JOURNEY -->
-    <div class="journey">
-      <div class="shead">Your Wedding Journey</div>
-      <div class="j-steps">
-        <div class="j-step"><div class="j-n">1</div><div class="j-l">First<br>Consultation</div></div>
-        <div class="j-step"><div class="j-n">2</div><div class="j-l">Vision<br>Building</div></div>
-        <div class="j-step"><div class="j-n">3</div><div class="j-l">Dress &amp; Studio<br>Selection</div></div>
-        <div class="j-step"><div class="j-n">4</div><div class="j-l">Team<br>Connection</div></div>
-        <div class="j-step"><div class="j-n">5</div><div class="j-l">Your Wedding<br>Day</div></div>
-      </div>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line r"></div>
     </div>
 
-    <!-- ══ RSVP HERO — curtain reveal ══ -->
-    <div class="rsvp-hero">
-      <div class="rsvp-rod"></div>
-      <!-- Replace src with the uploaded grand-opening image once committed to the repo -->
-      <img src="grand-opening.jpg" class="rsvp-hero-img" alt="Grand Opening — Amorè N' More Wedding Studio">
-      <div class="curtain curtain-l"></div>
-      <div class="curtain curtain-r"></div>
+    <div class="coming-soon">Coming Soon</div>
+    <div class="headline">
+      Something beautiful<br>is being prepared for you.
+    </div>
+    <div class="sub">
+      ကျွန်ုပ်တို့ရဲ့ Wedding Studio ကို အသစ်ပြောင်းလဲနေပါတယ်။<br>
+      မကြာမီ ပြန်လည် တွေ့ဆုံနိုင်မှာပါ။
     </div>
 
-    <!-- ══ RSVP FORM — scroll reveal ══ -->
-    <div class="rsvp-form-section">
-      <div class="rsvp-body">
+    <span class="petal">🌸</span>
 
-        <div class="rsvp-reveal">
-          <div class="rsvp-eye">Studio Grand Opening · Saturday 27 June 2026</div>
-          <div class="rsvp-title">RSVP — ပျော်ရွှင်သော ဖွင့်ပွဲသို့ ကြိုဆိုပါတယ်</div>
-          <div class="rsvp-sub">ကျွန်ုပ်တို့ Studio Opening သို့ ချစ်မင်းတမ်း ကြွရောက်ပေးပါ။<br>အောက်ပါ ဖောင်ကို ဖြည့်သွင်းပြီး RSVP ပြုလုပ်နိုင်ပါတယ်။</div>
-        </div>
-
-        <form id="rsvp-form" class="rsvp-form" novalidate>
-
-          <div class="rsvp-field rsvp-reveal delay-1">
-            <span class="rsvp-label">Name · နာမည်</span>
-            <input class="rsvp-input" type="text" name="name" placeholder="သင့်နာမည်" required>
-          </div>
-
-          <div class="rsvp-field rsvp-reveal delay-2">
-            <span class="rsvp-label">Email / Phone · အီးမေးလ် သို့ ဖုန်း</span>
-            <input class="rsvp-input" type="text" name="contact" placeholder="email@example.com  သို့  09xxxxxxxxx" required>
-          </div>
-
-          <div class="rsvp-divider rsvp-reveal delay-3"></div>
-
-          <div class="rsvp-field full rsvp-reveal delay-3">
-            <span class="rsvp-label">Time Slot · အချိန်ရွေးချယ်ပါ</span>
-            <div class="rsvp-slots">
-              <input class="rsvp-slot" type="radio" name="timeslot" id="slot1" value="11:00 – 13:00" required>
-              <label for="slot1">၁၁ – ၁၃</label>
-              <input class="rsvp-slot" type="radio" name="timeslot" id="slot2" value="13:00 – 15:00">
-              <label for="slot2">၁၃ – ၁၅</label>
-              <input class="rsvp-slot" type="radio" name="timeslot" id="slot3" value="15:00 – 17:00">
-              <label for="slot3">၁၅ – ၁၇</label>
-            </div>
-          </div>
-
-          <div class="rsvp-field full rsvp-reveal delay-4">
-            <span class="rsvp-label">Message · မှာကြားချက်</span>
-            <textarea class="rsvp-textarea" name="message" placeholder="သင့်ရဲ့ မှာကြားချက် သို့ မှတ်ချက်ကို ဒီမှာ ရေးပါ…"></textarea>
-          </div>
-
-          <div class="rsvp-field full rsvp-reveal delay-5">
-            <span class="rsvp-label">Any Questions · မေးချင်တာ ရှိပါသလား</span>
-            <textarea class="rsvp-textarea" name="questions" placeholder="မေးလိုသည့် မေးခွန်းများကို ဒီမှာ ရေးထားနိုင်ပါတယ်…"></textarea>
-          </div>
-
-          <div class="rsvp-submit-row rsvp-reveal delay-5">
-            <span class="rsvp-status" id="rsvp-status"></span>
-            <button type="submit" class="rsvp-btn" id="rsvp-btn">Send RSVP &nbsp;→</button>
-          </div>
-
-        </form>
-      </div>
-    </div><!-- /rsvp-form-section -->
-
-    <!-- FOOTER / CONTACT -->
-    <div class="footer">
-      <div class="f-left">
-        <div class="f-brand">Amorè N' More</div>
-        <div class="f-salon">ဝဒ်ဒင်းဆလောင် · Tokyo</div>
-        <div class="f-tagline">"Wedding Day မှာ 'Yes' လို့ ပြောတဲ့ အထိ —<br>ကျွန်ုပ်တို့က သင့်အနားမှာ အမြဲ ရှိနေမှာပါ။"</div>
-      </div>
-      <div class="f-right">
-        <div class="f-row"><span class="f-lbl">Email</span><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e6878b899483c8918382828f888192898d9f89a6818b878f8ac885898b">[email&#160;protected]</a></span></div>
-        <div class="f-row"><span class="f-lbl">Facebook</span><span>Amorè N' More</span></div>
-        <div class="f-cta">📅 Reservation</div>
-      </div>
-    </div><!-- /footer -->
-
-  </div><!-- /sheet -->
-
-<script>
-(function () {
-  /* ── Curtain open on page load ── */
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.querySelectorAll('.curtain').forEach(function (c) {
-        c.classList.add('open');
-      });
-    }, 450);
-  });
-
-  /* ── Scroll-reveal for RSVP form fields ── */
-  var revealEls = document.querySelectorAll('.rsvp-reveal');
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        e.target.classList.add('rsvp-visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.10 });
-  revealEls.forEach(function (el) { observer.observe(el); });
-
-  /* ── RSVP form → Google Apps Script ── */
-  var form   = document.getElementById('rsvp-form');
-  var btn    = document.getElementById('rsvp-btn');
-  var status = document.getElementById('rsvp-status');
-
-  if (!form) return;
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    var name    = form.querySelector('[name="name"]').value.trim();
-    var contact = form.querySelector('[name="contact"]').value.trim();
-    var slot    = form.querySelector('[name="timeslot"]:checked');
-
-    if (!name || !contact || !slot) {
-      showStatus('နာမည်၊ ဆက်သွယ်ရန်နှင့် အချိန် ရွေးချယ်ပေးပါ။', false);
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-
-    var data = {};
-    new FormData(form).forEach(function (v, k) { data[k] = v; });
-    data.submitted = new Date().toISOString();
-
-    fetch('config.json')
-      .then(function (r) { return r.json(); })
-      .then(function (cfg) {
-        var url    = cfg.googleScriptUrl;
-        var params = new URLSearchParams(data).toString();
-        return fetch(url + '?' + params, { method: 'GET', mode: 'no-cors' });
-      })
-      .then(function () {
-        showStatus('✓ RSVP လက်ခံပြီးပါပြီ — ကျေးဇူးတင်ပါတယ်', true);
-        form.reset();
-      })
-      .catch(function () {
-        showStatus('Something went wrong — please try again.', false);
-      })
-      .finally(function () {
-        btn.disabled = false;
-        btn.textContent = 'Send RSVP →';
-      });
-  });
-
-  function showStatus(msg, success) {
-    status.textContent = msg;
-    status.style.color = success ? 'var(--gold-light)' : '#c97a7a';
-    status.classList.add('show');
-    setTimeout(function () { status.classList.remove('show'); }, 6000);
-  }
-})();
-</script>
+    <div class="contact">
+      Facebook &nbsp;·&nbsp; Amorè N' More<br>
+      <a href="mailto:studio@amorenmore.com">studio@amorenmore.com</a>
+    </div>
+  </div>
 </body>
 </html>
