@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an Appointment — Amorè N' More Wedding Studio</title>
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="Book an Appointment — Amorè N' More Wedding Studio">
+<meta property="og:description" content="Preweddings · Dress · Hair &amp; Makeup · Photoshoot — Amorè N' More Wedding Studio, Tokyo">
+<meta property="og:image"       content="https://msburberryy-web.github.io/AmoreNMoreStudio/grand-opening.jpg">
+<meta property="og:url"         content="https://msburberryy-web.github.io/AmoreNMoreStudio/bookings/">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:image"      content="https://msburberryy-web.github.io/AmoreNMoreStudio/grand-opening.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Sans+Myanmar:wght@300;400&family=Noto+Serif+Myanmar:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold:       #C9A96E;
+  --gold-light: #E8D5B0;
+  --gold-pale:  #F6EDD9;
+  --ink:        #0D0A07;
+  --ink2:       #1C1410;
+  --cream:      #FAF6F0;
+  --ivory:      #F4EDE3;
+  --text:       #2A1E12;
+  --muted:      #7A6050;
+  --crimson:    #7A1515;
+  --crimson2:   #A0271F;
+}
+
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  background: var(--ivory);
+  font-family: 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
+  font-weight: 400;
+  color: var(--text);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ TOP BAR ══ */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px;
+  background: rgba(244, 237, 227, 0.90);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(201,169,110,.18);
+}
+.top-bar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-style: italic;
+  color: var(--crimson);
+  text-decoration: none;
+}
+.top-bar-brand span {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: normal; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(122,21,21,.45);
+  display: block; margin-top: 1px;
+}
+.top-bar-back {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.top-bar-back:hover { color: var(--crimson); }
+
+/* ══ HERO HEADER ══ */
+.booking-hero {
+  padding: 140px 24px 80px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.booking-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(122,21,21,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eye {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(122,21,21,.55);
+  animation: rise .9s .1s both;
+  margin-bottom: 16px;
+}
+.hero-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(48px, 10vw, 80px);
+  color: var(--crimson);
+  animation: rise .9s .2s both;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(11px, 1.8vw, 13px); letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(122,21,21,.45);
+  animation: rise .9s .3s both;
+  margin-bottom: 32px;
+}
+.hero-orn {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  animation: rise .9s .35s both;
+}
+.hero-orn-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,.5));
+}
+.hero-orn-line.r {
+  background: linear-gradient(90deg, rgba(201,169,110,.5), transparent);
+}
+.hero-orn-dot {
+  width: 5px; height: 5px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  opacity: .7;
+}
+
+/* ══ MAIN SECTION ══ */
+.booking-section {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 24px 100px;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .05s; }
+.d2 { transition-delay: .10s; }
+.d3 { transition-delay: .15s; }
+.d4 { transition-delay: .20s; }
+.d5 { transition-delay: .25s; }
+.d6 { transition-delay: .30s; }
+.d7 { transition-delay: .35s; }
+
+/* Section heading */
+.section-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(122,21,21,.55);
+  margin-bottom: 28px;
+}
+
+/* ══ FORM ══ */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 28px;
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field.full { grid-column: 1 / -1; }
+
+.lbl {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(122,21,21,.65);
+}
+.req { color: var(--gold); margin-left: 2px; }
+
+.inp, .txa {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid rgba(122,21,21,.18);
+  border-radius: 0;
+  padding: 13px 16px;
+  font-family: 'Noto Sans Myanmar', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;
+}
+.inp:focus, .txa:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,169,110,.12);
+}
+.inp::placeholder, .txa::placeholder { color: var(--muted); opacity: .6; font-size: 13px; }
+
+.txa { resize: vertical; min-height: 90px; }
+
+/* Date input */
+.inp[type="date"] {
+  cursor: pointer;
+  color-scheme: light;
+}
+.inp[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
+  filter: sepia(1) saturate(3) hue-rotate(340deg);
+}
+
+/* ── Service cards ── */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.service-r { display: none; }
+.service-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px;
+  padding: 20px 12px;
+  background: var(--cream);
+  border: 1px solid rgba(122,21,21,.16);
+  cursor: pointer;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  text-align: center;
+}
+.service-card:hover {
+  border-color: var(--gold);
+  background: var(--gold-pale);
+}
+.service-r:checked + .service-card {
+  border-color: var(--crimson);
+  background: rgba(122,21,21,.05);
+  box-shadow: inset 0 0 0 1px var(--crimson);
+}
+.service-icon {
+  font-size: 22px;
+  line-height: 1;
+  display: block;
+}
+.service-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--crimson);
+  font-weight: 600;
+}
+.service-name-my {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'Noto Sans Myanmar', sans-serif;
+}
+
+/* ── Time slots ── */
+.slots {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.slot-r { display: none; }
+.slot-lbl {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 11px 22px;
+  background: var(--cream);
+  border: 1px solid rgba(122,21,21,.18);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  color: var(--text);
+}
+.slot-lbl:hover { border-color: var(--gold); background: var(--gold-pale); }
+.slot-r:checked + .slot-lbl {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: var(--ivory);
+}
+
+/* ── HR divider ── */
+.hr {
+  grid-column: 1 / -1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,.35), transparent);
+  margin: 8px 0;
+}
+
+/* ── Submit row ── */
+.submit-row {
+  grid-column: 1 / -1;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding-top: 8px;
+}
+
+.btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--ivory);
+  background: var(--crimson);
+  border: 1px solid var(--crimson);
+  padding: 16px 52px;
+  cursor: pointer;
+  transition: background .25s, border-color .25s;
+}
+.btn:hover:not(:disabled) { background: var(--crimson2); border-color: var(--crimson2); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.booking-status {
+  font-family: 'Noto Sans Myanmar', sans-serif;
+  font-size: 13px; text-align: center;
+  opacity: 0; transition: opacity .4s;
+  min-height: 20px;
+}
+.booking-status.show { opacity: 1; }
+
+/* ══ FOOTER ══ */
+.foot {
+  text-align: center;
+  padding: 28px 24px;
+  background: var(--ink2);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(201,169,110,.5);
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 560px) {
+  .top-bar { padding: 14px 20px; }
+  .booking-hero { padding: 110px 20px 60px; }
+  .booking-section { padding: 48px 20px 80px; }
+  .form { grid-template-columns: 1fr; }
+  .field.full { grid-column: 1; }
+  .submit-row { grid-column: 1; }
+  .service-grid { grid-template-columns: 1fr 1fr; }
+  .btn { padding: 15px 36px; }
+}
+@media (max-width: 400px) {
+  .service-grid { grid-template-columns: 1fr; }
+  .slots { gap: 8px; }
+  .slot-lbl { font-size: 11px; padding: 10px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOP NAVIGATION ══ -->
+<header class="top-bar">
+  <a class="top-bar-brand" href="../">
+    Amorè N' More
+    <span>Wedding Studio &nbsp;·&nbsp; Tokyo</span>
+  </a>
+  <a class="top-bar-back" href="../">← Home</a>
+</header>
+
+<!-- ══ HERO ══ -->
+<div class="booking-hero">
+  <div class="hero-eye">Amorè N' More Wedding Studio</div>
+  <div class="hero-title">Book an Appointment</div>
+  <div class="hero-sub">Preweddings &nbsp;·&nbsp; Dress &nbsp;·&nbsp; Hair &amp; Makeup &nbsp;·&nbsp; Photoshoot</div>
+  <div class="hero-orn">
+    <div class="hero-orn-line"></div>
+    <div class="hero-orn-dot"></div>
+    <div class="hero-orn-line r"></div>
+  </div>
+</div>
+
+<!-- ══ BOOKING FORM ══ -->
+<div class="booking-section">
+
+  <div class="section-head reveal">ချိန်းဆိုမှု ဖောင်ဖြည့်ရန်</div>
+
+  <form id="booking-form" class="form" novalidate>
+
+    <!-- Name -->
+    <div class="field reveal d1">
+      <span class="lbl">Your Name · အမည် <span class="req">*</span></span>
+      <input class="inp" type="text" name="name" placeholder="အမည်အပြည့်အစုံ" required autocomplete="name">
+    </div>
+
+    <!-- Contact -->
+    <div class="field reveal d1">
+      <span class="lbl">Contact · ဆက်သွယ်ရန် <span class="req">*</span></span>
+      <input class="inp" type="text" name="contact" placeholder="09xxxxxxxxx  သို့မဟုတ်  email@example.com" required autocomplete="tel">
+    </div>
+
+    <!-- FB Account -->
+    <div class="field full reveal d2">
+      <span class="lbl">Facebook Account Name · Facebook အမည် <span class="req">*</span></span>
+      <input class="inp" type="text" name="fbName" placeholder="Facebook profile name (for identification · မှတ်သားရန်)" required>
+    </div>
+
+    <div class="hr reveal d2"></div>
+
+    <!-- Service Type -->
+    <div class="field full reveal d3">
+      <span class="lbl">Service Type · ဝန်ဆောင်မှု အမျိုးအစား <span class="req">*</span></span>
+      <div class="service-grid">
+
+        <input class="service-r" type="radio" name="service" id="svc-wedding" value="Wedding Consultation" required>
+        <label class="service-card" for="svc-wedding">
+          <span class="service-icon">💍</span>
+          <span class="service-name">Wedding Consultation</span>
+          <span class="service-name-my">မင်္ဂလာ ဆွေးနွေးမှု</span>
+        </label>
+
+        <input class="service-r" type="radio" name="service" id="svc-dress" value="Dress">
+        <label class="service-card" for="svc-dress">
+          <span class="service-icon">👗</span>
+          <span class="service-name">Dress</span>
+          <span class="service-name-my">ဝတ်စုံ</span>
+        </label>
+
+        <input class="service-r" type="radio" name="service" id="svc-makeup" value="Hair & Makeup">
+        <label class="service-card" for="svc-makeup">
+          <span class="service-icon">💄</span>
+          <span class="service-name">Hair &amp; Makeup</span>
+          <span class="service-name-my">ဆံပင် နှင့် မိတ်ကပ်</span>
+        </label>
+
+        <input class="service-r" type="radio" name="service" id="svc-photo" value="Photoshoot">
+        <label class="service-card" for="svc-photo">
+          <span class="service-icon">📸</span>
+          <span class="service-name">Photoshoot</span>
+          <span class="service-name-my">ဓာတ်ပုံရိုက်ကူးခြင်း</span>
+        </label>
+
+      </div>
+    </div>
+
+    <div class="hr reveal d4"></div>
+
+    <!-- Date -->
+    <div class="field reveal d4">
+      <span class="lbl">Preferred Date · ရက်ရွေးချယ်ရန် <span class="req">*</span></span>
+      <input class="inp" type="date" name="date" id="booking-date" required>
+    </div>
+
+    <!-- Time Slot -->
+    <div class="field reveal d4">
+      <span class="lbl">Time Slot · အချိန် ရွေးချယ်ရန် <span class="req">*</span></span>
+      <div class="slots">
+        <input class="slot-r" type="radio" name="timeslot" id="t1" value="09:00 – 11:00" required>
+        <label class="slot-lbl" for="t1">09:00 – 11:00</label>
+
+        <input class="slot-r" type="radio" name="timeslot" id="t2" value="11:00 – 13:00">
+        <label class="slot-lbl" for="t2">11:00 – 13:00</label>
+
+        <input class="slot-r" type="radio" name="timeslot" id="t3" value="13:00 – 15:00">
+        <label class="slot-lbl" for="t3">13:00 – 15:00</label>
+
+        <input class="slot-r" type="radio" name="timeslot" id="t4" value="15:00 – 17:00">
+        <label class="slot-lbl" for="t4">15:00 – 17:00</label>
+      </div>
+    </div>
+
+    <div class="hr reveal d5"></div>
+
+    <!-- Notes -->
+    <div class="field full reveal d5">
+      <span class="lbl">Additional Notes · မှာကြားလိုသည်များ</span>
+      <textarea class="txa" name="notes" placeholder="ထပ်မံမှာကြားလိုသည်များ ရှိပါက ဤနေရာတွင် ရေးသားပေးပါ…"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-row reveal d6">
+      <span class="booking-status" id="booking-status"></span>
+      <button type="submit" class="btn" id="booking-btn">Send Booking Request &nbsp;→</button>
+    </div>
+
+  </form>
+
+</div>
+
+<!-- ══ FOOTER ══ -->
+<div class="foot">Amorè N' More Wedding Studio &nbsp;·&nbsp; Tokyo 2026</div>
+
+<script>
+(function () {
+
+  /* ── Set minimum date to today ── */
+  var dateInput = document.getElementById('booking-date');
+  var today = new Date();
+  var yyyy = today.getFullYear();
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var dd = String(today.getDate()).padStart(2, '0');
+  dateInput.min = yyyy + '-' + mm + '-' + dd;
+
+  /* ── Scroll reveal ── */
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.reveal').forEach(function (el) { obs.observe(el); });
+
+  /* ── Form submission → Google Apps Script ── */
+  var form   = document.getElementById('booking-form');
+  var btn    = document.getElementById('booking-btn');
+  var status = document.getElementById('booking-status');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var name    = form.querySelector('[name="name"]').value.trim();
+    var contact = form.querySelector('[name="contact"]').value.trim();
+    var fbName  = form.querySelector('[name="fbName"]').value.trim();
+    var service = form.querySelector('[name="service"]:checked');
+    var date    = form.querySelector('[name="date"]').value;
+    var slot    = form.querySelector('[name="timeslot"]:checked');
+
+    if (!name || !contact || !fbName || !service || !date || !slot) {
+      flash('ကြယ်ပွင့်ဖြင့် သတ်မှတ်ထားသောအချက်များ အားလုံးဖြည့်ပေးပါ။\nPlease fill in all required fields.', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'ပေးပို့နေသည်…';
+
+    var data = {
+      type:      'booking',
+      submitted:  new Date().toISOString()
+    };
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+
+    fetch('../config.json')
+      .then(function (r) { return r.json(); })
+      .then(function (cfg) {
+        return fetch(cfg.googleScriptUrl, {
+          method:  'POST',
+          mode:    'no-cors',
+          body:    new URLSearchParams(data)
+        });
+      })
+      .then(function () {
+        flash('✓ Booking request sent — we will contact you shortly!\nချိန်းဆိုမှု လက်ခံပြီးပါပြီ — မကြာမီ ဆက်သွယ်ပေးပါမည်။', true);
+        form.reset();
+      })
+      .catch(function () {
+        flash('Something went wrong — please try again.\nမအောင်မြင်ပါ — ထပ်မံကြိုးစားပါ။', false);
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Send Booking Request →';
+      });
+  });
+
+  function flash(msg, ok) {
+    status.textContent = msg;
+    status.style.color = ok ? '#4a7c4e' : '#c05050';
+    status.classList.add('show');
+    setTimeout(function () { status.classList.remove('show'); }, 8000);
+  }
+
+})();
+</script>
+</body>
+</html>
