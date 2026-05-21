@@ -39,6 +39,10 @@
   0%, 100% { opacity: .85; text-shadow: 0 0 40px rgba(201,169,110,.10); }
   50%       { opacity: 1;   text-shadow: 0 0 80px rgba(201,169,110,.22); }
 }
+@keyframes pulse-book {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(160,39,31,.55), 0 0 18px rgba(122,21,21,.30); }
+  50%       { box-shadow: 0 0 0 7px rgba(160,39,31,.0),  0 0 32px rgba(122,21,21,.55); }
+}
 @keyframes petal-drift {
   0%   { transform: translateY(-30px) translateX(0)    rotate(0deg);   opacity: 0; }
   6%   { opacity: .6; }
@@ -133,10 +137,10 @@ body::after {
 .brand-sub {
   display: block;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.8vw, 14px);
-  font-weight: 600;
-  letter-spacing: 7px; text-transform: uppercase;
-  color: rgba(232,213,176,.72);
+  font-size: clamp(12px, 1.8vw, 15px);
+  font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase;
+  color: #E8D5B0;
   animation: rise .9s .22s both;
   margin-bottom: 44px;
 }
@@ -169,10 +173,10 @@ body::after {
 .now-open {
   display: block;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.8vw, 14px);
-  font-weight: 600;
-  letter-spacing: 6px; text-transform: uppercase;
-  color: rgba(232,213,176,.78);
+  font-size: clamp(12px, 1.8vw, 15px);
+  font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase;
+  color: #E8D5B0;
   animation: rise .9s .40s both;
   margin-bottom: 10px;
 }
@@ -191,13 +195,13 @@ body::after {
 .services {
   display: block;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.8vw, 14px);
-  font-weight: 600;
-  letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(232,213,176,.68);
+  font-size: clamp(13px, 1.9vw, 15px);
+  font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: #D4B87A;
   animation: rise .9s .55s both;
   margin-bottom: 52px;
-  line-height: 2;
+  line-height: 2.2;
 }
 
 /* ── CTAs ── */
@@ -210,10 +214,11 @@ body::after {
 .cta {
   display: inline-block;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.6vw, 14px);
-  letter-spacing: 4px; text-transform: uppercase;
+  font-size: clamp(13px, 1.7vw, 15px);
+  font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
   text-decoration: none;
-  padding: 15px 38px;
+  padding: 16px 40px;
   transition: background .25s, color .25s, border-color .25s, box-shadow .25s;
 }
 .cta-primary {
@@ -224,27 +229,28 @@ body::after {
 .cta-primary:hover {
   background: var(--gold-light);
   border-color: var(--gold-light);
-  box-shadow: 0 0 24px rgba(201,169,110,.25);
+  box-shadow: 0 0 28px rgba(201,169,110,.35);
 }
-.cta-ghost {
-  background: transparent;
-  border: 1px solid rgba(232,213,176,.45);
-  color: rgba(232,213,176,.85);
+.cta-book {
+  background: var(--crimson);
+  border: 1px solid #A0271F;
+  color: #F4EDE3;
+  animation: pulse-book 2.8s 3.5s ease-in-out infinite;
 }
-.cta-ghost:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  box-shadow: 0 0 24px rgba(201,169,110,.10);
+.cta-book:hover {
+  background: #A0271F;
+  border-color: #A0271F;
+  box-shadow: 0 0 32px rgba(122,21,21,.55);
 }
 
 /* ── Location ── */
 .location {
   display: block;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.6vw, 13px);
-  font-weight: 600;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(232,213,176,.58);
+  font-size: clamp(12px, 1.6vw, 14px);
+  font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: #A89060;
   animation: rise .9s .70s both;
   line-height: 2.4;
 }
@@ -294,7 +300,7 @@ body::after {
 
   <div class="cta-row">
     <a class="cta cta-primary" href="studioOpensNow/">RSVP Grand Opening</a>
-    <a class="cta cta-ghost"   href="bookings/">Book an Appointment</a>
+    <a class="cta cta-book"    href="bookings/">Book an Appointment</a>
   </div>
 
   <span class="location">
