@@ -4,194 +4,158 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Amorè N' More — Wedding Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:ital,wght@0,400;1,400&family=Noto+Sans+Myanmar:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;1,400&family=Noto+Sans+Myanmar:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --gold:       #C9A96E;
-  --gold-light: #E8D5B0;
-  --gold-pale:  #F6EDD9;
-  --ink:        #0D0A07;
-  --ink2:       #1C1410;
-  --cream:      #FAF6F0;
+  --gold:      #C9A96E;
+  --gold-light:#E8D5B0;
+  --ink:       #0D0A07;
+  --crimson:   #7A1515;
 }
 
-@keyframes float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-@keyframes shimmer { 0%{background-position:-300% center} 100%{background-position:300% center} }
-@keyframes rise    { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+@keyframes rise   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+@keyframes glow   { 0%,100%{opacity:.6} 50%{opacity:1} }
 
 body {
   background: var(--ink);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-family: 'Noto Sans Myanmar', sans-serif;
   overflow: hidden;
 }
-
-/* Subtle radial glow */
 body::before {
   content: '';
   position: fixed; inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,169,110,0.07) 0%, transparent 70%);
+  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(201,169,110,.07) 0%, transparent 70%);
   pointer-events: none;
 }
 
-/* Rotating ring decorations */
+/* Decorative rings */
 .ring {
-  position: fixed;
-  border-radius: 50%;
-  border: 1px solid rgba(201,169,110,0.10);
-  transform: translate(-50%,-50%);
-  left: 50%; top: 50%;
+  position: fixed; border-radius: 50%;
+  transform: translate(-50%,-50%); left: 50%; top: 50%;
   pointer-events: none;
 }
-.ring-1 { width: 520px; height: 520px; border-color: rgba(201,169,110,0.08); }
-.ring-2 { width: 760px; height: 760px; border-color: rgba(201,169,110,0.05); }
-.ring-3 { width: 1020px; height: 1020px; border-color: rgba(201,169,110,0.03); }
+.r1 { width: 480px; height: 480px; border: 1px solid rgba(201,169,110,.07); }
+.r2 { width: 720px; height: 720px; border: 1px solid rgba(201,169,110,.04); }
+.r3 { width: 980px; height: 980px; border: 1px solid rgba(201,169,110,.025); }
 
-/* Top gold line */
 .top-line {
   position: fixed; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
+/* Card */
 .card {
-  text-align: center;
-  padding: 0 24px;
+  text-align: center; padding: 0 28px;
   position: relative; z-index: 1;
 }
-
 .brand {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(28px, 6vw, 44px);
-  font-style: italic;
-  font-weight: 400;
+  font-size: clamp(26px,5.5vw,40px); font-style: italic; font-weight: 400;
   color: var(--gold-light);
   animation: rise .9s .1s both;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
-
 .brand-sub {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(8px, 1.8vw, 11px);
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: rgba(201,169,110,0.45);
-  animation: rise .9s .25s both;
-  margin-bottom: 52px;
-}
-
-/* Ornament */
-.ornament {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 52px;
-  animation: rise .9s .35s both;
-}
-.ornament-line {
-  width: 70px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.40));
-}
-.ornament-line.r {
-  background: linear-gradient(90deg, rgba(201,169,110,0.40), transparent);
-}
-.ornament-diamond {
-  width: 5px; height: 5px;
-  background: var(--gold);
-  transform: rotate(45deg);
-  opacity: 0.60;
-}
-
-.coming-soon {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(9px, 2vw, 12px);
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--gold);
-  animation: rise .9s .42s both;
-  margin-bottom: 22px;
-}
-
-.headline {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(18px, 4vw, 28px);
-  font-style: italic;
-  font-weight: 400;
-  color: rgba(255,255,255,0.82);
-  line-height: 1.5;
-  animation: rise .9s .50s both;
-  margin-bottom: 20px;
-}
-
-.sub {
-  font-family: 'Noto Sans Myanmar', sans-serif;
-  font-size: clamp(10px, 2vw, 12px);
-  font-weight: 300;
-  color: rgba(255,255,255,0.32);
-  line-height: 2.0;
-  animation: rise .9s .58s both;
-  margin-bottom: 52px;
-}
-
-/* Floating petal */
-.petal {
-  font-size: 22px;
-  display: block;
-  animation: float 4s ease-in-out infinite, rise .9s .68s both;
+  font-size: clamp(8px,1.6vw,10px); letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(201,169,110,.42);
+  animation: rise .9s .22s both;
   margin-bottom: 48px;
 }
 
-.contact {
+/* Ornament */
+.orn {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-bottom: 40px; animation: rise .9s .32s both;
+}
+.orn-line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,169,110,.38)); }
+.orn-line.r { background: linear-gradient(90deg, rgba(201,169,110,.38), transparent); }
+.orn-dot { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); opacity: .55; }
+
+/* "Studio is opened!" */
+.opened-label {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(9px, 1.8vw, 11px);
-  letter-spacing: 2px;
-  color: rgba(201,169,110,0.42);
-  animation: rise .9s .74s both;
+  font-size: clamp(9px,1.8vw,11px); letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(122,21,21,.70);
+  animation: rise .9s .40s both;
+  margin-bottom: 14px;
+}
+.opened-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(42px,9vw,70px);
+  color: #A0271F;
+  animation: rise .9s .48s both, glow 3s 1.5s ease-in-out infinite;
+  line-height: 1.2;
+  margin-bottom: 36px;
+}
+
+/* CTA */
+.cta-wrap {
+  animation: rise .9s .58s both;
+  margin-bottom: 44px;
+}
+.cta {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9px,1.8vw,11px); letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--gold-light);
+  background: rgba(201,169,110,.09);
+  border: 1px solid rgba(201,169,110,.36);
+  padding: 13px 36px;
+  text-decoration: none;
+  transition: background .25s, border-color .25s;
+}
+.cta:hover { background: rgba(201,169,110,.18); border-color: var(--gold); }
+
+/* Floating petal */
+.petal {
+  display: block; font-size: 20px;
+  animation: float 4.5s ease-in-out infinite, rise .9s .68s both;
+  margin-bottom: 40px;
+}
+
+.info {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9px,1.7vw,11px); letter-spacing: 2px;
+  color: rgba(201,169,110,.38);
+  animation: rise .9s .76s both;
   line-height: 2.2;
 }
-.contact a {
-  color: rgba(201,169,110,0.55);
-  text-decoration: none;
-  transition: color .2s;
-}
-.contact a:hover { color: var(--gold-light); }
 </style>
 </head>
 <body>
   <div class="top-line"></div>
-  <div class="ring ring-1"></div>
-  <div class="ring ring-2"></div>
-  <div class="ring ring-3"></div>
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="ring r3"></div>
 
   <div class="card">
     <div class="brand">Amorè N' More</div>
     <div class="brand-sub">Wedding Studio &nbsp;·&nbsp; Tokyo</div>
 
-    <div class="ornament">
-      <div class="ornament-line"></div>
-      <div class="ornament-diamond"></div>
-      <div class="ornament-line r"></div>
+    <div class="orn">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
     </div>
 
-    <div class="coming-soon">Coming Soon</div>
-    <div class="headline">
-      Something beautiful<br>is being prepared for you.
-    </div>
-    <div class="sub">
-      ကျွန်ုပ်တို့ရဲ့ Wedding Studio ကို အသစ်ပြောင်းလဲနေပါတယ်။<br>
-      မကြာမီ ပြန်လည် တွေ့ဆုံနိုင်မှာပါ။
+    <div class="opened-label">Announcement</div>
+    <div class="opened-script">Studio is opened!</div>
+
+    <div class="cta-wrap">
+      <a class="cta" href="studioOpensNow/">RSVP to our Grand Opening &nbsp;→</a>
     </div>
 
     <span class="petal">🌸</span>
 
-    <div class="contact">
-      Facebook &nbsp;·&nbsp; Amorè N' More<br>
-      <a href="mailto:studio@amorenmore.com">studio@amorenmore.com</a>
+    <div class="info">
+      Saturday, 27 June 2026 &nbsp;·&nbsp; 11:00 AM<br>
+      Sengoku, Bunkyoku, Tokyo
     </div>
   </div>
 </body>

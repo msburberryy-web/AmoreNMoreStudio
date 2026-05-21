@@ -1,8 +1,11 @@
 # Amorè N' More — Wedding Studio
 
-## Current State
+## Live URLs
 
-The live site at `https://msburberryy-web.github.io/AmoreNMoreStudio/` shows a **Coming Soon** page while the full site is being prepared.
+| URL | What it shows |
+|---|---|
+| `msburberryy-web.github.io/AmoreNMoreStudio/` | **"Studio is opened!"** page with RSVP link |
+| `msburberryy-web.github.io/AmoreNMoreStudio/studioOpensNow/` | **Grand Opening** — curtain reveal + RSVP form + event details |
 
 ---
 
@@ -10,60 +13,48 @@ The live site at `https://msburberryy-web.github.io/AmoreNMoreStudio/` shows a *
 
 ```
 /
-├── index.html          ← Live: Coming Soon page (public)
-├── config.json         ← Google Apps Script URL for the RSVP form
-├── grand-opening.jpg   ← (TODO) Add the Grand Opening flyer image here
-├── README.md           ← You are here
+├── index.html                  ← "Studio is opened!" landing page (links to studioOpensNow)
+├── config.json                 ← Google Apps Script URL for the RSVP form
+├── grand-opening.jpg           ← (TODO) Add the Grand Opening flyer image here
+├── README.md                   ← You are here
+│
+├── studioOpensNow/
+│   └── index.html              ← Full event page:
+│                                    • Silk curtain reveal over grand-opening.jpg
+│                                    • RSVP form (name, email/phone, time slot, message, questions)
+│                                    • Event details section (date, time, address, quote)
 │
 └── _archive/
-    └── index.html      ← Full wedding studio service page + RSVP section
-                           (hidden from public, stored here temporarily)
+    └── index.html              ← Original full wedding studio service page
+                                   (preserved, not publicly linked)
 ```
 
 ---
 
-## What's in `_archive/`
+## To activate the RSVP form
 
-`_archive/index.html` is the complete website containing:
-- Full wedding salon service page (original content)
-- Studio Opening RSVP section with curtain reveal animation
-- Scroll-reveal form with Google Apps Script submission
-- Time slot selection (၁၁–၁၃ · ၁၃–၁၅ · ၁၅–၁၇)
-
-**Do not delete this file** — it will become the live site once ready.
-
----
-
-## To Go Live
-
-When ready to launch, do the following:
-
-### 1. Add the Grand Opening image
-Place the flyer image in the repo root as `grand-opening.jpg`.
+### 1. Add the Grand Opening flyer image
+Place the image in the **repo root** as `grand-opening.jpg`.
+It is referenced in `studioOpensNow/index.html` as `../grand-opening.jpg`.
 
 ### 2. Set the Google Apps Script URL
-Open `config.json` and replace `YOUR_SCRIPT_ID_HERE` with your actual script ID:
+Open `config.json` and replace the placeholder with your real script ID:
 ```json
 {
   "googleScriptUrl": "https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec"
 }
 ```
 
-### 3. Swap the pages
-```bash
-cp _archive/index.html index.html
-git add index.html
-git commit -m "Launch full site"
-git push
-```
+---
 
-GitHub Pages will update within ~1 minute.
+## Time slots (RSVP form)
+- ၁၁ – ၁၃ &nbsp; (11:00 AM – 1:00 PM)
+- ၁၃ – ၁၅ &nbsp; (1:00 PM – 3:00 PM)
+- ၁၅ – ၁၇ &nbsp; (3:00 PM – 5:00 PM)
 
 ---
 
-## Branches
-
-| Branch | Purpose |
-|---|---|
-| `main` | Live (currently shows Coming Soon) |
-| `claude/add-studio-opening-rsvp-n84Iz` | Development branch for the RSVP feature (merged into main, archived) |
+## Event Details (hard-coded in studioOpensNow/index.html)
+- **Date**: Saturday, 27 June 2026
+- **Start**: 11:00 AM
+- **Address**: 112-0011 Tokyo, Bunkyoku, Sengoku, 4-chome-26-2, SANSAN Sengoku Bldg. 301
