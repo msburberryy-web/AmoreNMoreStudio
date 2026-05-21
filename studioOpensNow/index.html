@@ -41,12 +41,13 @@ body {
   background: #ede7de;
   line-height: 0;
 }
-.hero-img {
+.hero-video {
   display: block;
   width: 100%;
   max-height: 100vh;
   object-fit: cover;
   object-position: center top;
+  background: #1a0f08; /* shown while video loads */
 }
 /* Gold rod — thicker, with cylindrical shadow */
 .rod {
@@ -424,8 +425,10 @@ body {
 <!-- ══ HERO — silk curtain reveal ══ -->
 <div class="hero">
   <div class="rod"></div>
-  <!-- Commit grand-opening.jpg to the repo root, it is referenced here -->
-  <img src="../grand-opening.jpg" class="hero-img" alt="Grand Opening — Amorè N' More Wedding Studio">
+  <!-- Upload grand-opening.mp4 to the repo root on GitHub -->
+  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <source src="../grand-opening.mp4" type="video/mp4">
+  </video>
   <div class="curtain curtain-l"></div>
   <div class="curtain curtain-r"></div>
 </div>
