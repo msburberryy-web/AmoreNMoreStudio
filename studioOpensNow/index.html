@@ -184,6 +184,36 @@ body {
   line-height: 2.20; margin-bottom: 36px; max-width: 540px;
 }
 
+/* Add to Calendar */
+.cal-wrap { margin-bottom: 36px; }
+.cal-btn-group { position: relative; display: inline-block; }
+.cal-btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--crimson); background: transparent;
+  border: 1px solid rgba(122,21,21,.35);
+  padding: 9px 20px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: background .2s, color .2s;
+}
+.cal-btn:hover { background: var(--crimson); color: #fff; }
+.cal-dropdown {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0;
+  background: #fff; border: 1px solid rgba(122,21,21,.18);
+  min-width: 170px; z-index: 10; box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.cal-dropdown.open { display: block; }
+.cal-option {
+  display: block; padding: 10px 16px; cursor: pointer; text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--crimson);
+  border-bottom: 1px solid rgba(122,21,21,.08);
+  transition: background .15s;
+}
+.cal-option:last-child { border-bottom: none; }
+.cal-option:hover { background: #fdf5ee; }
+
 /* Form grid */
 .form {
   display: grid;
@@ -398,7 +428,21 @@ body {
       <div class="rsvp-sub">
         ပြီးပြည့်စုံတဲ့ Bridal Experience တစ်ခုကို တစ်နေရာတည်းမှာ အလှပဆုံး ဖန်တီးပေးနိုင်မဲ့အကြောင်းကိုပါးရင်း<br>
         ကျွန်ုပ်တို့၏ Studio ဖွင့်ပွဲကို လေးစားစွာ ဖိတ်ကြားအပ်ပါသည်။<br>
-        အောက်ပါ အချက်အလက်များကို ဖြည့်စွက်၍ RSVP ပြုလုပ်ပေးနိုင်ပါသည်။
+        တက်ရောက်နိုင်မည်ဆိုပါက တက်ရောက်မည့် အချိန်အား အောက်ပါပုံစံတွင် ရွေးချယ်ဖြည့်စွက်ပေးပါရန် မေတ္တာရပ်ခံအပ်ပါသည်။
+      </div>
+
+      <div class="cal-wrap reveal">
+        <div class="cal-btn-group">
+          <button type="button" class="cal-btn" id="cal-toggle">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Add to Calendar
+          </button>
+          <div class="cal-dropdown" id="cal-dropdown">
+            <a class="cal-option" id="cal-google" target="_blank" rel="noopener">Google Calendar</a>
+            <a class="cal-option" id="cal-ical">Apple / iCal</a>
+            <a class="cal-option" id="cal-outlook">Outlook</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -548,6 +592,58 @@ body {
     status.classList.add('show');
     setTimeout(function () { status.classList.remove('show'); }, 7000);
   }
+
+  /* ── Add to Calendar ── */
+  var CAL = {
+    title:    'Amorè N\' More — Studio Grand Opening',
+    location: 'SANSAN Sengoku Bldg. 301, 4-26-2 Sengoku, Bunkyo-ku, Tokyo 112-0011',
+    detail:   'ပြီးပြည့်စုံတဲ့ Bridal Experience တစ်ခုကို တစ်နေရာတည်းမှာ ဖန်တီးပေးနိုင်ရန် Amorè N\' More Wedding Studio ဖွင့်ပွဲ',
+    startUTC: '20260627T020000Z', /* 11:00 JST = 02:00 UTC */
+    endUTC:   '20260627T080000Z'  /* 17:00 JST = 08:00 UTC */
+  };
+
+  document.getElementById('cal-google').href =
+    'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' + encodeURIComponent(CAL.title) +
+    '&dates=' + CAL.startUTC + '/' + CAL.endUTC +
+    '&details=' + encodeURIComponent(CAL.detail) +
+    '&location=' + encodeURIComponent(CAL.location) +
+    '&ctz=Asia/Tokyo';
+
+  function makeICS() {
+    return [
+      'BEGIN:VCALENDAR', 'VERSION:2.0',
+      'PRODID:-//Amore N More//Studio Grand Opening//EN',
+      'BEGIN:VEVENT',
+      'DTSTART:' + CAL.startUTC,
+      'DTEND:'   + CAL.endUTC,
+      'SUMMARY:' + CAL.title,
+      'DESCRIPTION:' + CAL.detail,
+      'LOCATION:' + CAL.location,
+      'END:VEVENT', 'END:VCALENDAR'
+    ].join('\r\n');
+  }
+
+  function downloadICS() {
+    var blob = new Blob([makeICS()], { type: 'text/calendar;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'amore-n-more-grand-opening.ics';
+    a.click();
+  }
+
+  document.getElementById('cal-ical').addEventListener('click', downloadICS);
+  document.getElementById('cal-outlook').addEventListener('click', downloadICS);
+
+  var calToggle   = document.getElementById('cal-toggle');
+  var calDropdown = document.getElementById('cal-dropdown');
+  calToggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    calDropdown.classList.toggle('open');
+  });
+  document.addEventListener('click', function () {
+    calDropdown.classList.remove('open');
+  });
 
 })();
 </script>
