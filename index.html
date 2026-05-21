@@ -646,53 +646,106 @@ body {
 .f-cta:hover { background:rgba(201,169,110,0.14); }
 
 /* ══════════════════════════════════════════
-   RSVP SECTION
+   RSVP — CURTAIN HERO
 ══════════════════════════════════════════ */
-.rsvp-wrap {
+.rsvp-hero {
+  position: relative;
+  overflow: hidden;
+  background: #ede7de;
+  line-height: 0;
+}
+.rsvp-hero-img {
+  display: block;
+  width: 100%;
+  max-height: 720px;
+  object-fit: cover;
+  object-position: center top;
+}
+/* Gold rod across the top */
+.rsvp-rod {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 5px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(201,169,110,.35) 15%,
+    rgba(201,169,110,.90) 35%,
+    #E8D5B0 50%,
+    rgba(201,169,110,.90) 65%,
+    rgba(201,169,110,.35) 85%,
+    transparent 100%
+  );
+  z-index: 5;
+}
+/* Silk curtains */
+.curtain {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 51%;
+  z-index: 4;
+  will-change: transform;
+  transition: transform 1.8s cubic-bezier(0.76, 0, 0.18, 1);
+}
+.curtain-l {
+  left: 0;
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgba(255,255,255,.24) 0px, rgba(240,234,222,0) 5px,
+      rgba(255,255,255,.10) 12px, rgba(240,234,222,0) 18px,
+      rgba(255,255,255,.18) 26px, rgba(240,234,222,0) 32px
+    ),
+    linear-gradient(to right, #ece5d9, #e3dbd0, #ece5d9, #ddd5c9);
+}
+.curtain-r {
+  right: 0;
+  background:
+    repeating-linear-gradient(
+      to left,
+      rgba(255,255,255,.24) 0px, rgba(240,234,222,0) 5px,
+      rgba(255,255,255,.10) 12px, rgba(240,234,222,0) 18px,
+      rgba(255,255,255,.18) 26px, rgba(240,234,222,0) 32px
+    ),
+    linear-gradient(to left, #ece5d9, #e3dbd0, #ece5d9, #ddd5c9);
+}
+.curtain-l.open { transform: translateX(-100%); }
+.curtain-r.open { transform: translateX(100%); }
+
+/* ══════════════════════════════════════════
+   RSVP — FORM (scroll reveal)
+══════════════════════════════════════════ */
+.rsvp-form-section {
   background: var(--ink);
   position: relative;
   overflow: hidden;
 }
-.rsvp-wrap::before {
+.rsvp-form-section::before {
   content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(201,169,110,0.08) 0%, transparent 65%);
+  background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,169,110,0.08) 0%, transparent 65%);
   pointer-events: none;
 }
-.rsvp-wrap::after {
+.rsvp-form-section::after {
   content:''; position:absolute; top:0; left:0; right:0; height:1.5px;
-  background: linear-gradient(90deg,transparent,var(--gold),transparent);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-.rsvp-img {
-  width: 100%;
-  max-height: 340px;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  opacity: 0.88;
+
+/* Scroll-reveal base state */
+.rsvp-reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .95s ease, transform .95s ease;
 }
-.rsvp-img-placeholder {
-  width: 100%;
-  height: 260px;
-  background: linear-gradient(160deg, var(--umber) 0%, var(--ink2) 60%, #1a0f08 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+.rsvp-reveal.rsvp-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
-.rsvp-img-placeholder::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(201,169,110,0.13) 0%, transparent 70%);
-}
-.rsvp-img-placeholder-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(201,169,110,0.40);
-  position: relative; z-index: 1;
-}
+.rsvp-reveal.delay-1 { transition-delay: .10s; }
+.rsvp-reveal.delay-2 { transition-delay: .22s; }
+.rsvp-reveal.delay-3 { transition-delay: .34s; }
+.rsvp-reveal.delay-4 { transition-delay: .46s; }
+.rsvp-reveal.delay-5 { transition-delay: .58s; }
+
 .rsvp-body {
-  padding: 40px 44px 48px;
+  padding: 42px 44px 54px;
   position: relative; z-index: 1;
 }
 .rsvp-eye {
@@ -709,24 +762,21 @@ body {
 .rsvp-sub {
   font-family: 'TharLon', 'Noto Sans Myanmar', sans-serif;
   font-size: 10.5px; color: rgba(255,255,255,0.38);
-  line-height: 1.85; margin-bottom: 30px; max-width: 500px;
+  line-height: 1.90; margin-bottom: 30px; max-width: 500px;
 }
 .rsvp-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px 22px;
 }
-.rsvp-field {
-  display: flex; flex-direction: column; gap: 6px;
-}
+.rsvp-field { display: flex; flex-direction: column; gap: 6px; }
 .rsvp-field.full { grid-column: 1 / -1; }
 .rsvp-label {
   font-family: 'Cormorant Garamond', serif;
   font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase;
   color: var(--gold);
 }
-.rsvp-input,
-.rsvp-textarea {
+.rsvp-input, .rsvp-textarea {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(201,169,110,0.22);
   color: rgba(255,255,255,0.82);
@@ -737,33 +787,24 @@ body {
   transition: border-color .25s, background .25s;
   width: 100%;
 }
-.rsvp-input:focus,
-.rsvp-textarea:focus {
+.rsvp-input:focus, .rsvp-textarea:focus {
   border-color: rgba(201,169,110,0.60);
   background: rgba(255,255,255,0.07);
 }
-.rsvp-input::placeholder,
-.rsvp-textarea::placeholder {
-  color: rgba(255,255,255,0.22);
-  font-size: 10.5px;
+.rsvp-input::placeholder, .rsvp-textarea::placeholder {
+  color: rgba(255,255,255,0.22); font-size: 10.5px;
 }
-.rsvp-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
+.rsvp-textarea { resize: vertical; min-height: 80px; }
+
 /* Time slots */
-.rsvp-slots {
-  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px;
-}
-.rsvp-slot {
-  display: none;
-}
+.rsvp-slots { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
+.rsvp-slot { display: none; }
 .rsvp-slot + label {
   font-family: 'TharLon', 'Myanmar Khyay', 'Noto Serif Myanmar', serif;
-  font-size: 12px; letter-spacing: 1px;
+  font-size: 13px; letter-spacing: 1px;
   color: rgba(201,169,110,0.70);
   border: 1px solid rgba(201,169,110,0.24);
-  padding: 8px 18px;
+  padding: 9px 20px;
   cursor: pointer;
   transition: background .22s, border-color .22s, color .22s;
   user-select: none;
@@ -773,15 +814,21 @@ body {
   border-color: var(--gold);
   color: var(--gold-light);
 }
-.rsvp-slot + label:hover {
-  border-color: rgba(201,169,110,0.50);
-  color: var(--gold-light);
-}
-/* Submit */
+.rsvp-slot + label:hover { border-color: rgba(201,169,110,0.50); color: var(--gold-light); }
+
+/* Submit row */
 .rsvp-submit-row {
   grid-column: 1 / -1;
-  display: flex; justify-content: flex-end; margin-top: 4px;
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 18px; margin-top: 6px;
 }
+.rsvp-status {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5px; letter-spacing: 1px; font-style: italic;
+  color: var(--gold-light);
+  opacity: 0; transition: opacity .5s;
+}
+.rsvp-status.show { opacity: 1; }
 .rsvp-btn {
   font-family: 'Cormorant Garamond', serif;
   font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
@@ -790,17 +837,14 @@ body {
   border: 1px solid rgba(201,169,110,0.38);
   padding: 12px 32px;
   cursor: pointer;
-  transition: background .25s, border-color .25s;
+  transition: background .25s, border-color .25s, opacity .2s;
 }
-.rsvp-btn:hover {
-  background: rgba(201,169,110,0.18);
-  border-color: var(--gold);
-}
-/* Divider line */
+.rsvp-btn:hover { background: rgba(201,169,110,0.18); border-color: var(--gold); }
+.rsvp-btn:disabled { opacity: 0.40; cursor: default; }
 .rsvp-divider {
+  grid-column: 1 / -1;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(201,169,110,0.18), transparent);
-  margin: 26px 0;
 }
 
 /* ── PRINT ── */
@@ -1008,67 +1052,69 @@ body {
       </div>
     </div>
 
-    <!-- RSVP — STUDIO OPENING -->
-    <div class="rsvp-wrap">
-      <!-- Image slot: replace src with your actual photo -->
-      <div class="rsvp-img-placeholder">
-        <span class="rsvp-img-placeholder-text">Studio Opening Photo</span>
-      </div>
+    <!-- ══ RSVP HERO — curtain reveal ══ -->
+    <div class="rsvp-hero">
+      <div class="rsvp-rod"></div>
+      <!-- Replace src with the uploaded grand-opening image once committed to the repo -->
+      <img src="grand-opening.jpg" class="rsvp-hero-img" alt="Grand Opening — Amorè N' More Wedding Studio">
+      <div class="curtain curtain-l"></div>
+      <div class="curtain curtain-r"></div>
+    </div>
 
+    <!-- ══ RSVP FORM — scroll reveal ══ -->
+    <div class="rsvp-form-section">
       <div class="rsvp-body">
-        <div class="rsvp-eye">Studio Opening · Grand Launch</div>
-        <div class="rsvp-title">RSVP — ပျော်ရွှင်သော ဖွင့်ပွဲသို့ ကြိုဆိုပါတယ်</div>
-        <div class="rsvp-sub">ကျွန်ုပ်တို့ Studio Opening သို့ ချစ်မင်းတမ်းလာရောက်ပေးပါ။ အောက်ပါ ဖောင်ကို ဖြည့်သွင်းပြီး RSVP ပြုလုပ်နိုင်ပါတယ်။</div>
 
-        <form class="rsvp-form" name="studio-rsvp" method="POST" data-netlify="true" action="#">
-          <!-- Name -->
-          <div class="rsvp-field">
+        <div class="rsvp-reveal">
+          <div class="rsvp-eye">Studio Grand Opening · Saturday 27 June 2026</div>
+          <div class="rsvp-title">RSVP — ပျော်ရွှင်သော ဖွင့်ပွဲသို့ ကြိုဆိုပါတယ်</div>
+          <div class="rsvp-sub">ကျွန်ုပ်တို့ Studio Opening သို့ ချစ်မင်းတမ်း ကြွရောက်ပေးပါ။<br>အောက်ပါ ဖောင်ကို ဖြည့်သွင်းပြီး RSVP ပြုလုပ်နိုင်ပါတယ်။</div>
+        </div>
+
+        <form id="rsvp-form" class="rsvp-form" novalidate>
+
+          <div class="rsvp-field rsvp-reveal delay-1">
             <span class="rsvp-label">Name · နာမည်</span>
             <input class="rsvp-input" type="text" name="name" placeholder="သင့်နာမည်" required>
           </div>
 
-          <!-- Email or Phone -->
-          <div class="rsvp-field">
+          <div class="rsvp-field rsvp-reveal delay-2">
             <span class="rsvp-label">Email / Phone · အီးမေးလ် သို့ ဖုန်း</span>
             <input class="rsvp-input" type="text" name="contact" placeholder="email@example.com  သို့  09xxxxxxxxx" required>
           </div>
 
-          <div class="rsvp-divider full" style="grid-column:1/-1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,169,110,.14),transparent);"></div>
+          <div class="rsvp-divider rsvp-reveal delay-3"></div>
 
-          <!-- Time Slot -->
-          <div class="rsvp-field full">
+          <div class="rsvp-field full rsvp-reveal delay-3">
             <span class="rsvp-label">Time Slot · အချိန်ရွေးချယ်ပါ</span>
             <div class="rsvp-slots">
-              <input class="rsvp-slot" type="radio" name="timeslot" id="slot1" value="11:00–13:00" required>
+              <input class="rsvp-slot" type="radio" name="timeslot" id="slot1" value="11:00 – 13:00" required>
               <label for="slot1">၁၁ – ၁၃</label>
-
-              <input class="rsvp-slot" type="radio" name="timeslot" id="slot2" value="13:00–15:00">
+              <input class="rsvp-slot" type="radio" name="timeslot" id="slot2" value="13:00 – 15:00">
               <label for="slot2">၁၃ – ၁၅</label>
-
-              <input class="rsvp-slot" type="radio" name="timeslot" id="slot3" value="15:00–17:00">
+              <input class="rsvp-slot" type="radio" name="timeslot" id="slot3" value="15:00 – 17:00">
               <label for="slot3">၁၅ – ၁၇</label>
             </div>
           </div>
 
-          <!-- Message -->
-          <div class="rsvp-field full">
+          <div class="rsvp-field full rsvp-reveal delay-4">
             <span class="rsvp-label">Message · မှာကြားချက်</span>
             <textarea class="rsvp-textarea" name="message" placeholder="သင့်ရဲ့ မှာကြားချက် သို့ မှတ်ချက်ကို ဒီမှာ ရေးပါ…"></textarea>
           </div>
 
-          <!-- Any Questions -->
-          <div class="rsvp-field full">
+          <div class="rsvp-field full rsvp-reveal delay-5">
             <span class="rsvp-label">Any Questions · မေးချင်တာ ရှိပါသလား</span>
             <textarea class="rsvp-textarea" name="questions" placeholder="မေးလိုသည့် မေးခွန်းများကို ဒီမှာ ရေးထားနိုင်ပါတယ်…"></textarea>
           </div>
 
-          <!-- Submit -->
-          <div class="rsvp-submit-row">
-            <button type="submit" class="rsvp-btn">Send RSVP &nbsp;→</button>
+          <div class="rsvp-submit-row rsvp-reveal delay-5">
+            <span class="rsvp-status" id="rsvp-status"></span>
+            <button type="submit" class="rsvp-btn" id="rsvp-btn">Send RSVP &nbsp;→</button>
           </div>
+
         </form>
       </div>
-    </div><!-- /rsvp-wrap -->
+    </div><!-- /rsvp-form-section -->
 
     <!-- FOOTER / CONTACT -->
     <div class="footer">
@@ -1080,4 +1126,88 @@ body {
       <div class="f-right">
         <div class="f-row"><span class="f-lbl">Email</span><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e6878b899483c8918382828f888192898d9f89a6818b878f8ac885898b">[email&#160;protected]</a></span></div>
         <div class="f-row"><span class="f-lbl">Facebook</span><span>Amorè N' More</span></div>
-        <div class="f-cta">📅 Reservation 
+        <div class="f-cta">📅 Reservation</div>
+      </div>
+    </div><!-- /footer -->
+
+  </div><!-- /sheet -->
+
+<script>
+(function () {
+  /* ── Curtain open on page load ── */
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      document.querySelectorAll('.curtain').forEach(function (c) {
+        c.classList.add('open');
+      });
+    }, 450);
+  });
+
+  /* ── Scroll-reveal for RSVP form fields ── */
+  var revealEls = document.querySelectorAll('.rsvp-reveal');
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('rsvp-visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.10 });
+  revealEls.forEach(function (el) { observer.observe(el); });
+
+  /* ── RSVP form → Google Apps Script ── */
+  var form   = document.getElementById('rsvp-form');
+  var btn    = document.getElementById('rsvp-btn');
+  var status = document.getElementById('rsvp-status');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var name    = form.querySelector('[name="name"]').value.trim();
+    var contact = form.querySelector('[name="contact"]').value.trim();
+    var slot    = form.querySelector('[name="timeslot"]:checked');
+
+    if (!name || !contact || !slot) {
+      showStatus('နာမည်၊ ဆက်သွယ်ရန်နှင့် အချိန် ရွေးချယ်ပေးပါ။', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+    data.submitted = new Date().toISOString();
+
+    fetch('config.json')
+      .then(function (r) { return r.json(); })
+      .then(function (cfg) {
+        var url    = cfg.googleScriptUrl;
+        var params = new URLSearchParams(data).toString();
+        return fetch(url + '?' + params, { method: 'GET', mode: 'no-cors' });
+      })
+      .then(function () {
+        showStatus('✓ RSVP လက်ခံပြီးပါပြီ — ကျေးဇူးတင်ပါတယ်', true);
+        form.reset();
+      })
+      .catch(function () {
+        showStatus('Something went wrong — please try again.', false);
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Send RSVP →';
+      });
+  });
+
+  function showStatus(msg, success) {
+    status.textContent = msg;
+    status.style.color = success ? 'var(--gold-light)' : '#c97a7a';
+    status.classList.add('show');
+    setTimeout(function () { status.classList.remove('show'); }, 6000);
+  }
+})();
+</script>
+</body>
+</html>
