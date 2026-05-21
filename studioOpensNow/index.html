@@ -48,41 +48,119 @@ body {
   object-fit: cover;
   object-position: center top;
 }
-/* Gold rod */
+/* Gold rod — thicker, with cylindrical shadow */
 .rod {
-  position: absolute; top: 0; left: 0; right: 0; height: 5px; z-index: 5;
-  background: linear-gradient(90deg,
-    transparent 0%, rgba(201,169,110,.35) 15%,
-    rgba(201,169,110,.90) 35%, #E8D5B0 50%,
-    rgba(201,169,110,.90) 65%, rgba(201,169,110,.35) 85%, transparent 100%
+  position: absolute; top: 0; left: 0; right: 0; height: 8px; z-index: 6;
+  background: linear-gradient(to bottom,
+    #f5e8c8 0%, #E8D5B0 30%, #C9A96E 60%, #9A7840 100%
+  );
+  box-shadow: 0 3px 10px rgba(0,0,0,0.55), 0 1px 3px rgba(201,169,110,0.4);
+}
+
+/* ── Theatrical cartoon curtains ── */
+.curtain {
+  position: absolute; top: 0; bottom: 0;
+  width: 52%; z-index: 4;
+  will-change: transform;
+  transition: transform 2.0s cubic-bezier(0.76, 0, 0.18, 1);
+}
+
+/* Gathering shadow + pleat lines at the top */
+.curtain::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 70px;
+  z-index: 2; pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgba(0,0,0,.55) 0px,  rgba(0,0,0,0) 3px,
+      rgba(0,0,0,0)   18px, rgba(0,0,0,.45) 21px,
+      rgba(0,0,0,0)   24px, rgba(0,0,0,0)   42px,
+      rgba(0,0,0,.38) 45px, rgba(0,0,0,0)   48px
+    ),
+    linear-gradient(to bottom, rgba(0,0,0,.60) 0%, rgba(0,0,0,.10) 60%, transparent 100%);
+}
+
+/* Diagonal gloss sheen */
+.curtain::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(
+    155deg,
+    rgba(255,255,255,.13) 0%,
+    rgba(255,255,255,.04) 35%,
+    transparent 55%,
+    rgba(0,0,0,.06) 100%
   );
 }
-/* Silk curtains */
-.curtain {
-  position: absolute; top: 0; bottom: 0; width: 51%; z-index: 4;
-  will-change: transform;
-  transition: transform 1.9s cubic-bezier(0.76, 0, 0.18, 1);
-}
+
+/* Left curtain */
 .curtain-l {
   left: 0;
   background:
-    repeating-linear-gradient(to right,
-      rgba(255,255,255,.26) 0px, rgba(240,234,222,0) 5px,
-      rgba(255,255,255,.10) 13px, rgba(240,234,222,0) 19px,
-      rgba(255,255,255,.20) 28px, rgba(240,234,222,0) 34px
+    /* deep inner-edge shadow (right side = curtain centre) */
+    linear-gradient(to left,
+      rgba(0,0,0,.70) 0%, rgba(0,0,0,.20) 5%, transparent 20%
     ),
-    linear-gradient(to right, #ece5d9, #e2d9cc, #ece5d9, #dbd2c6);
+    /* bold cartoon folds */
+    repeating-linear-gradient(to right,
+      #200505  0px,
+      #3D0C0C  12px,
+      #6A1616  28px,
+      #8C2020  44px,
+      #B03535  55px,   /* catch-light peak of fold */
+      #8C2020  66px,
+      #6A1616  82px,
+      #3D0C0C  95px,
+      #200505  104px
+    );
+  /* scalloped hem — wavy bottom edge */
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 83%,
+    96% 88%, 92% 83%, 88% 90%,
+    84% 84%, 80% 92%, 76% 86%,
+    72% 93%, 68% 87%, 64% 94%,
+    60% 88%, 56% 95%, 52% 89%,
+    48% 96%, 44% 90%, 40% 97%,
+    36% 91%, 32% 97%, 27% 91%,
+    22% 97%, 17% 91%, 12% 96%,
+    7%  90%, 3%  95%, 0%  89%
+  );
 }
+
+/* Right curtain — mirror */
 .curtain-r {
   right: 0;
   background:
-    repeating-linear-gradient(to left,
-      rgba(255,255,255,.26) 0px, rgba(240,234,222,0) 5px,
-      rgba(255,255,255,.10) 13px, rgba(240,234,222,0) 19px,
-      rgba(255,255,255,.20) 28px, rgba(240,234,222,0) 34px
+    /* deep inner-edge shadow (left side = curtain centre) */
+    linear-gradient(to right,
+      rgba(0,0,0,.70) 0%, rgba(0,0,0,.20) 5%, transparent 20%
     ),
-    linear-gradient(to left, #ece5d9, #e2d9cc, #ece5d9, #dbd2c6);
+    /* bold cartoon folds */
+    repeating-linear-gradient(to left,
+      #200505  0px,
+      #3D0C0C  12px,
+      #6A1616  28px,
+      #8C2020  44px,
+      #B03535  55px,
+      #8C2020  66px,
+      #6A1616  82px,
+      #3D0C0C  95px,
+      #200505  104px
+    );
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 89%,
+    97% 95%, 93% 90%, 89% 97%,
+    85% 91%, 81% 96%, 77% 90%,
+    73% 97%, 69% 91%, 65% 96%,
+    61% 89%, 57% 95%, 53% 90%,
+    49% 97%, 45% 91%, 41% 96%,
+    37% 90%, 33% 97%, 29% 91%,
+    24% 97%, 19% 91%, 14% 96%,
+    9%  90%, 4%  95%, 0%  83%
+  );
 }
+
 .curtain-l.open { transform: translateX(-100%); }
 .curtain-r.open { transform: translateX(100%); }
 
