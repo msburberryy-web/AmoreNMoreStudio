@@ -358,29 +358,29 @@ body {
 
     <div class="reveal">
       <div class="rsvp-eye">Studio Grand Opening &nbsp;·&nbsp; Saturday 27 June 2026</div>
-      <div class="rsvp-title">RSVP — ပျော်ရွှင်သော ဖွင့်ပွဲသို့ ကြိုဆိုပါတယ်</div>
+      <div class="rsvp-title">RSVP — ကျွန်ုပ်တို့၏ Studio ဖွင့်ပွဲသို့ ဖိတ်ကြားအပ်ပါသည်</div>
       <div class="rsvp-sub">
-        ကျွန်ုပ်တို့ Studio Opening သို့ ချစ်မင်းတမ်း ကြွရောက်ပေးပါ။<br>
-        အောက်ပါ ဖောင်ကို ဖြည့်သွင်းပြီး RSVP ပြုလုပ်နိုင်ပါတယ်။
+        ကျွန်ုပ်တို့၏ Studio ဖွင့်ပွဲ အခမ်းအနားသို့ တက်ရောက်ပေးပါရန် လေးစားစွာ ဖိတ်ကြားအပ်ပါသည်။<br>
+        အောက်ပါ အချက်အလက်များကို ဖြည့်စွက်၍ RSVP ပြုလုပ်ပေးနိုင်ပါသည်။
       </div>
     </div>
 
     <form id="rsvp-form" class="form" novalidate>
 
       <div class="field reveal d1">
-        <span class="lbl">Name · နာမည်</span>
-        <input class="inp" type="text" name="name" placeholder="သင့်နာမည်" required>
+        <span class="lbl">Name · အမည်</span>
+        <input class="inp" type="text" name="name" placeholder="အမည်အပြည့်အစုံ" required>
       </div>
 
       <div class="field reveal d2">
-        <span class="lbl">Email / Phone · အီးမေးလ် သို့ ဖုန်း</span>
-        <input class="inp" type="text" name="contact" placeholder="email@example.com  သို့  09xxxxxxxxx" required>
+        <span class="lbl">Email / Phone · အီးမေးလ် သို့မဟုတ် ဖုန်းနံပါတ်</span>
+        <input class="inp" type="text" name="contact" placeholder="email@example.com  သို့မဟုတ်  09xxxxxxxxx" required>
       </div>
 
       <div class="hr reveal d3"></div>
 
       <div class="field full reveal d3">
-        <span class="lbl">Time Slot · အချိန်ရွေးချယ်ပါ</span>
+        <span class="lbl">Time Slot · အချိန်ရွေးချယ်ရန်</span>
         <div class="slots">
           <input class="slot-r" type="radio" name="timeslot" id="s1" value="11:00 – 13:00" required>
           <label for="s1">၁၁ – ၁၃</label>
@@ -392,18 +392,18 @@ body {
       </div>
 
       <div class="field full reveal d4">
-        <span class="lbl">Message · မှာကြားချက်</span>
-        <textarea class="txa" name="message" placeholder="သင့်ရဲ့ မှာကြားချက် သို့ မှတ်ချက်ကို ဒီမှာ ရေးပါ…"></textarea>
+        <span class="lbl">Message · အထူးမှာကြားလိုသည်များ (Optional)</span>
+        <textarea class="txa" name="message" placeholder="အထူးမှာကြားလိုသည်များကို ဤနေရာတွင် ရေးသားပေးပါ…"></textarea>
       </div>
 
       <div class="field full reveal d5">
-        <span class="lbl">Any Questions · မေးချင်တာ ရှိပါသလား</span>
-        <textarea class="txa" name="questions" placeholder="မေးလိုသည့် မေးခွန်းများကို ဒီမှာ ရေးထားနိုင်ပါတယ်…"></textarea>
+        <span class="lbl">Any Questions · မေးမြန်းလိုသည်များ (ရှိပါက ရေးသားပေးပါ)</span>
+        <textarea class="txa" name="questions" placeholder="မေးမြန်းလိုသည်များ ရှိပါက ဤနေရာတွင် ရေးသားပေးပါ…"></textarea>
       </div>
 
       <div class="submit-row reveal d6">
         <span class="rsvp-status" id="rsvp-status"></span>
-        <button type="submit" class="btn" id="rsvp-btn">Send RSVP &nbsp;→</button>
+        <button type="submit" class="btn" id="rsvp-btn">RSVP ပေးပို့မည် &nbsp;→</button>
       </div>
 
     </form>
@@ -508,12 +508,12 @@ body {
     var slot    = form.querySelector('[name="timeslot"]:checked');
 
     if (!name || !contact || !slot) {
-      flash('နာမည်၊ ဆက်သွယ်ရန်နှင့် အချိန် ရွေးချယ်ပေးပါ။', false);
+      flash('အမည်၊ ဆက်သွယ်ရန်နှင့် အချိန် ရွေးချယ်ပေးပါ။', false);
       return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Sending…';
+    btn.textContent = 'ပေးပို့နေသည်…';
 
     var data = { submitted: new Date().toISOString() };
     new FormData(form).forEach(function (v, k) { data[k] = v; });
@@ -534,7 +534,7 @@ body {
       })
       .finally(function () {
         btn.disabled = false;
-        btn.textContent = 'Send RSVP →';
+        btn.textContent = 'RSVP ပေးပို့မည် →';
       });
   });
 
