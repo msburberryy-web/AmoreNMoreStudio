@@ -99,6 +99,7 @@ body::before {
 .cta-wrap {
   animation: rise .9s .58s both;
   margin-bottom: 44px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
 }
 .cta {
   display: inline-block;
@@ -112,6 +113,18 @@ body::before {
   transition: background .25s;
 }
 .cta:hover { background: #A0271F; border-color: #A0271F; }
+.cta-outline {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9px,1.8vw,11px); letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--crimson);
+  background: transparent;
+  border: 1px solid rgba(122,21,21,.40);
+  padding: 13px 36px;
+  text-decoration: none;
+  transition: background .25s, border-color .25s, color .25s;
+}
+.cta-outline:hover { background: var(--crimson); border-color: var(--crimson); color: #F7F0E8; }
 
 /* Floating petal */
 .petal {
@@ -150,6 +163,7 @@ body::before {
 
     <div class="cta-wrap">
       <a class="cta" href="studioOpensNow/">RSVP to our Grand Opening &nbsp;→</a>
+      <a class="cta-outline" href="bookings/">Book an Appointment &nbsp;→</a>
     </div>
 
     <span class="petal">🌸</span>
