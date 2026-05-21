@@ -20,16 +20,17 @@
 @keyframes glow   { 0%,100%{opacity:.6} 50%{opacity:1} }
 
 body {
-  background: var(--ink);
+  background: #F7F0E8;
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Noto Sans Myanmar', sans-serif;
+  font-weight: 400;
   overflow: hidden;
 }
 body::before {
   content: '';
   position: fixed; inset: 0;
-  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(201,169,110,.07) 0%, transparent 70%);
+  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(122,21,21,.04) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -39,13 +40,13 @@ body::before {
   transform: translate(-50%,-50%); left: 50%; top: 50%;
   pointer-events: none;
 }
-.r1 { width: 480px; height: 480px; border: 1px solid rgba(201,169,110,.07); }
-.r2 { width: 720px; height: 720px; border: 1px solid rgba(201,169,110,.04); }
-.r3 { width: 980px; height: 980px; border: 1px solid rgba(201,169,110,.025); }
+.r1 { width: 480px; height: 480px; border: 1px solid rgba(122,21,21,.07); }
+.r2 { width: 720px; height: 720px; border: 1px solid rgba(122,21,21,.04); }
+.r3 { width: 980px; height: 980px; border: 1px solid rgba(122,21,21,.025); }
 
 .top-line {
   position: fixed; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, rgba(122,21,21,.50), transparent);
 }
 
 /* Card */
@@ -56,14 +57,14 @@ body::before {
 .brand {
   font-family: 'Playfair Display', serif;
   font-size: clamp(26px,5.5vw,40px); font-style: italic; font-weight: 400;
-  color: var(--gold-light);
+  color: #3D0C0C;
   animation: rise .9s .1s both;
   margin-bottom: 3px;
 }
 .brand-sub {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(8px,1.6vw,10px); letter-spacing: 5px; text-transform: uppercase;
-  color: rgba(201,169,110,.42);
+  color: rgba(122,21,21,.45);
   animation: rise .9s .22s both;
   margin-bottom: 48px;
 }
@@ -73,9 +74,9 @@ body::before {
   display: flex; align-items: center; justify-content: center; gap: 12px;
   margin-bottom: 40px; animation: rise .9s .32s both;
 }
-.orn-line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,169,110,.38)); }
-.orn-line.r { background: linear-gradient(90deg, rgba(201,169,110,.38), transparent); }
-.orn-dot { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); opacity: .55; }
+.orn-line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, rgba(122,21,21,.32)); }
+.orn-line.r { background: linear-gradient(90deg, rgba(122,21,21,.32), transparent); }
+.orn-dot { width: 4px; height: 4px; background: var(--crimson); transform: rotate(45deg); opacity: .50; }
 
 /* "Studio is opened!" */
 .opened-label {
@@ -103,14 +104,14 @@ body::before {
   display: inline-block;
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(9px,1.8vw,11px); letter-spacing: 3.5px; text-transform: uppercase;
-  color: var(--gold-light);
-  background: rgba(201,169,110,.09);
-  border: 1px solid rgba(201,169,110,.36);
+  color: #F7F0E8;
+  background: var(--crimson);
+  border: 1px solid var(--crimson);
   padding: 13px 36px;
   text-decoration: none;
-  transition: background .25s, border-color .25s;
+  transition: background .25s;
 }
-.cta:hover { background: rgba(201,169,110,.18); border-color: var(--gold); }
+.cta:hover { background: #A0271F; border-color: #A0271F; }
 
 /* Floating petal */
 .petal {
@@ -120,11 +121,11 @@ body::before {
 }
 
 .info {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(9px,1.7vw,11px); letter-spacing: 2px;
-  color: rgba(201,169,110,.38);
+  font-family: 'Noto Sans Myanmar', sans-serif;
+  font-size: clamp(10px,1.7vw,12px); letter-spacing: 1px;
+  color: rgba(122,21,21,.45);
   animation: rise .9s .76s both;
-  line-height: 2.2;
+  line-height: 2.4;
 }
 </style>
 </head>
