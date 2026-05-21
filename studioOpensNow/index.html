@@ -224,7 +224,7 @@ body {
 }
 .rsvp-status {
   font-family: 'Noto Sans Myanmar', sans-serif;
-  font-size: 12px; color: var(--crimson);
+  font-size: 13px; color: #2A1E12;
   opacity: 0; transition: opacity .5s;
 }
 .rsvp-status.show { opacity: 1; }
@@ -399,7 +399,7 @@ body {
       </div>
 
       <div class="field full reveal d4">
-        <span class="lbl">Message · အထူးမှာကြားလိုသည်များ (Optional)</span>
+        <span class="lbl">Message us.</span>
         <textarea class="txa" name="message" placeholder="အထူးမှာကြားလိုသည်များကို ဤနေရာတွင် ရေးသားပေးပါ…"></textarea>
       </div>
 
@@ -493,8 +493,10 @@ body {
     fetch('../config.json')
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
-        return fetch(cfg.googleScriptUrl + '?' + new URLSearchParams(data).toString(), {
-          method: 'GET', mode: 'no-cors'
+        return fetch(cfg.googleScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams(data)
         });
       })
       .then(function () {
