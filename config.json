@@ -1,3 +1,4 @@
 {
-  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbw7cKNejgLeMiyOPclaU4gtWtxBqdOhi1b5OxmG7N7PaUWnzaeVTrLswqRZcNDcr88/exec"
+  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbw7cKNejgLeMiyOPclaU4gtWtxBqdOhi1b5OxmG7N7PaUWnzaeVTrLswqRZcNDcr88/exec",
+  "bookingScriptUrl": "YOUR_BOOKING_SCRIPT_URL_HERE"
 }
