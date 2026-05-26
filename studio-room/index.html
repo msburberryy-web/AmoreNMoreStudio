@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Studio — Amorè N' More</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Sans+Myanmar:wght@300;400&family=Noto+Serif+Myanmar:wght@700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold:    #C9A96E;
+  --crimson: #7A1515;
+  --cream:   #FAF6F0;
+  --ivory:   #F4EDE3;
+  --ink:     #0D0A07;
+  --muted:   #7A6050;
+  --text:    #2A1E12;
+}
+
+html, body {
+  height: 100%;
+  background: var(--ink);
+  font-family: 'Noto Sans Myanmar', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+.hdr {
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px;
+  border-bottom: 1px solid rgba(201,169,110,.18);
+}
+.hdr-back {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); opacity: .7; text-decoration: none;
+  transition: opacity .2s;
+}
+.hdr-back:hover { opacity: 1; }
+.hdr-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 26px; color: var(--cream);
+  text-align: center;
+}
+.hdr-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); opacity: .55; text-align: right;
+}
+
+/* ── Hint text ── */
+.hint {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); opacity: .55;
+  padding: 14px 0 10px;
+  background: var(--ink);
+}
+
+/* ── Room wrapper ── */
+.room-wrap {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--ink);
+  padding: 0 0 120px;
+}
+.room-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: default;
+}
+
+/* ── Zone hover effects ── */
+.zone-hit {
+  cursor: pointer;
+  transition: opacity .25s;
+}
+.zone-hit rect.overlay {
+  fill: rgba(201,169,110,0);
+  transition: fill .25s;
+}
+.zone-hit:hover rect.overlay {
+  fill: rgba(201,169,110,0.08);
+}
+.zone-hit.active rect.overlay {
+  fill: rgba(201,169,110,0.13);
+}
+.zone-label {
+  pointer-events: none;
+  transition: opacity .25s;
+}
+.zone-hit:hover .zone-label,
+.zone-hit.active .zone-label {
+  opacity: 1 !important;
+}
+
+/* ── Info panel ── */
+.panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--ivory);
+  border-top: 2px solid var(--gold);
+  padding: 28px 36px 32px;
+  transform: translateY(100%);
+  transition: transform .4s cubic-bezier(.22,1,.36,1);
+  z-index: 100;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.panel.open { transform: translateY(0); }
+
+.panel-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 48px;
+  align-items: start;
+}
+.panel-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none;
+  font-size: 18px; color: var(--muted);
+  cursor: pointer; line-height: 1;
+  transition: color .2s;
+}
+.panel-close:hover { color: var(--crimson); }
+.panel-icon { font-size: 32px; margin-bottom: 8px; }
+.panel-eye {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px;
+}
+.panel-title {
+  font-family: 'Noto Serif Myanmar', serif;
+  font-size: 18px; font-weight: 700;
+  color: var(--crimson); line-height: 1.6; margin-bottom: 10px;
+}
+.panel-title-en {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; font-style: italic;
+  color: var(--muted); margin-bottom: 14px;
+}
+.panel-desc {
+  font-family: 'Noto Sans Myanmar', sans-serif;
+  font-size: 12px; line-height: 2.2; color: var(--muted);
+}
+.panel-tags {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;
+}
+.panel-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--crimson); border: 1px solid rgba(122,21,21,.3);
+  padding: 4px 10px;
+}
+.panel-book {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cream); background: var(--crimson);
+  border: none; padding: 11px 26px; cursor: pointer;
+  text-decoration: none; margin-top: 20px;
+  transition: background .2s;
+}
+.panel-book:hover { background: #A0271F; }
+
+@media (max-width: 600px) {
+  .panel-inner { grid-template-columns: 1fr; }
+  .panel { padding: 22px 20px 28px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <a href="../" class="hdr-back">← Back</a>
+  <div class="hdr-title">Amorè N' More</div>
+  <div class="hdr-tag">Wedding Studio · Tokyo</div>
+</header>
+
+<div class="hint">Click on any area to explore our studio</div>
+
+<div class="room-wrap">
+
+<!-- ══════════════════════════════════════════════════════════
+     INTERACTIVE STUDIO ROOM SVG
+══════════════════════════════════════════════════════════ -->
+<svg class="room-svg" viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- Drop shadow -->
+  <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="rgba(10,6,3,0.3)"/>
+  </filter>
+  <filter id="softshadow" x="-10%" y="-10%" width="120%" height="130%">
+    <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="rgba(10,6,3,0.2)"/>
+  </filter>
+  <!-- Subtle glow -->
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="12" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <!-- Wood floor pattern -->
+  <pattern id="wood" width="160" height="28" patternUnits="userSpaceOnUse" patternTransform="translate(0,360)">
+    <rect width="160" height="28" fill="#C8A262"/>
+    <rect width="160" height="28" fill="#BF9A5C" opacity="0.4"/>
+    <rect y="27" width="160" height="1" fill="rgba(0,0,0,0.12)"/>
+    <rect x="79" width="1" height="28" fill="rgba(0,0,0,0.06)"/>
+    <rect x="0" width="160" height="2" fill="rgba(255,255,255,0.06)"/>
+  </pattern>
+  <!-- Warm wallpaper -->
+  <pattern id="wall" width="48" height="48" patternUnits="userSpaceOnUse">
+    <rect width="48" height="48" fill="#EDE0CE"/>
+    <path d="M24,4 L44,24 L24,44 L4,24 Z" fill="none" stroke="rgba(201,169,110,0.14)" stroke-width="0.8"/>
+    <circle cx="24" cy="24" r="2" fill="rgba(201,169,110,0.10)"/>
+  </pattern>
+  <!-- Rug pattern -->
+  <pattern id="rug" width="30" height="30" patternUnits="userSpaceOnUse">
+    <rect width="30" height="30" fill="#8B4E4E"/>
+    <rect width="30" height="30" fill="none" stroke="rgba(201,169,110,0.20)" stroke-width="0.5"/>
+    <rect x="4" y="4" width="22" height="22" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="0.5"/>
+  </pattern>
+</defs>
+
+<!-- ══ ROOM BASE ══ -->
+<!-- Wall -->
+<rect width="960" height="362" fill="url(#wall)"/>
+<!-- Floor -->
+<rect y="360" width="960" height="200" fill="url(#wood)"/>
+<!-- Baseboard -->
+<rect y="355" width="960" height="9" fill="#B8924A" opacity="0.5"/>
+<!-- Crown moulding -->
+<rect width="960" height="7" fill="#D4B878" opacity="0.35"/>
+<rect y="7" width="960" height="3" fill="#C9A96E" opacity="0.2"/>
+<!-- Ceiling line -->
+<line x1="0" y1="0" x2="960" y2="0" stroke="rgba(201,169,110,0.4)" stroke-width="1"/>
+
+<!-- Subtle room shadow at sides -->
+<rect width="40" height="560" fill="rgba(0,0,0,0.06)"/>
+<rect x="920" width="40" height="560" fill="rgba(0,0,0,0.06)"/>
+
+<!-- Centre vertical divider (wall shadow) -->
+<rect x="476" width="8" height="362" fill="rgba(0,0,0,0.06)"/>
+<!-- Floor divider -->
+<rect x="476" y="360" width="8" height="200" fill="rgba(0,0,0,0.08)"/>
+
+<!-- ══════════════════════════════════════════
+     ZONE 1 — PHOTO STUDIO (wall, left)
+══════════════════════════════════════════ -->
+
+<!-- Backdrop stand — two poles -->
+<rect x="72" y="52" width="9" height="298" rx="3" fill="#7A6040"/>
+<rect x="244" y="52" width="9" height="298" rx="3" fill="#7A6040"/>
+<!-- Top crossbar -->
+<rect x="64" y="48" width="198" height="13" rx="4" fill="#8B6F48"/>
+<!-- Backdrop fabric (off-white) -->
+<rect x="82" y="61" width="160" height="220" rx="3" fill="#F8F3EC" filter="url(#softshadow)"/>
+<!-- Subtle fabric fold lines -->
+<line x1="115" y1="61" x2="115" y2="281" stroke="rgba(0,0,0,0.04)" stroke-width="1.5"/>
+<line x1="150" y1="61" x2="150" y2="281" stroke="rgba(0,0,0,0.04)" stroke-width="1.5"/>
+<line x1="185" y1="61" x2="185" y2="281" stroke="rgba(0,0,0,0.04)" stroke-width="1.5"/>
+<line x1="215" y1="61" x2="215" y2="281" stroke="rgba(0,0,0,0.04)" stroke-width="1.5"/>
+<!-- Clamp clips at top -->
+<rect x="88" y="56" width="10" height="14" rx="2" fill="#9A8060"/>
+<rect x="114" y="56" width="10" height="14" rx="2" fill="#9A8060"/>
+<rect x="218" y="56" width="10" height="14" rx="2" fill="#9A8060"/>
+
+<!-- Studio light stand (left) -->
+<rect x="48" y="90" width="6" height="200" rx="2" fill="#5A4830"/>
+<!-- Light head -->
+<rect x="28" y="78" width="44" height="30" rx="4" fill="#3A3020" filter="url(#softshadow)"/>
+<rect x="33" y="83" width="34" height="20" rx="3" fill="rgba(255,245,200,0.7)"/>
+<ellipse cx="50" cy="93" rx="14" ry="8" fill="rgba(255,245,200,0.25)" filter="url(#glow)"/>
+
+<!-- Ring light (right side of zone) -->
+<circle cx="382" cy="150" r="66" fill="none" stroke="#D4B878" stroke-width="18" filter="url(#softshadow)"/>
+<circle cx="382" cy="150" r="52" fill="none" stroke="#F0DFA8" stroke-width="12" opacity="0.5"/>
+<circle cx="382" cy="150" r="36" fill="rgba(255,250,235,0.15)"/>
+<!-- Ring light glow -->
+<circle cx="382" cy="150" r="62" fill="rgba(255,245,200,0.10)" filter="url(#glow)"/>
+<!-- Ring light stand pole -->
+<line x1="382" y1="216" x2="382" y2="358" stroke="#6A5030" stroke-width="7" stroke-linecap="round"/>
+<ellipse cx="382" cy="362" rx="22" ry="7" fill="#5A4020" opacity="0.55"/>
+
+<!-- Camera + tripod -->
+<!-- Tripod legs -->
+<line x1="330" y1="300" x2="300" y2="358" stroke="#4A3820" stroke-width="5" stroke-linecap="round"/>
+<line x1="330" y1="300" x2="362" y2="358" stroke="#4A3820" stroke-width="5" stroke-linecap="round"/>
+<line x1="330" y1="300" x2="330" y2="358" stroke="#4A3820" stroke-width="5" stroke-linecap="round"/>
+<!-- Centre pole -->
+<line x1="330" y1="210" x2="330" y2="304" stroke="#4A3820" stroke-width="6" stroke-linecap="round"/>
+<!-- Camera body -->
+<rect x="302" y="186" width="56" height="38" rx="5" fill="#1C1610" filter="url(#dropshadow)"/>
+<!-- Lens ring -->
+<circle cx="330" cy="205" r="16" fill="#2A2018"/>
+<circle cx="330" cy="205" r="12" fill="#0D0A07"/>
+<circle cx="330" cy="205" r="7" fill="#1A1614"/>
+<circle cx="324" cy="199" r="3.5" fill="rgba(255,255,255,0.22)"/>
+<!-- Shutter button -->
+<rect x="332" y="178" width="13" height="10" rx="3" fill="#141010"/>
+<!-- Flash -->
+<rect x="304" y="179" width="16" height="9" rx="2" fill="#2A2820"/>
+
+<!-- Spotlight on floor -->
+<ellipse cx="162" cy="420" rx="80" ry="22" fill="rgba(255,248,220,0.28)"/>
+
+<!-- Zone 1 label -->
+<g class="zone-label" opacity="0.65">
+  <text x="162" y="474" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="13" letter-spacing="5" fill="#C9A96E">PHOTO STUDIO</text>
+  <text x="162" y="492" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3" fill="#C9A96E" opacity="0.6">· click to explore ·</text>
+</g>
+
+<!-- Zone 1 hotspot -->
+<g class="zone-hit" id="zone-photo" data-panel="photo">
+  <rect class="overlay" x="0" y="0" width="480" height="560" rx="0"/>
+</g>
+
+<!-- ══════════════════════════════════════════
+     ZONE 2 — MAKEUP & STYLING (wall, right)
+══════════════════════════════════════════ -->
+
+<!-- Vanity table top surface -->
+<rect x="524" y="256" width="382" height="18" rx="3" fill="#C8A262" filter="url(#softshadow)"/>
+<!-- Table body -->
+<rect x="524" y="274" width="382" height="86" fill="#D4AE70"/>
+<!-- Table legs -->
+<rect x="536" y="358" width="14" height="16" rx="2" fill="#B89248"/>
+<rect x="880" y="358" width="14" height="16" rx="2" fill="#B89248"/>
+<!-- Drawer details -->
+<rect x="570" y="290" width="80" height="28" rx="2" fill="rgba(0,0,0,0.06)"/>
+<circle cx="610" cy="304" r="4" fill="#C9A96E"/>
+<rect x="780" y="290" width="80" height="28" rx="2" fill="rgba(0,0,0,0.06)"/>
+<circle cx="820" cy="304" r="4" fill="#C9A96E"/>
+
+<!-- Hollywood mirror frame -->
+<rect x="644" y="42" width="152" height="218" rx="10" fill="#18120E" filter="url(#dropshadow)"/>
+<!-- Mirror glass -->
+<rect x="654" y="52" width="132" height="198" rx="7" fill="#2C2230"/>
+<!-- Mirror highlight/reflection -->
+<rect x="654" y="52" width="132" height="198" rx="7" fill="url(#wall)" opacity="0.12"/>
+<line x1="660" y1="72" x2="780" y2="72" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+<line x1="660" y1="140" x2="780" y2="140" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+<!-- Hollywood bulbs — top -->
+<circle cx="655" cy="47" r="8" fill="#F8E090"/><circle cx="655" cy="47" r="5" fill="#FFF0A0"/>
+<circle cx="678" cy="47" r="8" fill="#F8E090"/><circle cx="678" cy="47" r="5" fill="#FFF0A0"/>
+<circle cx="701" cy="47" r="8" fill="#F8E090"/><circle cx="701" cy="47" r="5" fill="#FFF0A0"/>
+<circle cx="724" cy="47" r="8" fill="#F8E090"/><circle cx="724" cy="47" r="5" fill="#FFF0A0"/>
+<circle cx="747" cy="47" r="8" fill="#F8E090"/><circle cx="747" cy="47" r="5" fill="#FFF0A0"/>
+<circle cx="770" cy="47" r="8" fill="#F8E090"/><circle cx="770" cy="47" r="5" fill="#FFF0A0"/>
+<circle cx="790" cy="47" r="8" fill="#F8E090"/><circle cx="790" cy="47" r="5" fill="#FFF0A0"/>
+<!-- bulbs — bottom -->
+<circle cx="655" cy="257" r="8" fill="#F8E090"/><circle cx="655" cy="257" r="5" fill="#FFF0A0"/>
+<circle cx="678" cy="257" r="8" fill="#F8E090"/><circle cx="678" cy="257" r="5" fill="#FFF0A0"/>
+<circle cx="701" cy="257" r="8" fill="#F8E090"/><circle cx="701" cy="257" r="5" fill="#FFF0A0"/>
+<circle cx="724" cy="257" r="8" fill="#F8E090"/><circle cx="724" cy="257" r="5" fill="#FFF0A0"/>
+<circle cx="747" cy="257" r="8" fill="#F8E090"/><circle cx="747" cy="257" r="5" fill="#FFF0A0"/>
+<circle cx="770" cy="257" r="8" fill="#F8E090"/><circle cx="770" cy="257" r="5" fill="#FFF0A0"/>
+<circle cx="790" cy="257" r="8" fill="#F8E090"/><circle cx="790" cy="257" r="5" fill="#FFF0A0"/>
+<!-- bulbs — left -->
+<circle cx="644" cy="68" r="8" fill="#F8E090"/><circle cx="644" cy="68" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="92" r="8" fill="#F8E090"/><circle cx="644" cy="92" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="116" r="8" fill="#F8E090"/><circle cx="644" cy="116" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="140" r="8" fill="#F8E090"/><circle cx="644" cy="140" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="164" r="8" fill="#F8E090"/><circle cx="644" cy="164" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="188" r="8" fill="#F8E090"/><circle cx="644" cy="188" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="212" r="8" fill="#F8E090"/><circle cx="644" cy="212" r="5" fill="#FFF0A0"/>
+<circle cx="644" cy="236" r="8" fill="#F8E090"/><circle cx="644" cy="236" r="5" fill="#FFF0A0"/>
+<!-- bulbs — right -->
+<circle cx="796" cy="68" r="8" fill="#F8E090"/><circle cx="796" cy="68" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="92" r="8" fill="#F8E090"/><circle cx="796" cy="92" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="116" r="8" fill="#F8E090"/><circle cx="796" cy="116" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="140" r="8" fill="#F8E090"/><circle cx="796" cy="140" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="164" r="8" fill="#F8E090"/><circle cx="796" cy="164" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="188" r="8" fill="#F8E090"/><circle cx="796" cy="188" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="212" r="8" fill="#F8E090"/><circle cx="796" cy="212" r="5" fill="#FFF0A0"/>
+<circle cx="796" cy="236" r="8" fill="#F8E090"/><circle cx="796" cy="236" r="5" fill="#FFF0A0"/>
+<!-- Bulb warm glow on mirror -->
+<rect x="644" y="42" width="152" height="218" fill="rgba(255,230,120,0.07)" rx="10"/>
+
+<!-- Makeup items on table -->
+<!-- Perfume bottle -->
+<rect x="538" y="237" width="18" height="25" rx="3" fill="#D0A0C0" filter="url(#softshadow)"/>
+<rect x="542" y="229" width="10" height="10" rx="2" fill="#B890B0"/>
+<rect x="545" y="224" width="4" height="7" rx="1" fill="#9A7090"/>
+<!-- Lipstick set -->
+<rect x="565" y="240" width="9" height="20" rx="1" fill="#C9A96E"/>
+<rect x="565" y="233" width="9" height="9" rx="1" fill="#A0271F"/>
+<rect x="577" y="242" width="9" height="18" rx="1" fill="#D4B878"/>
+<rect x="577" y="235" width="9" height="9" rx="1" fill="#7A1515"/>
+<!-- Powder compact -->
+<ellipse cx="880" cy="247" rx="18" ry="14" fill="#C8A870" filter="url(#softshadow)"/>
+<ellipse cx="880" cy="247" rx="13" ry="10" fill="#D4B878"/>
+<!-- Brush -->
+<rect x="860" y="222" width="5" height="38" rx="2" fill="#8B6B4A"/>
+<rect x="859" y="212" width="7" height="12" rx="2" fill="#D4B060"/>
+
+<!-- Makeup stool -->
+<ellipse cx="715" cy="382" rx="36" ry="16" fill="#8B5A4A" filter="url(#softshadow)"/>
+<line x1="698" y1="396" x2="692" y2="430" stroke="#6A4030" stroke-width="6" stroke-linecap="round"/>
+<line x1="732" y1="396" x2="738" y2="430" stroke="#6A4030" stroke-width="6" stroke-linecap="round"/>
+<line x1="694" y1="416" x2="736" y2="416" stroke="#6A4030" stroke-width="4" stroke-linecap="round"/>
+
+<!-- Zone 2 label -->
+<g class="zone-label" opacity="0.65">
+  <text x="715" y="474" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="13" letter-spacing="5" fill="#C9A96E">MAKEUP &amp; STYLING</text>
+  <text x="715" y="492" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3" fill="#C9A96E" opacity="0.6">· click to explore ·</text>
+</g>
+
+<!-- Zone 2 hotspot -->
+<g class="zone-hit" id="zone-makeup" data-panel="makeup">
+  <rect class="overlay" x="480" y="0" width="480" height="560" rx="0"/>
+</g>
+
+<!-- ══════════════════════════════════════════
+     ZONE 3 — DRESS RENTAL (floor, left)
+══════════════════════════════════════════ -->
+
+<!-- Dress rack — base feet -->
+<ellipse cx="78" cy="478" rx="28" ry="9" fill="#5A4020" opacity="0.5"/>
+<ellipse cx="390" cy="478" rx="28" ry="9" fill="#5A4020" opacity="0.5"/>
+<!-- Vertical poles -->
+<rect x="72" y="360" width="12" height="118" rx="4" fill="#9A8060"/>
+<rect x="384" y="360" width="12" height="118" rx="4" fill="#9A8060"/>
+<!-- Horizontal rail -->
+<rect x="72" y="358" width="324" height="12" rx="5" fill="#B8986A" filter="url(#softshadow)"/>
+
+<!-- Hanging gowns (5 dresses) -->
+<!-- Dress 1 — white western gown -->
+<path d="M110,370 Q108,395 90,460 L136,460 Q118,395 114,370 Z" fill="#F8F3EC" filter="url(#softshadow)"/>
+<path d="M112,370 Q110,390 92,460 L100,460 Q116,395 116,370 Z" fill="rgba(255,255,255,0.4)"/>
+<!-- Hanger 1 -->
+<path d="M112,358 Q112,348 118,344 Q124,340 118,344 Q112,348 112,358" fill="none" stroke="#B8986A" stroke-width="3"/>
+<line x1="106" y1="358" x2="118" y2="358" stroke="#B8986A" stroke-width="3"/>
+
+<!-- Dress 2 — gold/champagne -->
+<path d="M162,370 Q160,392 142,460 L188,460 Q170,392 168,370 Z" fill="#E8C878" filter="url(#softshadow)"/>
+<path d="M164,370 Q162,388 144,460 L152,460 Q168,392 168,370 Z" fill="rgba(255,255,255,0.25)"/>
+<!-- Hanger 2 -->
+<path d="M165,358 Q165,348 171,344 Q177,340 171,344 Q165,348 165,358" fill="none" stroke="#B8986A" stroke-width="3"/>
+<line x1="159" y1="358" x2="171" y2="358" stroke="#B8986A" stroke-width="3"/>
+
+<!-- Dress 3 — crimson (Myanmar traditional) -->
+<path d="M216,370 Q214,390 198,455 L240,455 Q224,390 220,370 Z" fill="#8B1A1A" filter="url(#softshadow)"/>
+<path d="M218,370 Q216,387 200,455 L208,455 Q222,390 222,370 Z" fill="rgba(255,255,255,0.12)"/>
+<!-- Gold trim on crimson dress -->
+<path d="M198,455 Q219,462 240,455" fill="none" stroke="#C9A96E" stroke-width="3"/>
+<!-- Hanger 3 -->
+<path d="M218,358 Q218,348 224,344 Q230,340 224,344 Q218,348 218,358" fill="none" stroke="#B8986A" stroke-width="3"/>
+<line x1="212" y1="358" x2="224" y2="358" stroke="#B8986A" stroke-width="3"/>
+
+<!-- Dress 4 — ivory/blush -->
+<path d="M270,370 Q268,393 250,458 L296,458 Q278,393 274,370 Z" fill="#F0E0D0" filter="url(#softshadow)"/>
+<path d="M272,370 Q270,390 252,458 L260,458 Q276,393 276,370 Z" fill="rgba(255,255,255,0.35)"/>
+<!-- Hanger 4 -->
+<path d="M272,358 Q272,348 278,344 Q284,340 278,344 Q272,348 272,358" fill="none" stroke="#B8986A" stroke-width="3"/>
+<line x1="266" y1="358" x2="278" y2="358" stroke="#B8986A" stroke-width="3"/>
+
+<!-- Dress 5 — black (formal) -->
+<path d="M324,370 Q322,392 306,458 L348,458 Q332,392 328,370 Z" fill="#1C1410" filter="url(#softshadow)"/>
+<path d="M326,370 Q324,389 308,458 L316,458 Q330,392 330,370 Z" fill="rgba(255,255,255,0.06)"/>
+<!-- Hanger 5 -->
+<path d="M326,358 Q326,348 332,344 Q338,340 332,344 Q326,348 326,358" fill="none" stroke="#B8986A" stroke-width="3"/>
+<line x1="320" y1="358" x2="332" y2="358" stroke="#B8986A" stroke-width="3"/>
+
+<!-- Dress zone label -->
+<g class="zone-label" opacity="0.65">
+  <text x="230" y="510" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="13" letter-spacing="5" fill="#C9A96E">DRESS RENTAL</text>
+  <text x="230" y="528" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3" fill="#C9A96E" opacity="0.6">· click to explore ·</text>
+</g>
+
+<!-- Zone 3 hotspot -->
+<g class="zone-hit" id="zone-dress" data-panel="dress">
+  <rect class="overlay" x="0" y="360" width="480" height="200" rx="0"/>
+</g>
+
+<!-- ══════════════════════════════════════════
+     ZONE 4 — CONSULTATION (floor, right)
+══════════════════════════════════════════ -->
+
+<!-- Rug under consultation area -->
+<rect x="510" y="390" width="400" height="150" rx="6" fill="url(#rug)" opacity="0.55" filter="url(#softshadow)"/>
+<rect x="510" y="390" width="400" height="150" rx="6" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="2"/>
+
+<!-- Sofa — main body -->
+<rect x="530" y="400" width="310" height="120" rx="16" fill="#6A3040" filter="url(#dropshadow)"/>
+<!-- Sofa back cushion -->
+<rect x="530" y="400" width="310" height="58" rx="12" fill="#7A3848"/>
+<!-- Sofa seat cushion dividers -->
+<line x1="688" y1="458" x2="688" y2="520" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
+<!-- Sofa left arm -->
+<rect x="526" y="406" width="28" height="100" rx="10" fill="#7A3848"/>
+<!-- Sofa right arm -->
+<rect x="816" y="406" width="28" height="100" rx="10" fill="#7A3848"/>
+<!-- Cushion pillows -->
+<rect x="548" y="410" width="60" height="44" rx="8" fill="#8B4858" filter="url(#softshadow)"/>
+<rect x="762" y="410" width="60" height="44" rx="8" fill="#8B4858" filter="url(#softshadow)"/>
+<!-- Sofa legs -->
+<rect x="548" y="514" width="12" height="10" rx="2" fill="#4A2030"/>
+<rect x="808" y="514" width="12" height="10" rx="2" fill="#4A2030"/>
+
+<!-- Coffee table -->
+<rect x="620" y="450" width="150" height="70" rx="4" fill="#C8A262" filter="url(#softshadow)"/>
+<!-- Glass table top shine -->
+<rect x="622" y="452" width="146" height="66" rx="3" fill="rgba(255,255,255,0.10)"/>
+<line x1="625" y1="458" x2="762" y2="458" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+<!-- Table legs -->
+<rect x="626" y="518" width="8" height="12" rx="2" fill="#A8823A"/>
+<rect x="754" y="518" width="8" height="12" rx="2" fill="#A8823A"/>
+<!-- Tea cups on table -->
+<ellipse cx="665" cy="480" rx="14" ry="9" fill="#F8F3EC"/>
+<ellipse cx="665" cy="476" rx="11" ry="7" fill="rgba(180,130,80,0.4)"/>
+<path d="M679,480 Q684,476 679,472" fill="none" stroke="#D4B878" stroke-width="2"/>
+<ellipse cx="725" cy="480" rx="14" ry="9" fill="#F8F3EC"/>
+<ellipse cx="725" cy="476" rx="11" ry="7" fill="rgba(180,130,80,0.4)"/>
+<path d="M739,480 Q744,476 739,472" fill="none" stroke="#D4B878" stroke-width="2"/>
+<!-- Small book/magazine on table -->
+<rect x="643" y="497" width="32" height="20" rx="2" fill="#8B1A1A" opacity="0.7"/>
+<rect x="645" y="499" width="28" height="16" rx="1" fill="rgba(201,169,110,0.3)"/>
+
+<!-- Plant (corner) -->
+<!-- Pot -->
+<path d="M500,490 Q496,520 504,528 L526,528 Q534,520 530,490 Z" fill="#7A6040"/>
+<rect x="494" y="486" width="42" height="8" rx="2" fill="#8B7050"/>
+<!-- Plant leaves -->
+<ellipse cx="512" cy="466" rx="18" ry="28" fill="#3A6030" transform="rotate(-20,512,466)"/>
+<ellipse cx="512" cy="466" rx="18" ry="28" fill="#4A7040" transform="rotate(15,512,466)"/>
+<ellipse cx="512" cy="460" rx="14" ry="22" fill="#3A6030" transform="rotate(-5,512,460)"/>
+<!-- Leaf vein highlights -->
+<line x1="512" y1="490" x2="502" y2="450" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+<line x1="512" y1="490" x2="524" y2="452" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+<!-- Zone 4 label -->
+<g class="zone-label" opacity="0.65">
+  <text x="715" y="544" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="13" letter-spacing="5" fill="#C9A96E">CONSULTATION</text>
+  <text x="715" y="558" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3" fill="#C9A96E" opacity="0.6">· click to explore ·</text>
+</g>
+
+<!-- Zone 4 hotspot -->
+<g class="zone-hit" id="zone-consult" data-panel="consult">
+  <rect class="overlay" x="480" y="360" width="480" height="200" rx="0"/>
+</g>
+
+</svg><!-- /room-svg -->
+
+<!-- ══ INFO PANELS ══ -->
+
+<div class="panel" id="panel-photo">
+  <button class="panel-close" onclick="closePanel()">✕</button>
+  <div class="panel-inner">
+    <div>
+      <div class="panel-icon">📸</div>
+      <div class="panel-eye">Photo &amp; Video Studio</div>
+      <div class="panel-title">မြန်မာ့ရိုးရာ ဘိသိက် Style<br>Photo Studio</div>
+      <div class="panel-title-en">Pre-wedding · Portrait · Wedding Day</div>
+      <div class="panel-tags">
+        <span class="panel-tag">Myanmar Traditional</span>
+        <span class="panel-tag">Western</span>
+        <span class="panel-tag">Japanese Kimono</span>
+        <span class="panel-tag">Studio Rental</span>
+      </div>
+    </div>
+    <div>
+      <div class="panel-desc">အနောက်တိုင်းစတိုင်သာမက မြန်မာ့ရိုးရာ ဘိသိက်အငွေ့အသက်နဲ့ ရိုက်ချင်သူတွေအတွက်လည်း ဘိသိက်မင်္ဂလာများနဲ့ သေသပ်စွာ ဖန်တီးထားတဲ့ Studio ဖြစ်ပါတယ်။ ရိုးရာအလှတရားနဲ့ Professional Backdrop တွေ ပေါင်းစပ်ပေးထားပါတယ်။<br><br>Pre-wedding Shoot, Portrait Session နဲ့ Wedding Day မှတ်တမ်းများ အတွက် အထူးသင့်လျော်ပြီး နာရီအလိုက် ငှားရမ်းနိုင်ပါသည်။</div>
+      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-makeup">
+  <button class="panel-close" onclick="closePanel()">✕</button>
+  <div class="panel-inner">
+    <div>
+      <div class="panel-icon">💄</div>
+      <div class="panel-eye">Makeup &amp; Styling</div>
+      <div class="panel-title">Professional Makeup Room<br>— ၃ ဦးတစ်ပြိုင်နက် ပြင်ဆင်နိုင်သည်</div>
+      <div class="panel-title-en">Bridal · Rehearsal · Photoshoot Styling</div>
+      <div class="panel-tags">
+        <span class="panel-tag">Burmese Style</span>
+        <span class="panel-tag">Korean / Douyin</span>
+        <span class="panel-tag">Japanese</span>
+        <span class="panel-tag">Thai Style</span>
+      </div>
+    </div>
+    <div>
+      <div class="panel-desc">Burmese, Thai, Korean နဲ့ Douyin (C-beauty) Look တွေကို နောက်ဆုံးပေါ် Trend တွေ အတိုင်း ကျွမ်းကျင်စွာ ပြင်ဆင်ပေးနေပါတယ်။<br><br>Rehearsal ပြင်ဆင်ခြင်း၊ အရံများ အတွက်ပြင်ဆင်ခြင်းများလည်း ဆောင်ရွက်နိုင်ပါတယ်။ Hollywood Vanity Mirror နဲ့ Professional Lighting တွေနဲ့ ပြင်ဆင်ပေးပါတယ်။</div>
+      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-dress">
+  <button class="panel-close" onclick="closePanel()">✕</button>
+  <div class="panel-inner">
+    <div>
+      <div class="panel-icon">👗</div>
+      <div class="panel-eye">Dress &amp; Costume Rental</div>
+      <div class="panel-title">Western · Myanmar Traditional · Kimono</div>
+      <div class="panel-title-en">Wedding Day · Pre-shoot · Events</div>
+      <div class="panel-tags">
+        <span class="panel-tag">Western Bridal Gowns</span>
+        <span class="panel-tag">Myanmar Bitheik</span>
+        <span class="panel-tag">Kimono / Furisode</span>
+        <span class="panel-tag">Men's Formal</span>
+      </div>
+    </div>
+    <div>
+      <div class="panel-desc">Wedding Day, Pre-shoot နဲ့ Event တိုင်းအတွက် သင့်တော်တဲ့ Outfit တွေ ရှိပါတယ်။<br><br>Private Dressing Room တွင် သင်နှစ်သက်တဲ့ Dress တွေကို အေးအေးဆေးဆေး စမ်းသပ်နိုင်ပါတယ်။ Fitting နဲ့ Styling အတွက်လည်း ဝန်ထမ်းတွေက အနီးကပ် ကူညီပေးမှာပါ။</div>
+      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-consult">
+  <button class="panel-close" onclick="closePanel()">✕</button>
+  <div class="panel-inner">
+    <div>
+      <div class="panel-icon">☕</div>
+      <div class="panel-eye">Consultation Space</div>
+      <div class="panel-title">Relaxed Consultation<br>— သင့်ခရီးစဉ်ကို ဒီမှာ စတင်ပါ</div>
+      <div class="panel-title-en">Wedding Planning · First Consultation</div>
+      <div class="panel-tags">
+        <span class="panel-tag">By Appointment</span>
+        <span class="panel-tag">Wedding Planning</span>
+        <span class="panel-tag">Styling Advice</span>
+      </div>
+    </div>
+    <div>
+      <div class="panel-desc">Wedding Planner နဲ့ အေးအေးဆေးဆေး ထိုင်ပြီး သင့်ရဲ့ Vision တွေကို ဆွေးနွေးနိုင်တဲ့ နေရာလေး ဖြစ်ပါတယ်။<br><br>Photo Studio, Dress Rental, Makeup နဲ့ Wedding Planning အားလုံးကို တစ်နေရာတည်းမှာ ဆွေးနွေးနိုင်ပါတယ်။ သင့်အိပ်မက်တွေကို အကောင်အထည်ဖော်ဖို့ ဒီမှာ စတင်လိုက်ပါ။</div>
+      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /room-wrap -->
+
+<script>
+(function () {
+  var activePanel = null;
+
+  document.querySelectorAll('.zone-hit').forEach(function (zone) {
+    zone.addEventListener('click', function () {
+      var panelId = 'panel-' + zone.dataset.panel;
+      var panel   = document.getElementById(panelId);
+
+      document.querySelectorAll('.zone-hit').forEach(function (z) { z.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('open'); });
+
+      if (activePanel === panelId) {
+        activePanel = null;
+        return;
+      }
+
+      zone.classList.add('active');
+      panel.classList.add('open');
+      activePanel = panelId;
+    });
+  });
+
+  window.closePanel = function () {
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('open'); });
+    document.querySelectorAll('.zone-hit').forEach(function (z) { z.classList.remove('active'); });
+    activePanel = null;
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closePanel();
+  });
+})();
+</script>
+</body>
+</html>
