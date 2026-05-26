@@ -323,6 +323,68 @@ body {
   color: var(--text);
 }
 
+/* ══ THANK YOU STATE ══ */
+.booking-thanks {
+  display: none;
+  text-align: center;
+  padding: 20px 24px 60px;
+  animation: thanks-in .8s ease both;
+}
+@keyframes thanks-in {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.thanks-orn {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-bottom: 32px;
+}
+.thanks-orn-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.thanks-orn-line.r {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.thanks-orn-dot {
+  width: 6px; height: 6px;
+  background: var(--gold); transform: rotate(45deg); opacity: .7;
+}
+.thanks-script {
+  display: block;
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(64px, 14vw, 110px);
+  color: var(--crimson);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.thanks-title {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 2vw, 16px);
+  font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.thanks-my {
+  display: block;
+  font-family: 'Padauk', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--muted);
+  line-height: 2; margin-bottom: 36px;
+}
+.thanks-note {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-style: italic;
+  color: var(--muted);
+  background: rgba(201,169,110,.08);
+  border-left: 2px solid var(--gold);
+  padding: 12px 20px;
+  text-align: left;
+  line-height: 1.9;
+  max-width: 480px;
+}
+
 /* ══ FOOTER ══ */
 .foot {
   text-align: center;
@@ -484,6 +546,24 @@ body {
 
   </form>
 
+  <!-- ══ THANK YOU (shown after submit) ══ -->
+  <div id="booking-thanks" class="booking-thanks">
+    <div class="thanks-orn">
+      <div class="thanks-orn-line"></div>
+      <div class="thanks-orn-dot"></div>
+      <div class="thanks-orn-line r"></div>
+    </div>
+    <span class="thanks-script">Thank You</span>
+    <span class="thanks-title">Your booking request has been received</span>
+    <span class="thanks-my">
+      ချိန်းဆိုမှု တောင်းဆိုချက် လက်ခံရရှိပြီးပါပြီ။<br>
+      သင့်ရွေးချယ်ထားသော ရက်နှင့် အချိန်ကို စစ်ဆေးပြီး မကြာမီ ဆက်သွယ်အတည်ပြုပေးပါမည်။
+    </span>
+    <span class="thanks-note">
+      We will review your preferred date &amp; time and confirm the plan with you shortly.
+    </span>
+  </div>
+
 </div>
 
 <!-- ══ FOOTER ══ -->
@@ -550,13 +630,13 @@ body {
         });
       })
       .then(function () {
-        flash('✓ Request received! We will review your preferred date & time and confirm the plan with you soon.\nတောင်းဆိုမှု လက်ခံပြီးပါပြီ။ သင့်ရွေးချယ်ထားသော ရက်နှင့် အချိန်ကို စစ်ဆေးပြီး မကြာမီ အတည်ပြုပေးမည်။', true);
-        form.reset();
+        form.style.display = 'none';
+        document.querySelector('.section-head').style.display = 'none';
+        document.getElementById('booking-thanks').style.display = 'block';
+        window.scrollTo({ top: document.querySelector('.booking-section').offsetTop - 80, behavior: 'smooth' });
       })
       .catch(function () {
         flash('Something went wrong — please try again.\nမအောင်မြင်ပါ — ထပ်မံကြိုးစားပါ။', false);
-      })
-      .finally(function () {
         btn.disabled = false;
         btn.textContent = 'Send Booking Request →';
       });
@@ -568,6 +648,8 @@ body {
     status.classList.add('show');
     setTimeout(function () { status.classList.remove('show'); }, 8000);
   }
+
+  /* reset "sending" state only on error — success hides the form entirely */
 
 })();
 </script>
