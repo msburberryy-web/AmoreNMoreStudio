@@ -4,795 +4,750 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Studio — Amorè N' More</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Sans+Myanmar:wght@300;400&family=Noto+Serif+Myanmar:wght@700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Sans+Myanmar:wght@300;400&family=Noto+Serif+Myanmar:wght@700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --gold:#C9A96E; --crimson:#7A1515; --cream:#FAF6F0;
-  --ivory:#F4EDE3; --ink:#0D0A07; --muted:#7A6050; --text:#2A1E12;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#C9A96E; --gold-light:#E8D5B0; --crimson:#7A1515;
+  --cream:#FAF6F0; --ivory:#F4EDE3; --ink:#080604; --muted:#7A6050;
 }
-html,body { background:var(--ink); font-family:'Noto Sans Myanmar',sans-serif; overflow-x:hidden; }
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sans-serif;overflow-x:hidden;}
+
+/* ── Animations ── */
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.9}70%{transform:scale(2.4);opacity:0}100%{transform:scale(2.4);opacity:0}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes line-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ── Header ── */
-.hdr {
-  background:var(--ink);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 28px;
-  border-bottom:1px solid rgba(201,169,110,.18);
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:18px 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(to bottom,rgba(8,6,4,.95) 0%,rgba(8,6,4,0) 100%);
 }
-.hdr-back {
+.hdr-back{
   font-family:'Cormorant Garamond',serif;
-  font-size:11px; letter-spacing:3px; text-transform:uppercase;
-  color:var(--gold); opacity:.7; text-decoration:none; transition:opacity .2s;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);opacity:.7;text-decoration:none;transition:opacity .2s;
 }
-.hdr-back:hover { opacity:1; }
-.hdr-brand { font-family:'Great Vibes',cursive; font-size:24px; color:var(--cream); }
-.hdr-tag {
-  font-family:'Cormorant Garamond',serif;
-  font-size:10px; letter-spacing:4px; text-transform:uppercase;
-  color:var(--gold); opacity:.5;
+.hdr-back:hover{opacity:1;}
+.hdr-brand{font-family:'Great Vibes',cursive;font-size:22px;color:var(--cream);}
+.hdr-spacer{width:80px;}
+
+/* ══════════════════════════════════════════
+   HERO SECTION
+══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:80px 24px 60px;
+  position:relative;overflow:hidden;
 }
-
-.hint {
-  text-align:center;
-  font-family:'Cormorant Garamond',serif;
-  font-size:11px; letter-spacing:4px; text-transform:uppercase;
-  color:rgba(201,169,110,.5); padding:12px 0 8px;
-}
-
-/* ── Room SVG wrapper ── */
-.room-wrap { max-width:1080px; margin:0 auto; padding:0 0 140px; }
-.room-svg { display:block; width:100%; height:auto; }
-
-/* ── Zone hover effects ── */
-.zone-hit { cursor:pointer; }
-
-.zone-glow { pointer-events:none; opacity:0; transition:opacity .35s ease; }
-.zone-hit:hover .zone-glow,
-.zone-hit.active .zone-glow { opacity:1; }
-
-.zone-label-wrap {
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(201,169,110,.07) 0%,transparent 70%);
   pointer-events:none;
-  opacity:0;
-  transition:opacity .35s ease;
 }
-.zone-hit:hover .zone-label-wrap,
-.zone-hit.active .zone-label-wrap { opacity:1; }
-
-/* ── Info panel ── */
-.panel {
-  position:fixed; bottom:0; left:0; right:0;
-  background:var(--ivory);
-  border-top:2px solid var(--gold);
-  padding:26px 36px 30px;
-  transform:translateY(100%);
-  transition:transform .42s cubic-bezier(.22,1,.36,1);
-  z-index:200;
-  max-height:55vh; overflow-y:auto;
-}
-.panel.open { transform:translateY(0); }
-.panel-close {
-  position:absolute; top:14px; right:18px;
-  background:none; border:none; font-size:18px;
-  color:var(--muted); cursor:pointer; transition:color .2s;
-}
-.panel-close:hover { color:var(--crimson); }
-.panel-inner {
-  max-width:780px; margin:0 auto;
-  display:grid; grid-template-columns:1fr 1fr; gap:20px 44px; align-items:start;
-}
-.panel-icon { font-size:30px; margin-bottom:6px; }
-.panel-eye {
+.hero-eyebrow{
   font-family:'Cormorant Garamond',serif;
-  font-size:10px; letter-spacing:4px; text-transform:uppercase;
-  color:var(--gold); margin-bottom:4px;
+  font-size:10px;letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold);opacity:.7;margin-bottom:22px;
+  animation:rise .9s .2s both;
 }
-.panel-title {
-  font-family:'Noto Serif Myanmar',serif;
-  font-size:17px; font-weight:700; color:var(--crimson);
-  line-height:1.65; margin-bottom:8px;
+.hero-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(52px,10vw,96px);
+  color:var(--cream);line-height:1.15;
+  margin-bottom:6px;
+  animation:rise .9s .35s both;
 }
-.panel-title-en {
-  font-family:'Playfair Display',serif; font-style:italic;
-  font-size:12px; color:var(--muted); margin-bottom:12px;
+.hero-subtitle{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(11px,2vw,14px);letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold);opacity:.6;margin-bottom:32px;
+  animation:rise .9s .5s both;
 }
-.panel-desc {
+.hero-desc{
   font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:12px; line-height:2.2; color:var(--muted);
+  font-size:13px;line-height:2.3;
+  color:rgba(250,246,240,.5);max-width:460px;
+  margin:0 auto 48px;
+  animation:rise .9s .65s both;
 }
-.panel-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
-.panel-tag {
+.hero-line{
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  margin:0 auto;
+  animation:rise .9s .8s both;
+}
+.hero-scroll-hint{
   font-family:'Cormorant Garamond',serif;
-  font-size:10px; letter-spacing:2px; text-transform:uppercase;
-  color:var(--crimson); border:1px solid rgba(122,21,21,.28); padding:3px 9px;
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);opacity:.45;margin-top:12px;
+  animation:rise .9s .95s both;
 }
-.panel-book {
-  display:inline-block; margin-top:18px;
+
+/* ══════════════════════════════════════════
+   STICKY ROOM SECTION
+══════════════════════════════════════════ */
+.room-section{position:relative;}
+.room-outer{height:600vh;} /* 100vh intro + 4 × 100vh zones + 100vh outro */
+.room-sticky{
+  position:sticky;top:0;height:100vh;
+  display:grid;grid-template-columns:1fr 380px;
+  overflow:hidden;
+}
+
+/* ── Room image side ── */
+.room-image-side{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  padding:40px 24px 40px 40px;
+}
+.room-image-wrap{
+  position:relative;
+  width:100%;max-width:680px;
+  aspect-ratio:1/1;
+}
+.room-img{
+  display:block;width:100%;height:100%;
+  object-fit:cover;border-radius:2px;
+  filter:brightness(.92) saturate(1.1);
+  transition:filter .6s ease;
+}
+.room-img.lit{filter:brightness(1.02) saturate(1.15);}
+
+/* SVG overlay container */
+.room-svg-overlay{
+  position:absolute;inset:0;
+  width:100%;height:100%;pointer-events:none;
+}
+
+/* Zone highlight polygons */
+.zone-poly{
+  fill:rgba(255,235,150,0);
+  transition:fill .7s ease;
+  pointer-events:none;
+}
+.zone-poly.active{fill:rgba(255,235,150,.18);}
+
+/* Hotspot pulsing dots */
+.hotspot{
+  position:absolute;
+  width:14px;height:14px;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.hotspot::before{
+  content:'';position:absolute;inset:0;
+  border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 0 rgba(201,169,110,.6);
+  animation:pulse-ring 2.2s ease-out infinite;
+}
+.hotspot::after{
+  content:'';position:absolute;inset:3px;
+  border-radius:50%;background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+}
+.hotspot.active::before{animation:none;background:rgba(255,240,160,.9);}
+.hotspot.active::after{background:#fff8d0;box-shadow:0 0 16px rgba(255,240,160,.8);}
+
+/* Zone number overlay (large background numeral) */
+.zone-numeral{
+  position:absolute;right:32px;bottom:20px;
   font-family:'Cormorant Garamond',serif;
-  font-size:11px; letter-spacing:3px; text-transform:uppercase;
-  color:var(--cream); background:var(--crimson);
-  padding:10px 24px; text-decoration:none; transition:background .2s;
+  font-size:180px;font-weight:300;line-height:1;
+  color:rgba(201,169,110,.06);
+  pointer-events:none;
+  transition:opacity .5s;
+  user-select:none;
 }
-.panel-book:hover { background:#A0271F; }
-@media(max-width:600px){
-  .panel-inner{ grid-template-columns:1fr; }
-  .panel{ padding:18px 16px 24px; }
+
+/* ── Room info side ── */
+.room-info-side{
+  position:relative;
+  background:rgba(12,9,6,.96);
+  border-left:1px solid rgba(201,169,110,.12);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:48px 40px;
+  overflow:hidden;
+}
+.room-info-side::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,.3),transparent);
+}
+
+/* Zone info cards */
+.zone-info{
+  position:absolute;inset:0;padding:48px 40px;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
+  pointer-events:none;
+}
+.zone-info.active{opacity:1;transform:translateY(0);pointer-events:all;}
+
+.zi-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:72px;font-weight:300;line-height:1;
+  color:rgba(122,21,21,.35);
+  margin-bottom:4px;
+}
+.zi-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;
+}
+.zi-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(32px,3.5vw,46px);
+  color:var(--cream);line-height:1.25;margin-bottom:8px;
+}
+.zi-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:13px;
+  color:var(--gold);opacity:.8;margin-bottom:20px;
+}
+.zi-line{
+  width:40px;height:1px;background:var(--gold);opacity:.4;
+  margin-bottom:20px;transform-origin:left;
+  animation:line-draw .6s .3s both;
+}
+.zone-info.active .zi-line{animation:line-draw .6s .3s both;}
+.zi-desc{
+  font-family:'Noto Sans Myanmar',sans-serif;
+  font-size:12px;line-height:2.3;
+  color:rgba(250,246,240,.55);margin-bottom:22px;
+}
+.zi-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+.zi-tag{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(201,169,110,.3);
+  padding:4px 10px;
+}
+.zi-book{
+  display:inline-block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--cream);background:var(--crimson);
+  padding:12px 26px;text-decoration:none;
+  border:none;cursor:pointer;
+  transition:background .2s;align-self:flex-start;
+}
+.zi-book:hover{background:#A0271F;}
+
+/* Intro card (shown before any zone) */
+.zone-intro{
+  position:absolute;inset:0;padding:48px 40px;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.zone-intro.visible{opacity:1;transform:translateY(0);}
+.zi-intro-title{
+  font-family:'Great Vibes',cursive;
+  font-size:38px;color:var(--cream);margin-bottom:16px;
+}
+.zi-intro-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;line-height:2.2;color:rgba(250,246,240,.5);
+  margin-bottom:24px;
+}
+.zi-intro-hint{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);opacity:.5;
+}
+.zi-intro-arrow{display:block;margin-top:8px;font-size:18px;color:var(--gold);opacity:.4;}
+
+/* ── Progress indicator ── */
+.progress-bar{
+  position:absolute;left:40px;bottom:36px;
+  display:flex;align-items:center;gap:12px;
+}
+.progress-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(201,169,110,.25);
+  transition:background .4s,transform .4s;cursor:default;
+}
+.progress-dot.active{background:var(--gold);transform:scale(1.5);}
+.progress-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);opacity:.4;margin-left:4px;
+}
+
+/* ── Scroll hint inside sticky ── */
+.scroll-track{
+  position:absolute;right:24px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.scroll-track-line{
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,transparent,var(--gold),transparent);
+  opacity:.3;
+}
+.scroll-track-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);opacity:.3;
+  writing-mode:vertical-rl;
+}
+
+/* ══════════════════════════════════════════
+   SERVICE CARDS SECTION
+══════════════════════════════════════════ */
+.services-section{
+  padding:120px 40px;
+  max-width:1200px;margin:0 auto;
+}
+.services-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold);opacity:.6;text-align:center;margin-bottom:16px;
+}
+.services-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(38px,6vw,64px);
+  text-align:center;color:var(--cream);margin-bottom:64px;
+}
+.services-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:2px;
+}
+.service-card{
+  padding:44px 40px;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(201,169,110,.08);
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .8s ease,transform .8s ease,background .3s;
+}
+.service-card.revealed{opacity:1;transform:translateY(0);}
+.service-card:hover{background:rgba(201,169,110,.04);}
+.service-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,.3),transparent);
+}
+.sc-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:48px;font-weight:300;
+  color:rgba(201,169,110,.12);line-height:1;margin-bottom:12px;
+}
+.sc-icon{font-size:28px;margin-bottom:14px;display:block;}
+.sc-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-style:italic;
+  color:var(--cream);margin-bottom:6px;
+}
+.sc-title-my{
+  font-family:'Noto Serif Myanmar',serif;
+  font-size:14px;font-weight:700;color:var(--gold);
+  margin-bottom:16px;display:block;
+}
+.sc-desc{
+  font-family:'Noto Sans Myanmar',sans-serif;
+  font-size:12px;line-height:2.3;color:rgba(250,246,240,.45);
+  margin-bottom:18px;
+}
+.sc-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.sc-tag{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);opacity:.6;
+  border:1px solid rgba(201,169,110,.2);padding:3px 8px;
+}
+
+/* ══════════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════════ */
+.cta-section{
+  text-align:center;padding:100px 24px 120px;
+  position:relative;
+  border-top:1px solid rgba(201,169,110,.08);
+}
+.cta-section::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:300px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,.4),transparent);
+}
+.cta-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold);opacity:.6;margin-bottom:20px;
+}
+.cta-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(42px,7vw,72px);
+  color:var(--cream);margin-bottom:12px;
+}
+.cta-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;letter-spacing:2px;
+  color:rgba(250,246,240,.4);margin-bottom:44px;
+}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{
+  font-family:'Cormorant Garamond',serif;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--cream);background:var(--crimson);
+  border:1px solid var(--crimson);
+  padding:14px 36px;text-decoration:none;transition:background .2s;
+}
+.btn-primary:hover{background:#A0271F;}
+.btn-ghost{
+  font-family:'Cormorant Garamond',serif;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);background:transparent;
+  border:1px solid rgba(201,169,110,.4);
+  padding:14px 36px;text-decoration:none;transition:background .2s,color .2s;
+}
+.btn-ghost:hover{background:rgba(201,169,110,.1);}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .room-sticky{grid-template-columns:1fr;grid-template-rows:1fr auto;}
+  .room-image-side{padding:80px 16px 16px;}
+  .room-info-side{height:220px;border-left:none;border-top:1px solid rgba(201,169,110,.12);}
+  .zone-info,.zone-intro{padding:20px 20px;}
+  .zi-num{font-size:40px;}
+  .zi-title{font-size:26px;}
+  .services-grid{grid-template-columns:1fr;}
+  .scroll-track{display:none;}
 }
 </style>
 </head>
 <body>
 
+<!-- ── Header ── -->
 <header class="hdr">
   <a href="../" class="hdr-back">← Back</a>
   <div class="hdr-brand">Amorè N' More</div>
-  <div class="hdr-tag">Wedding Studio · Tokyo</div>
+  <div class="hdr-spacer"></div>
 </header>
-<div class="hint">Hover to explore · Click for details</div>
-
-<div class="room-wrap">
-<svg class="room-svg" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
-<defs>
-
-  <!-- Floor wood planks -->
-  <pattern id="floorwood" width="200" height="36" patternUnits="userSpaceOnUse" patternTransform="translate(0,320)">
-    <rect width="200" height="36" fill="#B8904A"/>
-    <rect width="200" height="36" fill="#C09A52" opacity=".45"/>
-    <rect y="35" width="200" height="1" fill="rgba(0,0,0,.14)"/>
-    <rect x="99" width="1" height="36" fill="rgba(0,0,0,.07)"/>
-    <rect width="200" height="1.5" fill="rgba(255,255,255,.07)"/>
-  </pattern>
-
-  <!-- Back wall diamond wallpaper -->
-  <pattern id="bwall" width="52" height="52" patternUnits="userSpaceOnUse">
-    <rect width="52" height="52" fill="#EAD9C2"/>
-    <path d="M26,4 L48,26 L26,48 L4,26 Z" fill="none" stroke="rgba(201,169,110,.16)" stroke-width=".9"/>
-    <circle cx="26" cy="26" r="2.2" fill="rgba(201,169,110,.13)"/>
-  </pattern>
-
-  <!-- Left wall solid warm -->
-  <!-- Right wall solid warm (slightly darker) -->
-
-  <!-- Shadows / glows -->
-  <filter id="drop" x="-20%" y="-20%" width="140%" height="150%">
-    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="rgba(10,6,3,.32)"/>
-  </filter>
-  <filter id="soft" x="-10%" y="-10%" width="120%" height="130%">
-    <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="rgba(10,6,3,.18)"/>
-  </filter>
-  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-    <feGaussianBlur stdDeviation="18" result="b"/>
-    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>
-  <filter id="textglow" x="-30%" y="-60%" width="160%" height="220%">
-    <feGaussianBlur stdDeviation="10" result="b"/>
-    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>
-
-  <!-- Gold radial glow for hover zones -->
-  <radialGradient id="glow-back" cx="50%" cy="50%" r="55%">
-    <stop offset="0%" stop-color="rgba(201,169,110,.30)"/>
-    <stop offset="100%" stop-color="rgba(201,169,110,0)"/>
-  </radialGradient>
-  <radialGradient id="glow-left" cx="80%" cy="50%" r="70%">
-    <stop offset="0%" stop-color="rgba(201,169,110,.28)"/>
-    <stop offset="100%" stop-color="rgba(201,169,110,0)"/>
-  </radialGradient>
-  <radialGradient id="glow-right" cx="20%" cy="50%" r="70%">
-    <stop offset="0%" stop-color="rgba(201,169,110,.28)"/>
-    <stop offset="100%" stop-color="rgba(201,169,110,0)"/>
-  </radialGradient>
-  <radialGradient id="glow-floor" cx="50%" cy="30%" r="60%">
-    <stop offset="0%" stop-color="rgba(201,169,110,.22)"/>
-    <stop offset="100%" stop-color="rgba(201,169,110,0)"/>
-  </radialGradient>
-
-  <!-- Spotlight on floor -->
-  <radialGradient id="spotlight" cx="50%" cy="50%" r="50%">
-    <stop offset="0%" stop-color="rgba(255,248,220,.45)"/>
-    <stop offset="100%" stop-color="rgba(255,248,220,0)"/>
-  </radialGradient>
-
-  <!-- Rug -->
-  <pattern id="rug" width="28" height="28" patternUnits="userSpaceOnUse">
-    <rect width="28" height="28" fill="#6A2A38"/>
-    <rect x="3" y="3" width="22" height="22" fill="none" stroke="rgba(201,169,110,.25)" stroke-width=".6"/>
-    <rect x="7" y="7" width="14" height="14" fill="none" stroke="rgba(201,169,110,.18)" stroke-width=".5"/>
-  </pattern>
-
-</defs>
 
 <!-- ══════════════════════════════════════════
-     ROOM SHELL — 3D PERSPECTIVE BOX
+     HERO
 ══════════════════════════════════════════ -->
-
-<!-- Ceiling (lightest surface) -->
-<polygon points="80,78 920,78 740,28 260,28" fill="#F4EAD5"/>
-
-<!-- Back wall -->
-<polygon points="260,78 740,78 740,318 260,318" fill="url(#bwall)"/>
-
-<!-- Left wall (faces viewer at angle, slightly darker) -->
-<polygon points="80,78 260,78 260,318 80,660" fill="#DDD1BC"/>
-<!-- Left wall subtle gradient shadow -->
-<polygon points="80,78 260,78 260,318 80,660" fill="url(#glow-left)" opacity=".0"/>
-
-<!-- Right wall (most in shadow) -->
-<polygon points="740,78 920,78 920,660 740,318" fill="#D0C4AC"/>
-
-<!-- Floor (warm wood) -->
-<polygon points="80,660 920,660 740,318 260,318" fill="url(#floorwood)"/>
-
-<!-- ── Edge lines (architectural depth) ── -->
-<!-- Back-left corner vertical -->
-<line x1="260" y1="78" x2="260" y2="318" stroke="rgba(0,0,0,.20)" stroke-width="2.5"/>
-<!-- Back-right corner vertical -->
-<line x1="740" y1="78" x2="740" y2="318" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
-<!-- Floor-left edge -->
-<line x1="80" y1="660" x2="260" y2="318" stroke="rgba(0,0,0,.18)" stroke-width="2.5"/>
-<!-- Floor-right edge -->
-<line x1="920" y1="660" x2="740" y2="318" stroke="rgba(0,0,0,.10)" stroke-width="2"/>
-<!-- Ceiling edges -->
-<line x1="80" y1="78" x2="260" y2="28" stroke="rgba(0,0,0,.10)" stroke-width="1.5"/>
-<line x1="920" y1="78" x2="740" y2="28" stroke="rgba(0,0,0,.08)" stroke-width="1.5"/>
-<!-- Baseboard left wall -->
-<polygon points="80,644 260,308 260,318 80,660" fill="rgba(0,0,0,.10)"/>
-<!-- Baseboard right wall -->
-<polygon points="920,644 740,308 740,318 920,660" fill="rgba(0,0,0,.06)"/>
-<!-- Crown left -->
-<polygon points="80,78 260,78 260,68 80,58" fill="rgba(255,255,255,.10)"/>
-<!-- Crown right -->
-<polygon points="740,78 920,78 920,58 740,68" fill="rgba(255,255,255,.06)"/>
-<!-- Back wall top moulding -->
-<rect x="260" y="78" width="480" height="6" fill="rgba(201,169,110,.25)"/>
-
-<!-- Subtle ambient light on back wall (upper centre) -->
-<ellipse cx="500" cy="180" rx="200" ry="130" fill="rgba(255,248,220,.08)"/>
-
+<section class="hero">
+  <div class="hero-eyebrow">Wedding Studio &nbsp;·&nbsp; Tokyo</div>
+  <div class="hero-title">Step Inside</div>
+  <div class="hero-subtitle">Our Studio</div>
+  <div class="hero-desc">
+    ပြီးပြည့်စုံတဲ့ Bridal Experience တစ်ခုကို<br>တစ်နေရာတည်းမှာ ဖန်တီးပေးနိုင်ပါတယ်
+  </div>
+  <div class="hero-line"></div>
+  <div class="hero-scroll-hint">Scroll to explore</div>
+</section>
 
 <!-- ══════════════════════════════════════════
-     PHOTO STUDIO — BACK WALL
+     STICKY ROOM
 ══════════════════════════════════════════ -->
+<section class="room-section">
+  <div class="room-outer" id="room-outer">
+    <div class="room-sticky" id="room-sticky">
 
-<!-- Backdrop stand (centred on back wall) -->
-<!-- Left pole -->
-<rect x="358" y="86" width="8" height="224" rx="3" fill="#7A6040" filter="url(#soft)"/>
-<!-- Right pole -->
-<rect x="634" y="86" width="8" height="224" rx="3" fill="#7A6040" filter="url(#soft)"/>
-<!-- Top crossbar -->
-<rect x="350" y="83" width="300" height="12" rx="4" fill="#907050" filter="url(#soft)"/>
-<!-- Clamps -->
-<rect x="366" y="86" width="11" height="16" rx="2" fill="#B89060"/>
-<rect x="623" y="86" width="11" height="16" rx="2" fill="#B89060"/>
-<!-- Backdrop fabric -->
-<rect x="367" y="98" width="266" height="206" rx="3" fill="#F8F3EE" filter="url(#drop)"/>
-<!-- Subtle fold lines on backdrop -->
-<line x1="405" y1="98" x2="405" y2="304" stroke="rgba(0,0,0,.035)" stroke-width="1.5"/>
-<line x1="450" y1="98" x2="450" y2="304" stroke="rgba(0,0,0,.035)" stroke-width="1.5"/>
-<line x1="500" y1="98" x2="500" y2="304" stroke="rgba(0,0,0,.04)" stroke-width="1.5"/>
-<line x1="550" y1="98" x2="550" y2="304" stroke="rgba(0,0,0,.035)" stroke-width="1.5"/>
-<line x1="595" y1="98" x2="595" y2="304" stroke="rgba(0,0,0,.035)" stroke-width="1.5"/>
-<!-- Subtle logo/monogram on backdrop -->
-<text x="500" y="212" text-anchor="middle" font-family="Great Vibes,cursive" font-size="38" fill="rgba(201,169,110,.22)">Amorè</text>
-<line x1="420" y1="222" x2="480" y2="222" stroke="rgba(201,169,110,.15)" stroke-width=".8"/>
-<line x1="520" y1="222" x2="580" y2="222" stroke="rgba(201,169,110,.15)" stroke-width=".8"/>
+      <!-- ── Image side ── -->
+      <div class="room-image-side">
+        <div class="room-image-wrap" id="room-wrap">
 
-<!-- Ring light (right of backdrop, on back wall) -->
-<circle cx="696" cy="168" r="56" fill="none" stroke="#D4B060" stroke-width="15" filter="url(#soft)"/>
-<circle cx="696" cy="168" r="43" fill="none" stroke="#EED880" stroke-width="9" opacity=".5"/>
-<circle cx="696" cy="168" r="26" fill="rgba(255,248,210,.18)"/>
-<!-- Glow from ring light -->
-<circle cx="696" cy="168" r="52" fill="rgba(255,245,200,.10)" filter="url(#glow)"/>
-<!-- Ring light mount/arm to wall -->
-<rect x="735" y="162" width="10" height="12" rx="2" fill="#8A7040"/>
-<!-- Ring light stand pole (goes to floor) -->
-<line x1="696" y1="224" x2="696" y2="318" stroke="#7A6030" stroke-width="6" stroke-linecap="round"/>
-<!-- But it's on the back wall; extend onto floor in perspective -->
-<!-- Pole continuation on floor (perspective) -->
-<line x1="696" y1="318" x2="688" y2="400" stroke="#7A6030" stroke-width="5" stroke-linecap="round" opacity=".7"/>
-<ellipse cx="687" cy="402" rx="14" ry="5" fill="#5A4020" opacity=".45"/>
+          <img src="./illustration.jpg" class="room-img" id="room-img" alt="Amorè N' More Studio">
 
-<!-- Studio light left (on back wall, left of backdrop) -->
-<rect x="272" y="100" width="52" height="32" rx="5" fill="#252018" filter="url(#soft)"/>
-<rect x="278" y="106" width="40" height="20" rx="3" fill="rgba(255,248,200,.6)"/>
-<ellipse cx="298" cy="116" rx="16" ry="9" fill="rgba(255,248,200,.25)" filter="url(#glow)"/>
-<!-- Light arm -->
-<rect x="295" y="130" width="5" height="48" rx="2" fill="#5A4830"/>
-<rect x="280" y="174" width="34" height="5" rx="2" fill="#5A4830"/>
-<rect x="280" y="174" width="5" height="108" rx="2" fill="#5A4830"/>
-<ellipse cx="282" cy="284" rx="12" ry="4" fill="#3A2A18" opacity=".5"/>
+          <!-- SVG zone highlight overlays -->
+          <svg class="room-svg-overlay" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="g0" cx="28%" cy="40%" r="52%">
+                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
+                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
+              </radialGradient>
+              <radialGradient id="g1" cx="62%" cy="38%" r="48%">
+                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
+                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
+              </radialGradient>
+              <radialGradient id="g2" cx="80%" cy="46%" r="45%">
+                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
+                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
+              </radialGradient>
+              <radialGradient id="g3" cx="42%" cy="72%" r="52%">
+                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
+                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
+              </radialGradient>
+            </defs>
+            <!-- Photo Studio zone -->
+            <polygon class="zone-poly" id="zpoly-0"
+              points="40,255 500,75 570,435 55,615" fill="url(#g0)"/>
+            <!-- Makeup zone -->
+            <polygon class="zone-poly" id="zpoly-1"
+              points="475,85 785,168 768,530 440,462" fill="url(#g1)"/>
+            <!-- Dress Rental zone -->
+            <polygon class="zone-poly" id="zpoly-2"
+              points="742,165 985,255 960,658 715,568" fill="url(#g2)"/>
+            <!-- Consultation zone -->
+            <polygon class="zone-poly" id="zpoly-3"
+              points="55,610 705,490 685,945 55,890" fill="url(#g3)"/>
+          </svg>
 
-<!-- Camera + tripod on floor (perspective placement) -->
-<!-- Floor at v≈0.22: y=320+340*.22=395, x_left=260-180*.22=220, width=520+180*.44=600, center=500 -->
-<!-- Tripod positioned left of backdrop at about x=390, floor-y≈390 -->
-<!-- Tripod legs spreading on floor -->
-<line x1="395" y1="355" x2="370" y2="405" stroke="#4A3820" stroke-width="4.5" stroke-linecap="round"/>
-<line x1="395" y1="355" x2="420" y2="408" stroke="#4A3820" stroke-width="4.5" stroke-linecap="round"/>
-<line x1="395" y1="355" x2="393" y2="410" stroke="#4A3820" stroke-width="4.5" stroke-linecap="round"/>
-<!-- Tripod pole up (shorter in perspective) -->
-<line x1="395" y1="280" x2="395" y2="358" stroke="#4A3820" stroke-width="5.5" stroke-linecap="round"/>
-<!-- Camera body -->
-<rect x="367" y="257" width="56" height="36" rx="5" fill="#1C1610" filter="url(#drop)"/>
-<!-- Camera top surface (3D perspective top face) -->
-<polygon points="367,257 423,257 418,244 373,244" fill="#252018"/>
-<!-- Lens -->
-<circle cx="392" cy="275" r="15" fill="#2A2018"/>
-<circle cx="392" cy="275" r="11" fill="#120E0A"/>
-<circle cx="392" cy="275" r="7" fill="#1A1614"/>
-<circle cx="386" cy="269" r="3.5" fill="rgba(255,255,255,.24)"/>
-<!-- Flash hotshoe -->
-<rect x="376" y="237" width="14" height="9" rx="2" fill="#141010"/>
-<!-- Shutter button -->
-<rect x="407" y="244" width="13" height="9" rx="3" fill="#141010"/>
+          <!-- Pulsing hotspot indicators -->
+          <div class="hotspot" id="hspot-0" style="left:27%;top:37%;"></div>
+          <div class="hotspot" id="hspot-1" style="left:61%;top:33%;"></div>
+          <div class="hotspot" id="hspot-2" style="left:82%;top:46%;"></div>
+          <div class="hotspot" id="hspot-3" style="left:40%;top:71%;"></div>
 
-<!-- Spotlight on floor beneath ring light/camera zone -->
-<ellipse cx="420" cy="440" rx="110" ry="38" fill="url(#spotlight)"/>
+          <!-- Background zone numeral -->
+          <div class="zone-numeral" id="zone-numeral">01</div>
+        </div>
 
+        <!-- Scroll track -->
+        <div class="scroll-track">
+          <div class="scroll-track-line"></div>
+          <div class="scroll-track-text">scroll</div>
+          <div class="scroll-track-line"></div>
+        </div>
+      </div>
+
+      <!-- ── Info side ── -->
+      <div class="room-info-side">
+
+        <!-- Intro state -->
+        <div class="zone-intro visible" id="zone-intro">
+          <div class="zi-intro-title">Our Studio</div>
+          <div class="zi-intro-text">
+            Scroll down to explore each space in our wedding studio.<br>
+            Discover our services — from photo shoots to bridal styling.
+          </div>
+          <div class="zi-intro-hint">Four spaces to discover</div>
+          <span class="zi-intro-arrow">↓</span>
+        </div>
+
+        <!-- Zone 0 — Photo Studio -->
+        <div class="zone-info" id="zinfo-0">
+          <div class="zi-num">01</div>
+          <div class="zi-eyebrow">Photo &amp; Video Studio</div>
+          <div class="zi-title">Photo Studio</div>
+          <div class="zi-sub">Pre-wedding · Portrait · Wedding Day</div>
+          <div class="zi-line"></div>
+          <div class="zi-desc">
+            Professional backdrop, ring light နဲ့ studio lighting အပြည့်အစုံ ပါရှိပါတယ်။ Myanmar Traditional, Western နဲ့ Japanese Kimono Style တွေ အားလုံးအတွက် သင့်တော်ပါတယ်။
+          </div>
+          <div class="zi-tags">
+            <span class="zi-tag">Myanmar Traditional</span>
+            <span class="zi-tag">Western</span>
+            <span class="zi-tag">Kimono</span>
+            <span class="zi-tag">Studio Rental</span>
+          </div>
+          <a href="../studioOpensNow/" class="zi-book">Book Appointment →</a>
+        </div>
+
+        <!-- Zone 1 — Makeup -->
+        <div class="zone-info" id="zinfo-1">
+          <div class="zi-num">02</div>
+          <div class="zi-eyebrow">Makeup &amp; Styling</div>
+          <div class="zi-title">Makeup Studio</div>
+          <div class="zi-sub">Bridal · Rehearsal · Photoshoot</div>
+          <div class="zi-line"></div>
+          <div class="zi-desc">
+            Hollywood Vanity Mirror နဲ့ Professional Lighting တွေနဲ့ ၃ ဦးတစ်ပြိုင်နက် ပြင်ဆင်နိုင်ပါတယ်။ Burmese, Thai, Korean, Douyin Style တွေ ကျွမ်းကျင်ပါတယ်။
+          </div>
+          <div class="zi-tags">
+            <span class="zi-tag">Burmese Style</span>
+            <span class="zi-tag">Korean</span>
+            <span class="zi-tag">Japanese</span>
+            <span class="zi-tag">Thai Style</span>
+          </div>
+          <a href="../studioOpensNow/" class="zi-book">Book Appointment →</a>
+        </div>
+
+        <!-- Zone 2 — Dress Rental -->
+        <div class="zone-info" id="zinfo-2">
+          <div class="zi-num">03</div>
+          <div class="zi-eyebrow">Dress &amp; Costume Rental</div>
+          <div class="zi-title">Dress Rental</div>
+          <div class="zi-sub">Western · Myanmar Bitheik · Kimono</div>
+          <div class="zi-line"></div>
+          <div class="zi-desc">
+            Wedding Day, Pre-shoot နဲ့ Event တိုင်းအတွက် သင့်တော်တဲ့ Outfit တွေ ရှိပါတယ်။ Private Dressing Room တွင် ကျွမ်းကျင်ဝန်ထမ်းများ ကူညီပေးပါမည်။
+          </div>
+          <div class="zi-tags">
+            <span class="zi-tag">Bridal Gowns</span>
+            <span class="zi-tag">Myanmar Bitheik</span>
+            <span class="zi-tag">Kimono</span>
+            <span class="zi-tag">Men's Formal</span>
+          </div>
+          <a href="../studioOpensNow/" class="zi-book">Book Appointment →</a>
+        </div>
+
+        <!-- Zone 3 — Consultation -->
+        <div class="zone-info" id="zinfo-3">
+          <div class="zi-num">04</div>
+          <div class="zi-eyebrow">Consultation Space</div>
+          <div class="zi-title">Our Lounge</div>
+          <div class="zi-sub">Wedding Planning · First Consultation</div>
+          <div class="zi-line"></div>
+          <div class="zi-desc">
+            Wedding Planner နဲ့ အေးအေးဆေးဆေး ထိုင်ပြီး သင့်ရဲ့ Vision တွေကို ဆွေးနွေးနိုင်တဲ့ နေရာလေး ဖြစ်ပါတယ်။ သင့်အိပ်မက်တွေကို ဒီမှာ စတင်လိုက်ပါ။
+          </div>
+          <div class="zi-tags">
+            <span class="zi-tag">By Appointment</span>
+            <span class="zi-tag">Wedding Planning</span>
+            <span class="zi-tag">Styling Advice</span>
+          </div>
+          <a href="../studioOpensNow/" class="zi-book">Book Appointment →</a>
+        </div>
+
+        <!-- Progress dots -->
+        <div class="progress-bar" id="progress-bar">
+          <div class="progress-dot" id="pd-0"></div>
+          <div class="progress-dot" id="pd-1"></div>
+          <div class="progress-dot" id="pd-2"></div>
+          <div class="progress-dot" id="pd-3"></div>
+          <div class="progress-label">01 / 04</div>
+        </div>
+
+      </div><!-- /room-info-side -->
+    </div><!-- /room-sticky -->
+  </div><!-- /room-outer -->
+</section>
 
 <!-- ══════════════════════════════════════════
-     MAKEUP & STYLING — LEFT WALL
+     SERVICE CARDS
 ══════════════════════════════════════════ -->
+<section class="services-section">
+  <div class="services-eyebrow">What We Offer</div>
+  <div class="services-title">Our Services</div>
+  <div class="services-grid">
 
-<!-- Vanity table (3D box against left wall) -->
-<!-- Table top face (parallelogram going into left wall) -->
-<polygon points="88,382 240,328 240,344 88,400" fill="#D4AE6A" filter="url(#soft)"/>
-<!-- Table front face -->
-<polygon points="88,400 240,344 240,432 88,490" fill="#C09848"/>
-<!-- Table left side face (very thin, on left wall) -->
-<polygon points="80,395 88,400 88,490 80,484" fill="#A07830"/>
-<!-- Drawer lines on front face -->
-<line x1="164" y1="370" x2="164" y2="432" stroke="rgba(0,0,0,.12)" stroke-width="1.5"/>
-<!-- Drawer handles -->
-<circle cx="130" cy="400" r="4" fill="#C9A96E"/>
-<circle cx="200" cy="394" r="4" fill="#C9A96E"/>
-<!-- Table legs (visible as shadows) -->
-<rect x="94" y="488" width="10" height="14" rx="2" fill="#907030" transform="skewX(-12)"/>
-<polygon points="232,427 240,432 240,448 232,443" fill="#907030"/>
-
-<!-- Hollywood mirror (on left wall, in perspective) -->
-<!-- Mirror frame (parallelogram, left wall) -->
-<polygon points="98,104 222,60 222,294 98,346" fill="#18120E" filter="url(#drop)"/>
-<!-- Mirror glass -->
-<polygon points="108,114 214,74 214,280 108,322" fill="#2A2030"/>
-<!-- Glass reflection -->
-<polygon points="108,114 214,74 214,280 108,322" fill="url(#bwall)" opacity=".1"/>
-<line x1="112" y1="138" x2="210" y2="100" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
-<line x1="112" y1="200" x2="210" y2="162" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
-
-<!-- Hollywood bulbs — top row (following left wall angle) -->
-<circle cx="108" cy="109" r="8" fill="#F8E090"/><circle cx="108" cy="109" r="5" fill="#FFF4B0"/>
-<circle cx="128" cy="102" r="8" fill="#F8E090"/><circle cx="128" cy="102" r="5" fill="#FFF4B0"/>
-<circle cx="148" cy="96" r="8" fill="#F8E090"/><circle cx="148" cy="96" r="5" fill="#FFF4B0"/>
-<circle cx="168" cy="90" r="8" fill="#F8E090"/><circle cx="168" cy="90" r="5" fill="#FFF4B0"/>
-<circle cx="188" cy="84" r="8" fill="#F8E090"/><circle cx="188" cy="84" r="5" fill="#FFF4B0"/>
-<circle cx="208" cy="77" r="8" fill="#F8E090"/><circle cx="208" cy="77" r="5" fill="#FFF4B0"/>
-<!-- Bottom row -->
-<circle cx="108" cy="327" r="8" fill="#F8E090"/><circle cx="108" cy="327" r="5" fill="#FFF4B0"/>
-<circle cx="128" cy="320" r="8" fill="#F8E090"/><circle cx="128" cy="320" r="5" fill="#FFF4B0"/>
-<circle cx="148" cy="313" r="8" fill="#F8E090"/><circle cx="148" cy="313" r="5" fill="#FFF4B0"/>
-<circle cx="168" cy="307" r="8" fill="#F8E090"/><circle cx="168" cy="307" r="5" fill="#FFF4B0"/>
-<circle cx="188" cy="300" r="8" fill="#F8E090"/><circle cx="188" cy="300" r="5" fill="#FFF4B0"/>
-<circle cx="208" cy="293" r="8" fill="#F8E090"/><circle cx="208" cy="293" r="5" fill="#FFF4B0"/>
-<!-- Left column -->
-<circle cx="97" cy="131" r="8" fill="#F8E090"/><circle cx="97" cy="131" r="5" fill="#FFF4B0"/>
-<circle cx="97" cy="163" r="8" fill="#F8E090"/><circle cx="97" cy="163" r="5" fill="#FFF4B0"/>
-<circle cx="97" cy="195" r="8" fill="#F8E090"/><circle cx="97" cy="195" r="5" fill="#FFF4B0"/>
-<circle cx="97" cy="227" r="8" fill="#F8E090"/><circle cx="97" cy="227" r="5" fill="#FFF4B0"/>
-<circle cx="97" cy="259" r="8" fill="#F8E090"/><circle cx="97" cy="259" r="5" fill="#FFF4B0"/>
-<circle cx="97" cy="291" r="8" fill="#F8E090"/><circle cx="97" cy="291" r="5" fill="#FFF4B0"/>
-<!-- Right column (further away, slightly smaller) -->
-<circle cx="222" cy="87" r="7" fill="#F8E090"/><circle cx="222" cy="87" r="4" fill="#FFF4B0"/>
-<circle cx="222" cy="117" r="7" fill="#F8E090"/><circle cx="222" cy="117" r="4" fill="#FFF4B0"/>
-<circle cx="222" cy="147" r="7" fill="#F8E090"/><circle cx="222" cy="147" r="4" fill="#FFF4B0"/>
-<circle cx="222" cy="177" r="7" fill="#F8E090"/><circle cx="222" cy="177" r="4" fill="#FFF4B0"/>
-<circle cx="222" cy="207" r="7" fill="#F8E090"/><circle cx="222" cy="207" r="4" fill="#FFF4B0"/>
-<circle cx="222" cy="237" r="7" fill="#F8E090"/><circle cx="222" cy="237" r="4" fill="#FFF4B0"/>
-<circle cx="222" cy="267" r="7" fill="#F8E090"/><circle cx="222" cy="267" r="4" fill="#FFF4B0"/>
-<!-- Warm glow on mirror frame -->
-<polygon points="98,104 222,60 222,294 98,346" fill="rgba(255,235,120,.07)"/>
-
-<!-- Makeup stool (3D box in front of vanity) -->
-<!-- Stool seat top -->
-<polygon points="128,392 186,374 186,386 128,404" fill="#7A4A38" filter="url(#soft)"/>
-<!-- Stool front face -->
-<polygon points="128,404 186,386 186,402 128,420" fill="#6A3A2A"/>
-<!-- Stool legs -->
-<line x1="136" y1="420" x2="132" y2="460" stroke="#5A3020" stroke-width="5" stroke-linecap="round"/>
-<line x1="178" y1="406" x2="176" y2="445" stroke="#5A3020" stroke-width="5" stroke-linecap="round"/>
-
-<!-- Makeup items on vanity top -->
-<!-- Perfume (left wall perspective) -->
-<polygon points="100,350 112,346 112,332 100,336" fill="#D0A0C0" filter="url(#soft)"/>
-<polygon points="100,336 112,332 112,324 100,328" fill="#B890B0"/>
-<!-- Lipstick -->
-<polygon points="120,344 130,341 130,328 120,331" fill="#C9A96E"/>
-<polygon points="120,331 130,328 130,320 120,323" fill="#A0271F"/>
-<!-- Brush -->
-<polygon points="144,338 150,336 150,308 144,310" fill="#8B6B4A"/>
-<polygon points="142,310 152,307 152,300 142,303" fill="#D4B060"/>
-
-
-<!-- ══════════════════════════════════════════
-     DRESS RENTAL — RIGHT WALL
-══════════════════════════════════════════ -->
-
-<!-- Dress rack bar top (3D, right wall) -->
-<!-- Rack support poles -->
-<polygon points="764,142 776,142 776,318 764,318" fill="#9A8060" filter="url(#soft)"/>
-<!-- Right pole (further from viewer) -->
-<polygon points="896,110 908,106 908,318 896,318" fill="#9A8060" filter="url(#soft)"/>
-<!-- Horizontal rail (top of rack) -->
-<polygon points="762,138 910,104 910,118 762,152" fill="#B09060" filter="url(#soft)"/>
-<!-- Rail end caps -->
-<ellipse cx="762" cy="145" rx="8" ry="5" fill="#9A8060" transform="rotate(-5,762,145)"/>
-<ellipse cx="910" cy="111" rx="7" ry="4" fill="#9A8060" transform="rotate(-5,910,111)"/>
-<!-- Base feet -->
-<polygon points="756,312 772,312 774,322 758,322" fill="#7A6040"/>
-<polygon points="890,312 906,308 908,318 892,318" fill="#7A6040"/>
-
-<!-- Hanging gowns (perspective adjusted for right wall) -->
-<!-- Dress 1 — white bridal gown -->
-<polygon points="778,152 800,146 800,358 778,358" fill="#F8F3EE" filter="url(#soft)"/>
-<polygon points="778,152 800,146 786,146 766,152" fill="rgba(255,255,255,.6)"/>
-<!-- Puff detail at hem -->
-<path d="M778,358 Q784,368 791,362 Q797,368 800,358" fill="#F8F3EE" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
-<!-- Hanger 1 -->
-<path d="M789,143 Q789,133 794,129 Q799,125 794,129 Q789,133 789,143" fill="none" stroke="#B09060" stroke-width="3"/>
-<line x1="783" y1="143" x2="795" y2="143" stroke="#B09060" stroke-width="3"/>
-
-<!-- Dress 2 — champagne/gold -->
-<polygon points="808,144 828,138 828,345 808,345" fill="#E8C878" filter="url(#soft)"/>
-<polygon points="808,144 828,138 816,136 798,142" fill="rgba(255,255,255,.3)"/>
-<!-- Gold lace border at hem -->
-<line x1="808" y1="345" x2="828" y2="345" stroke="#C9A96E" stroke-width="2.5"/>
-<!-- Hanger 2 -->
-<path d="M818,135 Q818,125 823,121" fill="none" stroke="#B09060" stroke-width="3"/>
-<line x1="812" y1="135" x2="824" y2="135" stroke="#B09060" stroke-width="3"/>
-
-<!-- Dress 3 — deep crimson (Myanmar traditional) -->
-<polygon points="838,138 856,132 856,336 838,336" fill="#8B1818" filter="url(#soft)"/>
-<polygon points="838,138 856,132 845,130 828,136" fill="rgba(255,255,255,.1)"/>
-<!-- Gold trim -->
-<line x1="838" y1="336" x2="856" y2="336" stroke="#C9A96E" stroke-width="3"/>
-<line x1="838" y1="148" x2="856" y2="142" stroke="#C9A96E" stroke-width="1.5"/>
-<!-- Hanger 3 -->
-<path d="M847,129 Q847,119 852,115" fill="none" stroke="#B09060" stroke-width="3"/>
-<line x1="841" y1="129" x2="853" y2="129" stroke="#B09060" stroke-width="3"/>
-
-<!-- Dress 4 — ivory/blush -->
-<polygon points="864,132 882,126 882,330 864,330" fill="#F0E0D0" filter="url(#soft)"/>
-<polygon points="864,132 882,126 872,124 855,130" fill="rgba(255,255,255,.4)"/>
-<!-- Hanger 4 -->
-<path d="M873,123 Q873,113 878,109" fill="none" stroke="#B09060" stroke-width="2.5"/>
-<line x1="867" y1="123" x2="879" y2="123" stroke="#B09060" stroke-width="2.5"/>
-
-<!-- Dress 5 — black evening -->
-<polygon points="888,126 904,121 904,322 888,322" fill="#1C1410" filter="url(#soft)"/>
-<polygon points="888,126 904,121 895,119 880,124" fill="rgba(255,255,255,.05)"/>
-<!-- Pearl detail -->
-<circle cx="896" cy="135" r="2.5" fill="#E8D8C0"/>
-<circle cx="896" cy="143" r="2.5" fill="#E8D8C0"/>
-<circle cx="896" cy="151" r="2.5" fill="#E8D8C0"/>
-<!-- Hanger 5 -->
-<path d="M896,118 Q896,108 901,104" fill="none" stroke="#B09060" stroke-width="2.5"/>
-<line x1="890" y1="118" x2="902" y2="118" stroke="#B09060" stroke-width="2.5"/>
-
-<!-- Dress rack shadows on right wall -->
-<polygon points="764,310 910,275 910,280 764,315" fill="rgba(0,0,0,.06)"/>
-
-
-<!-- ══════════════════════════════════════════
-     CONSULTATION AREA — FLOOR
-══════════════════════════════════════════ -->
-
-<!-- Rug (3D parallelogram on floor in perspective) -->
-<!-- Rug is at approx v=0.38 to v=0.72, u=0.28 to u=0.72 -->
-<!-- floor at v=0.38: y=449, left_x=260-180*.38=192, right_x=740+180*.38=808 -->
-<!-- floor at v=0.72: y=565, left_x=260-180*.72=130, right_x=740+180*.72=870 -->
-<!-- u=0.28 at v=0.38: 192 + 0.28*(808-192)=192+172=364 -->
-<!-- u=0.72 at v=0.38: 192 + 0.72*(808-192)=192+444=636 -->
-<!-- u=0.28 at v=0.72: 130 + 0.28*(870-130)=130+207=337 -->
-<!-- u=0.72 at v=0.72: 130 + 0.72*(870-130)=130+533=663 -->
-<polygon points="364,449 636,449 663,565 337,565" fill="url(#rug)" filter="url(#soft)"/>
-<polygon points="364,449 636,449 663,565 337,565" fill="none" stroke="rgba(201,169,110,.3)" stroke-width="2"/>
-<!-- Inner rug border -->
-<polygon points="374,455 626,455 652,559 348,559" fill="none" stroke="rgba(201,169,110,.18)" stroke-width="1.2"/>
-
-<!-- Sofa (3D box on floor) -->
-<!-- Sofa occupies approx v=0.44 to v=0.60, u=0.30 to u=0.70 -->
-<!-- v=0.44: y=470, left_edge=260-79=181, right=740+79=819 -->
-<!-- u=0.30 at v=0.44: 181 + 0.30*(819-181)=181+191=372 -->
-<!-- u=0.70 at v=0.44: 181 + 0.70*(819-181)=181+446=627 -->
-<!-- v=0.60: y=524, left=260-108=152, right=740+108=848 -->
-<!-- u=0.30 at v=0.60: 152 + 0.30*(848-152)=152+208=360 -->
-<!-- u=0.70 at v=0.60: 152 + 0.70*(848-152)=360+486... wait let me recalc -->
-<!-- left=260-180*.60=152, right=740+180*.60=848 -->
-<!-- u=0.30: 152+0.30*696=360. u=0.70: 152+0.70*696=639 -->
-
-<!-- Sofa top face (visible surface) -->
-<polygon points="372,400 627,400 639,470 360,470" fill="#7A3848" filter="url(#drop)"/>
-<!-- Sofa front face (facing viewer) -->
-<polygon points="360,470 639,470 639,534 360,534" fill="#6A2A38"/>
-<!-- Sofa left side face -->
-<polygon points="348,460 372,400 360,470 348,528" fill="#5A2030" opacity=".9"/>
-<!-- Sofa right side face -->
-<polygon points="627,400 648,452 648,518 639,534 639,470" fill="#5A2030" opacity=".7"/>
-
-<!-- Sofa back cushions (top face) -->
-<polygon points="378,400 620,400 615,390 382,390" fill="#8B3A50"/>
-<!-- Back cushion front face -->
-<polygon points="378,400 620,400 620,408 378,408" fill="#7A3040"/>
-<!-- Cushion divider -->
-<line x1="499" y1="390" x2="499" y2="408" stroke="rgba(0,0,0,.18)" stroke-width="1.5"/>
-
-<!-- Seat cushions (on sofa top) -->
-<polygon points="372,468 499,468 499,404 372,404" fill="#7A3040" filter="url(#soft)"/>
-<polygon points="499,468 627,468 627,402 499,404" fill="#7A3040" filter="url(#soft)"/>
-<line x1="499" y1="404" x2="499" y2="468" stroke="rgba(0,0,0,.15)" stroke-width="1.5"/>
-
-<!-- Sofa throw pillow left -->
-<polygon points="386,432 432,418 432,455 386,467" fill="#9A5060" filter="url(#soft)"/>
-<polygon points="386,432 432,418 438,422 392,436" fill="#AA6070" opacity=".8"/>
-<!-- Sofa throw pillow right -->
-<polygon points="566,424 612,412 612,448 566,460" fill="#9A5060" filter="url(#soft)"/>
-<polygon points="566,424 612,412 618,416 572,428" fill="#AA6070" opacity=".8"/>
-
-<!-- Sofa arms (left) -->
-<polygon points="348,426 374,400 372,400 360,468 348,468" fill="#5A2030"/>
-<polygon points="348,426 374,400 382,394 360,420" fill="#6A2A38"/>
-<!-- Sofa arms (right) -->
-<polygon points="627,400 648,452 648,468 639,468 639,400" fill="#5A2030"/>
-<polygon points="627,400 634,394 654,446 648,452" fill="#6A2A38"/>
-
-<!-- Sofa legs (visible below front face) -->
-<polygon points="366,534 374,534 374,546 366,546" fill="#4A1A28"/>
-<polygon points="624,534 632,534 632,546 624,546" fill="#4A1A28"/>
-
-<!-- Coffee table (3D box, in front of sofa) -->
-<!-- Table top face -->
-<polygon points="390,532 608,532 622,572 376,572" fill="#C09848" filter="url(#drop)"/>
-<!-- Slight glass reflection on table top -->
-<polygon points="390,532 608,532 622,572 376,572" fill="rgba(255,255,255,.08)"/>
-<line x1="394" y1="538" x2="616" y2="538" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
-<!-- Table front face -->
-<polygon points="376,572 622,572 622,592 376,592" fill="#A07830"/>
-<!-- Table side left -->
-<polygon points="364,562 390,532 376,572 364,600" fill="#907020" opacity=".8"/>
-<!-- Table legs -->
-<polygon points="380,590 390,590 390,602 380,602" fill="#806020"/>
-<polygon points="610,590 620,590 620,602 610,602" fill="#806020"/>
-
-<!-- Tea / coffee cups on table -->
-<!-- Cup 1 -->
-<ellipse cx="450" cy="542" rx="16" ry="9" fill="#F8F0E8" filter="url(#soft)"/>
-<ellipse cx="450" cy="538" rx="12" ry="7" fill="rgba(120,80,40,.45)"/>
-<!-- Saucer -->
-<ellipse cx="450" cy="545" rx="18" ry="6" fill="#EAD8C0"/>
-<!-- Handle -->
-<path d="M462,536 Q470,536 470,542 Q470,548 462,548" fill="none" stroke="#D4B878" stroke-width="2"/>
-<!-- Cup 2 -->
-<ellipse cx="540" cy="540" rx="16" ry="9" fill="#F8F0E8" filter="url(#soft)"/>
-<ellipse cx="540" cy="536" rx="12" ry="7" fill="rgba(120,80,40,.45)"/>
-<ellipse cx="540" cy="543" rx="18" ry="6" fill="#EAD8C0"/>
-<path d="M552,534 Q560,534 560,540 Q560,546 552,546" fill="none" stroke="#D4B878" stroke-width="2"/>
-<!-- Small book/lookbook on table -->
-<polygon points="478,548 518,548 520,558 480,558" fill="#8B1A1A" opacity=".75"/>
-<polygon points="478,548 518,548 518,544 478,544" fill="#AA2020" opacity=".6"/>
-
-<!-- Plant (3D, beside sofa left) -->
-<!-- Pot -->
-<polygon points="306,536 330,536 326,560 310,560" fill="#8A7050" filter="url(#soft)"/>
-<!-- Pot rim -->
-<polygon points="302,533 334,533 330,540 306,540" fill="#9A8060"/>
-<!-- Soil -->
-<ellipse cx="318" cy="536" rx="16" ry="5" fill="#4A3A20"/>
-<!-- Leaves (left wall perspective) -->
-<ellipse cx="310" cy="508" rx="16" ry="26" fill="#3A6028" transform="rotate(-22,310,508)" filter="url(#soft)"/>
-<ellipse cx="322" cy="504" rx="16" ry="26" fill="#4A7038" transform="rotate(14,322,504)" filter="url(#soft)"/>
-<ellipse cx="318" cy="500" rx="13" ry="22" fill="#3A6028" transform="rotate(-4,318,500)"/>
-<line x1="314" y1="530" x2="306" y2="494" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
-<line x1="318" y1="530" x2="328" y2="492" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
-
-<!-- Small side table (right of sofa) -->
-<polygon points="658,472 684,462 684,500 658,510" fill="#C09040" filter="url(#soft)"/>
-<polygon points="658,510 684,500 684,512 658,522" fill="#A07030"/>
-<polygon points="648,504 658,510 658,522 648,516" fill="#907020"/>
-<!-- Small plant on side table -->
-<polygon points="664,444 676,440 676,464 664,468" fill="#8A7050"/>
-<ellipse cx="670" cy="444" rx="8" ry="3" fill="#5A4028"/>
-<ellipse cx="668" cy="428" rx="10" ry="16" fill="#3A6028" transform="rotate(-10,668,428)"/>
-<ellipse cx="674" cy="426" rx="9" ry="15" fill="#4A7038" transform="rotate(8,674,426)"/>
-
-
-<!-- ══════════════════════════════════════════
-     DECORATIVE DETAILS
-══════════════════════════════════════════ -->
-
-<!-- Ceiling light (central chandelier-style) -->
-<ellipse cx="500" cy="30" rx="30" ry="8" fill="#D4B060" opacity=".6" filter="url(#soft)"/>
-<line x1="500" y1="38" x2="500" y2="90" stroke="#C9A96E" stroke-width="3" opacity=".5"/>
-<circle cx="500" cy="94" r="12" fill="#F0D880" filter="url(#glow)"/>
-<circle cx="500" cy="94" r="8" fill="#FFF4A0"/>
-<!-- Light glow on back wall -->
-<ellipse cx="500" cy="140" rx="180" ry="100" fill="rgba(255,248,200,.08)"/>
-
-<!-- Wall sconce (left wall) -->
-<polygon points="220,182 238,176 238,200 220,206" fill="#9A8040"/>
-<polygon points="220,170 238,164 238,178 220,184" fill="#C9A96E"/>
-<ellipse cx="229" cy="163" rx="9" ry="5" fill="#F8E880" filter="url(#glow)" opacity=".8"/>
-
-<!-- Wall sconce (right wall) -->
-<polygon points="762,182 780,176 780,200 762,206" fill="#9A8040"/>
-<polygon points="762,170 780,164 780,178 762,184" fill="#C9A96E"/>
-<ellipse cx="771" cy="163" rx="9" ry="5" fill="#F8E880" filter="url(#glow)" opacity=".8"/>
-
-<!-- Subtle ambient shadows on floor -->
-<polygon points="260,318 310,318 286,400 240,400" fill="rgba(0,0,0,.06)"/>
-<polygon points="690,318 740,318 760,400 714,400" fill="rgba(0,0,0,.04)"/>
-
-
-<!-- ══════════════════════════════════════════
-     HOVER ZONES — INTERACTIVE OVERLAYS
-══════════════════════════════════════════ -->
-
-<!-- Zone 1: Photo Studio (back wall) -->
-<g class="zone-hit" id="zone-photo" data-panel="photo">
-  <polygon points="260,78 740,78 740,318 260,318" fill="transparent"/>
-  <!-- Glow overlay -->
-  <polygon class="zone-glow" points="260,78 740,78 740,318 260,318" fill="url(#glow-back)"/>
-  <!-- Label -->
-  <g class="zone-label-wrap">
-    <rect x="360" y="158" width="280" height="64" rx="4" fill="rgba(10,6,3,.55)"/>
-    <text x="500" y="187" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="10" letter-spacing="5" fill="#C9A96E">PHOTO STUDIO</text>
-    <text x="500" y="207" text-anchor="middle" font-family="Great Vibes,cursive" font-size="22" fill="#FAF6F0" filter="url(#textglow)">Photo &amp; Videography</text>
-  </g>
-</g>
-
-<!-- Zone 2: Makeup (left wall) -->
-<g class="zone-hit" id="zone-makeup" data-panel="makeup">
-  <polygon points="80,78 260,78 260,318 80,660" fill="transparent"/>
-  <polygon class="zone-glow" points="80,78 260,78 260,318 80,660" fill="url(#glow-left)"/>
-  <g class="zone-label-wrap">
-    <rect x="82" y="236" width="194" height="60" rx="4" fill="rgba(10,6,3,.55)"/>
-    <text x="179" y="262" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="4" fill="#C9A96E">MAKEUP &amp; STYLING</text>
-    <text x="179" y="283" text-anchor="middle" font-family="Great Vibes,cursive" font-size="20" fill="#FAF6F0" filter="url(#textglow)">Beauty Studio</text>
-  </g>
-</g>
-
-<!-- Zone 3: Dress Rental (right wall) -->
-<g class="zone-hit" id="zone-dress" data-panel="dress">
-  <polygon points="740,78 920,78 920,660 740,318" fill="transparent"/>
-  <polygon class="zone-glow" points="740,78 920,78 920,660 740,318" fill="url(#glow-right)"/>
-  <g class="zone-label-wrap">
-    <rect x="742" y="236" width="176" height="60" rx="4" fill="rgba(10,6,3,.55)"/>
-    <text x="830" y="262" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="4" fill="#C9A96E">DRESS RENTAL</text>
-    <text x="830" y="283" text-anchor="middle" font-family="Great Vibes,cursive" font-size="20" fill="#FAF6F0" filter="url(#textglow)">Bridal Gowns</text>
-  </g>
-</g>
-
-<!-- Zone 4: Consultation (floor) -->
-<g class="zone-hit" id="zone-consult" data-panel="consult">
-  <polygon points="80,660 920,660 740,318 260,318" fill="transparent"/>
-  <polygon class="zone-glow" points="80,660 920,660 740,318 260,318" fill="url(#glow-floor)"/>
-  <g class="zone-label-wrap">
-    <rect x="378" y="578" width="244" height="60" rx="4" fill="rgba(10,6,3,.55)"/>
-    <text x="500" y="604" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="4" fill="#C9A96E">CONSULTATION</text>
-    <text x="500" y="625" text-anchor="middle" font-family="Great Vibes,cursive" font-size="20" fill="#FAF6F0" filter="url(#textglow)">Wedding Planning</text>
-  </g>
-</g>
-
-</svg>
-
-<!-- ══ INFO PANELS ══ -->
-<div class="panel" id="panel-photo">
-  <button class="panel-close" onclick="closePanel()">✕</button>
-  <div class="panel-inner">
-    <div>
-      <div class="panel-icon">📸</div>
-      <div class="panel-eye">Photo &amp; Video Studio</div>
-      <div class="panel-title">မြန်မာ့ရိုးရာ ဘိသိက် Style<br>Photo Studio</div>
-      <div class="panel-title-en">Pre-wedding · Portrait · Wedding Day</div>
-      <div class="panel-tags">
-        <span class="panel-tag">Myanmar Traditional</span>
-        <span class="panel-tag">Western</span>
-        <span class="panel-tag">Japanese Kimono</span>
-        <span class="panel-tag">Studio Rental</span>
+    <div class="service-card" data-reveal>
+      <div class="sc-num">01</div>
+      <span class="sc-icon">📸</span>
+      <div class="sc-title">Photo Studio</div>
+      <span class="sc-title-my">Photo Studio · Videography</span>
+      <div class="sc-desc">Professional backdrop, ring light, studio lighting အပြည့်အစုံ ပါဝင်ပြီး Myanmar Traditional, Western နဲ့ Japanese Kimono Style အားလုံးအတွက် သင့်တော်သည့် Photo Studio ဖြစ်ပါတယ်။</div>
+      <div class="sc-tags">
+        <span class="sc-tag">Pre-wedding</span>
+        <span class="sc-tag">Portrait</span>
+        <span class="sc-tag">Wedding Day</span>
+        <span class="sc-tag">Hourly Rental</span>
       </div>
     </div>
-    <div>
-      <div class="panel-desc">အနောက်တိုင်းစတိုင်သာမက မြန်မာ့ရိုးရာ ဘိသိက်အငွေ့အသက်နဲ့ ရိုက်ချင်သူတွေအတွက်လည်း ဘိသိက်မင်္ဂလာများနဲ့ သေသပ်စွာ ဖန်တီးထားတဲ့ Studio ဖြစ်ပါတယ်။ Professional Backdrop နဲ့ Ring Light တွေ ပြည့်စုံပြီး Pre-wedding Shoot, Portrait Session နဲ့ Wedding Day မှတ်တမ်းများ အတွက် အထူးသင့်လျော်ပါတယ်။</div>
-      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
-    </div>
-  </div>
-</div>
 
-<div class="panel" id="panel-makeup">
-  <button class="panel-close" onclick="closePanel()">✕</button>
-  <div class="panel-inner">
-    <div>
-      <div class="panel-icon">💄</div>
-      <div class="panel-eye">Makeup &amp; Styling</div>
-      <div class="panel-title">Professional Makeup Room<br>— ၃ ဦးတစ်ပြိုင်နက် ပြင်ဆင်နိုင်သည်</div>
-      <div class="panel-title-en">Bridal · Rehearsal · Photoshoot Styling</div>
-      <div class="panel-tags">
-        <span class="panel-tag">Burmese Style</span>
-        <span class="panel-tag">Korean / Douyin</span>
-        <span class="panel-tag">Japanese</span>
-        <span class="panel-tag">Thai Style</span>
+    <div class="service-card" data-reveal style="transition-delay:.15s">
+      <div class="sc-num">02</div>
+      <span class="sc-icon">💄</span>
+      <div class="sc-title">Makeup &amp; Styling</div>
+      <span class="sc-title-my">Makeup · Hair · Styling</span>
+      <div class="sc-desc">Hollywood Vanity Mirror ရှေ့တွင် Burmese, Thai, Korean, Douyin နဲ့ Japanese Look တွေကို ကျွမ်းကျင်သော Makeup Artist များမှ ပြင်ဆင်ပေးပါတယ်။ ၃ ဦးတစ်ပြိုင်နက် ဝန်ဆောင်မှု ပေးနိုင်ပါသည်။</div>
+      <div class="sc-tags">
+        <span class="sc-tag">Bridal</span>
+        <span class="sc-tag">Rehearsal</span>
+        <span class="sc-tag">Photoshoot</span>
       </div>
     </div>
-    <div>
-      <div class="panel-desc">Burmese, Thai, Korean နဲ့ Douyin (C-beauty) Look တွေကို နောက်ဆုံးပေါ် Trend တွေ အတိုင်း ကျွမ်းကျင်စွာ ပြင်ဆင်ပေးနေပါတယ်။ Hollywood Vanity Mirror နဲ့ Professional Lighting တွေနဲ့ ပြင်ဆင်ပေးပါတယ်။ Rehearsal ပြင်ဆင်ခြင်းများလည်း ဆောင်ရွက်နိုင်ပါသည်။</div>
-      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
-    </div>
-  </div>
-</div>
 
-<div class="panel" id="panel-dress">
-  <button class="panel-close" onclick="closePanel()">✕</button>
-  <div class="panel-inner">
-    <div>
-      <div class="panel-icon">👗</div>
-      <div class="panel-eye">Dress &amp; Costume Rental</div>
-      <div class="panel-title">Western · Myanmar Traditional · Kimono</div>
-      <div class="panel-title-en">Wedding Day · Pre-shoot · Events</div>
-      <div class="panel-tags">
-        <span class="panel-tag">Western Bridal Gowns</span>
-        <span class="panel-tag">Myanmar Bitheik</span>
-        <span class="panel-tag">Kimono / Furisode</span>
-        <span class="panel-tag">Men's Formal</span>
+    <div class="service-card" data-reveal style="transition-delay:.3s">
+      <div class="sc-num">03</div>
+      <span class="sc-icon">👗</span>
+      <div class="sc-title">Dress Rental</div>
+      <span class="sc-title-my">Dress · Costume Rental</span>
+      <div class="sc-desc">Western Bridal Gowns, Myanmar Traditional Bitheik, Kimono နဲ့ Men's Formal Wear တို့ကို ငှားရမ်းနိုင်ပါသည်။ Private Dressing Room တွင် Fitting နဲ့ Styling အတွက် ဝန်ထမ်းများ ကူညီပေးပါမည်။</div>
+      <div class="sc-tags">
+        <span class="sc-tag">Bridal Gowns</span>
+        <span class="sc-tag">Myanmar Bitheik</span>
+        <span class="sc-tag">Kimono</span>
       </div>
     </div>
-    <div>
-      <div class="panel-desc">Wedding Day, Pre-shoot နဲ့ Event တိုင်းအတွက် သင့်တော်တဲ့ Outfit တွေ ရှိပါတယ်။ Western Bridal Gowns, Myanmar Traditional Bitheik, Kimono နဲ့ Men's Formal Wear များ ပါဝင်ပါသည်။ Private Dressing Room တွင် ကျွမ်းကျင်ဝန်ထမ်းများ ကူညီပေးပါမည်။</div>
-      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
-    </div>
-  </div>
-</div>
 
-<div class="panel" id="panel-consult">
-  <button class="panel-close" onclick="closePanel()">✕</button>
-  <div class="panel-inner">
-    <div>
-      <div class="panel-icon">☕</div>
-      <div class="panel-eye">Consultation Space</div>
-      <div class="panel-title">Relaxed Consultation<br>— သင့်ခရီးစဉ်ကို ဒီမှာ စတင်ပါ</div>
-      <div class="panel-title-en">Wedding Planning · First Consultation</div>
-      <div class="panel-tags">
-        <span class="panel-tag">By Appointment</span>
-        <span class="panel-tag">Wedding Planning</span>
-        <span class="panel-tag">Styling Advice</span>
+    <div class="service-card" data-reveal style="transition-delay:.45s">
+      <div class="sc-num">04</div>
+      <span class="sc-icon">☕</span>
+      <div class="sc-title">Consultation</div>
+      <span class="sc-title-my">Wedding Planning · Consultation</span>
+      <div class="sc-desc">Wedding Planner နဲ့ တည်ငြိမ်သောပတ်ဝန်းကျင်တွင် သင့်ရဲ့ Wedding Vision ကို ဆွေးနွေးနိုင်ပါတယ်။ Photo, Dress, Makeup နဲ့ Planning အားလုံးကို တစ်ပြိုင်နက် စီစဉ်ပေးနိုင်ပါသည်။</div>
+      <div class="sc-tags">
+        <span class="sc-tag">By Appointment</span>
+        <span class="sc-tag">Wedding Planning</span>
       </div>
     </div>
-    <div>
-      <div class="panel-desc">Wedding Planner နဲ့ အေးအေးဆေးဆေး ထိုင်ပြီး သင့်ရဲ့ Vision တွေကို ဆွေးနွေးနိုင်တဲ့ နေရာလေး ဖြစ်ပါတယ်။ Photo Studio, Dress Rental, Makeup နဲ့ Wedding Planning အားလုံးကို တစ်နေရာတည်းမှာ ဆွေးနွေးနိုင်ပါတယ်။</div>
-      <a href="../studioOpensNow/" class="panel-book">Book Appointment →</a>
-    </div>
-  </div>
-</div>
 
-</div><!-- /room-wrap -->
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CTA
+══════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-eyebrow">Ready to Begin?</div>
+  <div class="cta-title">Let's Create Something Beautiful</div>
+  <div class="cta-sub">By Appointment Only &nbsp;·&nbsp; Sengoku, Bunkyo, Tokyo</div>
+  <div class="cta-btns">
+    <a href="../studioOpensNow/" class="btn-primary">RSVP Grand Opening</a>
+    <a href="../" class="btn-ghost">Back to Home</a>
+  </div>
+</section>
 
 <script>
 (function(){
-  var active = null;
-  document.querySelectorAll('.zone-hit').forEach(function(z){
-    z.addEventListener('click', function(){
-      var pid = 'panel-' + z.dataset.panel;
-      var panel = document.getElementById(pid);
-      document.querySelectorAll('.zone-hit').forEach(function(x){ x.classList.remove('active'); });
-      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('open'); });
-      if(active === pid){ active = null; return; }
-      z.classList.add('active');
-      panel.classList.add('open');
-      active = pid;
+  var zoneCount = 4;
+  var activeZone = -1;
+
+  var roomOuter  = document.getElementById('room-outer');
+  var zoneIntro  = document.getElementById('zone-intro');
+  var progressLabel = document.querySelector('.progress-label');
+  var numerals = ['01','02','03','04'];
+
+  function setZone(idx){
+    if(idx === activeZone) return;
+    activeZone = idx;
+
+    /* Intro */
+    zoneIntro.classList.toggle('visible', idx < 0);
+
+    /* Zone infos */
+    for(var i=0;i<zoneCount;i++){
+      document.getElementById('zinfo-'+i).classList.toggle('active', i===idx);
+      document.getElementById('zpoly-'+i).classList.toggle('active', i===idx);
+      document.getElementById('hspot-'+i).classList.toggle('active', i===idx);
+      document.getElementById('pd-'+i).classList.toggle('active', i===idx);
+    }
+
+    /* Numeral */
+    var num = document.getElementById('zone-numeral');
+    num.textContent = idx >= 0 ? numerals[idx] : '';
+
+    /* Progress label */
+    if(progressLabel && idx >= 0){
+      progressLabel.textContent = numerals[idx] + ' / 04';
+    }
+
+    /* Image brightness */
+    document.getElementById('room-img').classList.toggle('lit', idx >= 0);
+  }
+
+  function onScroll(){
+    var rect   = roomOuter.getBoundingClientRect();
+    var scrolled = -rect.top;          /* px scrolled past start of room-outer */
+    var vh     = window.innerHeight;
+
+    if(scrolled < 0){
+      setZone(-1); return;
+    }
+    /* Each zone occupies 1 × vh of scroll */
+    var idx = Math.floor(scrolled / vh);
+    setZone(Math.min(idx, zoneCount - 1));
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* Scroll-reveal service cards */
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting) e.target.classList.add('revealed');
     });
-  });
-  window.closePanel = function(){
-    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('open'); });
-    document.querySelectorAll('.zone-hit').forEach(function(z){ z.classList.remove('active'); });
-    active = null;
-  };
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePanel(); });
+  },{threshold:.15});
+  document.querySelectorAll('[data-reveal]').forEach(function(el){observer.observe(el);});
+
 })();
 </script>
 </body>
