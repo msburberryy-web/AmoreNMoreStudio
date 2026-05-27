@@ -467,7 +467,10 @@ let qrInterval   = null;
 // ── Load config ──────────────────────────────────────────────
 fetch('../config.json')
   .then(r => r.json())
-  .then(cfg => { scriptUrl = cfg.attendanceScriptUrl || ''; })
+  .then(cfg => {
+    // attendance reuses the same deployment as bookings (doGet vs doPost)
+    scriptUrl = cfg.attendanceScriptUrl || cfg.bookingScriptUrl || '';
+  })
   .catch(() => {});
 
 // ── Utilities ────────────────────────────────────────────────

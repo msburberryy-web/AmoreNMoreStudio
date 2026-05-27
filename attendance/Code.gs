@@ -1,45 +1,101 @@
 // ═══════════════════════════════════════════════════════════════════
-//  Amorè N' More Studio — Attendance System
-//  Deploy: Extensions → Apps Script → Deploy → New deployment
-//          Type: Web App | Execute as: Me | Access: Anyone
+//  Amorè N' More Studio — Combined Sheet Script
+//  • POST  → Bookings tab   (existing behaviour, unchanged)
+//  • GET   → Attendance tab (lookup user + record Time In / Time Out)
+//
+//  Deploy: Extensions → Apps Script → Deploy → Manage deployments
+//          Edit the EXISTING deployment — no new URL needed.
+//          The attendance page uses the same URL as the bookings page.
 // ═══════════════════════════════════════════════════════════════════
 
-const SS_ID        = '10InXMuvd8pnqPeftniAKlg4fx6M3UgduDKxstn5Km-c';
-const RECORDS_TAB  = 'AttendanceRecords';
-const USERS_TAB    = 'Users';           // columns: A=ID  B=Name
-const TIMEZONE     = 'Asia/Tokyo';
+// ── Shared config ────────────────────────────────────────────────────
+var TIMEZONE     = 'Asia/Tokyo';
+var RECORDS_TAB  = 'AttendanceRecords';
+var USERS_TAB    = 'Users';            // columns: A = ID,  B = Name
 
-// ── Entry point ─────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+//  POST — Bookings  (original, unchanged)
+// ════════════════════════════════════════════════════════════════════
+function doPost(e) {
+  try {
+    var ss   = SpreadsheetApp.getActiveSpreadsheet();
+    var data = e.parameter;
+
+    var sheet = ss.getSheetByName('Bookings');
+    if (!sheet) {
+      sheet = ss.insertSheet('Bookings');
+      var headers = ['Submitted At', 'Name', 'Contact', 'Facebook Name',
+                     'Service', 'Preferred Date', 'Time Slot', 'Notes'];
+      sheet.appendRow(headers);
+
+      var headerRange = sheet.getRange(1, 1, 1, headers.length);
+      headerRange.setFontWeight('bold');
+      headerRange.setFontColor('#F4EDE3');
+      headerRange.setBackground('#7A1515');
+      headerRange.setHorizontalAlignment('center');
+      sheet.setFrozenRows(1);
+      sheet.setColumnWidths(1, headers.length, 160);
+    }
+
+    var d = data.submitted ? new Date(data.submitted) : new Date();
+    sheet.appendRow([
+      d.toLocaleString('en-JP', { timeZone: TIMEZONE }),
+      data.name     || '',
+      data.contact  || '',
+      data.fbName   || '',
+      data.service  || '',
+      data.date     || '',
+      data.timeslot || '',
+      data.notes    || ''
+    ]);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ result: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ result: 'error', error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  GET — Attendance
+//  ?action=lookup&id=XXX
+//  ?action=record&id=XXX&name=XXX&purpose=XXX&type=in|out[&manualTimeIn=…]
+// ════════════════════════════════════════════════════════════════════
 function doGet(e) {
-  const result = handle(e.parameter);
+  var result = handleAttendance(e.parameter);
   return ContentService
     .createTextOutput(JSON.stringify(result))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function handle(p) {
+function handleAttendance(p) {
   try {
     if (p.action === 'lookup') return lookupUser(p.id);
     if (p.action === 'record') return recordAttendance(p);
-    return { error: 'Unknown action' };
+    // Plain browser hit — friendly message instead of an error
+    return { info: 'Amorè N\' More — Sheet script is running.' };
   } catch (err) {
     return { error: err.toString() };
   }
 }
 
-// ── Lookup user by ID from Users sheet ──────────────────────────────
+// ── Look up a registered user by ID ──────────────────────────────────
 function lookupUser(id) {
   if (!id) return { error: 'ID is required' };
 
-  const ss    = SpreadsheetApp.openById(SS_ID);
-  const sheet = ss.getSheetByName(USERS_TAB);
+  var ss    = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(USERS_TAB);
   if (!sheet) return {
     error: 'Sheet "' + USERS_TAB + '" not found. ' +
            'Create it with columns: A = ID, B = Name'
   };
 
-  const rows = sheet.getDataRange().getValues();
-  for (let i = 1; i < rows.length; i++) {          // skip header row
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim() === String(id).trim()) {
       return { ok: true, id: String(rows[i][0]).trim(), name: String(rows[i][1]).trim() };
     }
@@ -47,61 +103,65 @@ function lookupUser(id) {
   return { error: 'ID not registered: ' + id };
 }
 
-// ── Record Time In or Time Out ───────────────────────────────────────
+// ── Write a Time In or Time Out record ───────────────────────────────
 function recordAttendance(p) {
-  const { id, name, purpose, type } = p;
+  var id = p.id, name = p.name, purpose = p.purpose, type = p.type;
   if (!id || !name || !purpose || !type) return { error: 'Missing required fields' };
 
-  const ss    = SpreadsheetApp.openById(SS_ID);
-  const sheet = ss.getSheetByName(RECORDS_TAB);
+  var ss    = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(RECORDS_TAB);
   if (!sheet) return { error: 'Sheet "' + RECORDS_TAB + '" not found' };
 
-  ensureHeaders(sheet);
+  ensureAttendanceHeaders(sheet);
 
-  const now = new Date();
-  const ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+  var now = new Date();
+  var ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
 
-  // ── TIME IN ──────────────────────────────────────────────────────
+  // ── Time In: always a new row ─────────────────────────────────────
   if (type === 'in') {
     sheet.appendRow([name, id, purpose, ts, '']);
     return { ok: true, message: 'Time In recorded', time: ts };
   }
 
-  // ── TIME OUT ─────────────────────────────────────────────────────
+  // ── Time Out: find the most recent open row for this ID ───────────
   if (type === 'out') {
-    const lastRow = sheet.getLastRow();
-
+    var lastRow = sheet.getLastRow();
     if (lastRow >= 2) {
-      const data = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
-      // Search from the most recent row upward for an open Time In
-      for (let i = data.length - 1; i >= 0; i--) {
-        const rowId    = String(data[i][1]).trim();
-        const timeOut  = data[i][4];
-        if (rowId === String(id).trim() && !timeOut) {
+      var data = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
+      for (var i = data.length - 1; i >= 0; i--) {
+        if (String(data[i][1]).trim() === String(id).trim() && !data[i][4]) {
           sheet.getRange(i + 2, 5).setValue(ts);
           return { ok: true, message: 'Time Out recorded', time: ts, timeIn: data[i][3] };
         }
       }
     }
 
-    // No open Time In found ─ check if caller supplied a manual one
+    // No open Time In — check if the caller supplied a manual one
     if (p.manualTimeIn) {
-      const timeInStr = p.manualTimeIn.replace('T', ' ') + ':00';
+      var timeInStr = p.manualTimeIn.replace('T', ' ') + ':00';
       sheet.appendRow([name, id, purpose, timeInStr, ts]);
       return { ok: true, message: 'Attendance recorded with manual Time In', time: ts };
     }
 
-    // Signal the front-end to ask for Time In
-    return { needTimeIn: true, message: 'No open Time In found for this ID.' };
+    // Tell the front-end to ask the user for a Time In
+    return { needTimeIn: true, message: 'No open Time In record found for this ID.' };
   }
 
   return { error: 'type must be "in" or "out"' };
 }
 
-// ── Write header row if sheet is blank ──────────────────────────────
-function ensureHeaders(sheet) {
+// ── Write header row if AttendanceRecords sheet is blank ─────────────
+function ensureAttendanceHeaders(sheet) {
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Name', 'ID', 'Purpose', 'Time In', 'Time Out']);
-    sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+    var h = ['Name', 'ID', 'Purpose', 'Time In', 'Time Out'];
+    sheet.appendRow(h);
+
+    var r = sheet.getRange(1, 1, 1, h.length);
+    r.setFontWeight('bold');
+    r.setFontColor('#F4EDE3');
+    r.setBackground('#7A1515');
+    r.setHorizontalAlignment('center');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidths(1, h.length, 180);
   }
 }
