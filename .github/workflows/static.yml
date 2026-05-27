@@ -41,3 +41,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        # studio-room image: E15AB7D8-D57E-41AB-ADF3-7F1AE41AED56.png
