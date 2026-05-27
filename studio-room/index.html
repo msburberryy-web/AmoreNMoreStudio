@@ -114,79 +114,45 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 .room-img{
   display:block;width:100%;height:100%;
   object-fit:cover;border-radius:2px;
-  filter:brightness(.92) saturate(1.1);
-  transition:filter .6s ease;
+  transition:filter .5s ease;
 }
-.room-img.lit{filter:brightness(1.02) saturate(1.15);}
 
-/* ── Pop-out clone layers ── */
-.pop-layer{
+/* ── Background dim overlay ── */
+.dim-overlay{
   position:absolute;inset:0;
-  background:url('./E15AB7D8-D57E-41AB-ADF3-7F1AE41AED56.png') 0 0 / 100% 100% no-repeat;
+  background:rgba(8,6,4,0);
+  transition:background .35s ease;
+  pointer-events:none;
+  z-index:3;
+  border-radius:2px;
+}
+
+/* ── Furniture element overlays ── */
+.room-el{
+  position:absolute;
+  pointer-events:all;
   cursor:pointer;
-  transition:transform .45s cubic-bezier(.34,1.56,.64,1),filter .3s ease;
-  will-change:transform,filter;
-  z-index:2;
-}
-.pop-layer:hover{
-  transform:scale(1.055) translateY(-7px);
-  filter:drop-shadow(0 18px 36px rgba(0,0,0,.65)) brightness(1.12) saturate(1.25);
-  z-index:9;
-}
-.pop-zone-label{
-  position:absolute;
-  left:50%;top:50%;
-  transform:translate(-50%,-50%) translateY(8px);
-  background:rgba(8,6,4,.88);
-  border:1px solid rgba(201,169,110,.45);
-  padding:6px 14px;
-  opacity:0;pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-}
-.pop-layer:hover .pop-zone-label{
-  opacity:1;
-  transform:translate(-50%,-50%) translateY(0);
-}
-.pop-zone-label span{
-  font-family:'Cormorant Garamond',serif;
-  font-size:10px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);white-space:nowrap;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1),
+             filter .32s ease,
+             opacity .28s ease;
+  z-index:4;
+  transform-origin:center bottom;
 }
 
-/* SVG overlay container */
-.room-svg-overlay{
-  position:absolute;inset:0;
-  width:100%;height:100%;pointer-events:none;
+/* :has() — when ANY element is hovered, dim everything else */
+.room-image-wrap:has(.room-el:hover) .dim-overlay{
+  background:rgba(8,6,4,.55);
 }
-
-/* Zone highlight polygons */
-.zone-poly{
-  fill:rgba(255,235,150,0);
-  transition:fill .7s ease;
-  pointer-events:none;
+.room-image-wrap:has(.room-el:hover) .room-el:not(:hover){
+  opacity:.15;
+  transform:scale(.97);
+  filter:brightness(.65);
 }
-.zone-poly.active{fill:rgba(255,235,150,.18);}
-
-/* Hotspot pulsing dots */
-.hotspot{
-  position:absolute;
-  width:14px;height:14px;
-  transform:translate(-50%,-50%);
-  pointer-events:none;
+.room-el:hover{
+  transform:scale(1.13) translateY(-16px);
+  filter:drop-shadow(0 22px 48px rgba(0,0,0,.7)) brightness(1.1) saturate(1.2);
+  z-index:12;
 }
-.hotspot::before{
-  content:'';position:absolute;inset:0;
-  border-radius:50%;background:var(--gold);
-  box-shadow:0 0 0 0 rgba(201,169,110,.6);
-  animation:pulse-ring 2.2s ease-out infinite;
-}
-.hotspot::after{
-  content:'';position:absolute;inset:3px;
-  border-radius:50%;background:var(--gold);
-  box-shadow:0 0 8px var(--gold);
-}
-.hotspot.active::before{animation:none;background:rgba(255,240,160,.9);}
-.hotspot.active::after{background:#fff8d0;box-shadow:0 0 16px rgba(255,240,160,.8);}
 
 /* Zone number overlay (large background numeral) */
 .zone-numeral{
@@ -487,68 +453,24 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
       <div class="room-image-side">
         <div class="room-image-wrap" id="room-wrap">
 
-          <img src="./E15AB7D8-D57E-41AB-ADF3-7F1AE41AED56.png" class="room-img" id="room-img" alt="Amorè N' More Studio">
+          <!-- Base: empty room shell -->
+          <img src="./2790BC85-949D-4286-9026-EE716F314941.png" class="room-img" id="room-img" alt="Amorè N' More Studio">
 
-          <!-- Pop-out clone layers — same image, clipped per zone, lifts on hover -->
-          <div class="pop-layer" data-zone="0"
-            style="clip-path:polygon(4% 25.5%, 50% 7.5%, 57% 43.5%, 5.5% 61.5%)">
-            <div class="pop-zone-label"><span>📸 Photo Studio</span></div>
-          </div>
-          <div class="pop-layer" data-zone="1"
-            style="clip-path:polygon(47.5% 8.5%, 78.5% 16.8%, 76.8% 53%, 44% 46.2%)">
-            <div class="pop-zone-label"><span>💄 Makeup Studio</span></div>
-          </div>
-          <div class="pop-layer" data-zone="2"
-            style="clip-path:polygon(74.2% 16.5%, 98.5% 25.5%, 96% 65.8%, 71.5% 56.8%)">
-            <div class="pop-zone-label"><span>👗 Dress Rental</span></div>
-          </div>
-          <div class="pop-layer" data-zone="3"
-            style="clip-path:polygon(5.5% 61%, 70.5% 49%, 68.5% 94.5%, 5.5% 89%)">
-            <div class="pop-zone-label"><span>☕ Consultation</span></div>
-          </div>
+          <!-- Dim overlay (fades in when any element is hovered) -->
+          <div class="dim-overlay"></div>
 
-          <!-- SVG zone highlight overlays -->
-          <svg class="room-svg-overlay" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="g0" cx="28%" cy="40%" r="52%">
-                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
-                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
-              </radialGradient>
-              <radialGradient id="g1" cx="62%" cy="38%" r="48%">
-                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
-                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
-              </radialGradient>
-              <radialGradient id="g2" cx="80%" cy="46%" r="45%">
-                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
-                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
-              </radialGradient>
-              <radialGradient id="g3" cx="42%" cy="72%" r="52%">
-                <stop offset="0%" stop-color="rgba(255,240,160,.55)"/>
-                <stop offset="100%" stop-color="rgba(255,240,160,0)"/>
-              </radialGradient>
-            </defs>
-            <!-- Photo Studio zone -->
-            <polygon class="zone-poly" id="zpoly-0"
-              points="40,255 500,75 570,435 55,615" fill="url(#g0)"/>
-            <!-- Makeup zone -->
-            <polygon class="zone-poly" id="zpoly-1"
-              points="475,85 785,168 768,530 440,462" fill="url(#g1)"/>
-            <!-- Dress Rental zone -->
-            <polygon class="zone-poly" id="zpoly-2"
-              points="742,165 985,255 960,658 715,568" fill="url(#g2)"/>
-            <!-- Consultation zone -->
-            <polygon class="zone-poly" id="zpoly-3"
-              points="55,610 705,490 685,945 55,890" fill="url(#g3)"/>
-          </svg>
-
-          <!-- Pulsing hotspot indicators -->
-          <div class="hotspot" id="hspot-0" style="left:27%;top:37%;"></div>
-          <div class="hotspot" id="hspot-1" style="left:61%;top:33%;"></div>
-          <div class="hotspot" id="hspot-2" style="left:82%;top:46%;"></div>
-          <div class="hotspot" id="hspot-3" style="left:40%;top:71%;"></div>
+          <!-- Furniture overlays — positioned over their zones in the base room -->
+          <img src="./el-photo.png"  class="room-el" data-zone="0" alt="Photo Studio"
+               style="left:1%;top:16%;width:44%">
+          <img src="./el-makeup.png" class="room-el" data-zone="1" alt="Makeup Studio"
+               style="left:33%;top:7%;width:28%">
+          <img src="./el-dress.png"  class="room-el" data-zone="2" alt="Dress Rental"
+               style="left:57%;top:14%;width:37%">
+          <img src="./el-lounge.png" class="room-el" data-zone="3" alt="Consultation"
+               style="left:8%;top:46%;width:54%">
 
           <!-- Background zone numeral -->
-          <div class="zone-numeral" id="zone-numeral">01</div>
+          <div class="zone-numeral" id="zone-numeral"></div>
         </div>
 
         <!-- Scroll track -->
@@ -760,8 +682,6 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
     /* Zone infos */
     for(var i=0;i<zoneCount;i++){
       document.getElementById('zinfo-'+i).classList.toggle('active', i===idx);
-      document.getElementById('zpoly-'+i).classList.toggle('active', i===idx);
-      document.getElementById('hspot-'+i).classList.toggle('active', i===idx);
       document.getElementById('pd-'+i).classList.toggle('active', i===idx);
     }
 
@@ -773,9 +693,6 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
     if(progressLabel && idx >= 0){
       progressLabel.textContent = numerals[idx] + ' / 04';
     }
-
-    /* Image brightness */
-    document.getElementById('room-img').classList.toggle('lit', idx >= 0);
   }
 
   function onScroll(){
@@ -792,15 +709,15 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 
-  /* Pop-layer hover → activate corresponding zone info panel */
-  document.querySelectorAll('.pop-layer').forEach(function(el){
+  /* Element hover → activate corresponding zone info panel */
+  document.querySelectorAll('.room-el').forEach(function(el){
     el.addEventListener('mouseenter', function(){
       hoverZone = parseInt(this.dataset.zone);
       setZone(hoverZone);
     });
     el.addEventListener('mouseleave', function(){
       hoverZone = -1;
-      setZone(scrollZone);
+      setZone(scrollZone >= 0 ? scrollZone : -1);
     });
   });
 
