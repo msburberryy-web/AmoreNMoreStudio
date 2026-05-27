@@ -408,6 +408,13 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 
 /* ── Responsive ── */
 @media(max-width:768px){
+  /* Hero: switch from centered to top-aligned so fixed header never clips the title */
+  .hero{
+    justify-content:flex-start;
+    padding-top:calc(env(safe-area-inset-top, 0px) + 80px);
+    overflow:visible;
+  }
+
   .room-sticky{grid-template-columns:1fr;grid-template-rows:1fr auto;}
   .room-image-side{padding:80px 16px 16px;}
   .room-info-side{height:220px;border-left:none;border-top:1px solid rgba(201,169,110,.12);}
