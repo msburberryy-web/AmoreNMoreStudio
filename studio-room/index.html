@@ -119,6 +119,40 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 }
 .room-img.lit{filter:brightness(1.02) saturate(1.15);}
 
+/* ── Pop-out clone layers ── */
+.pop-layer{
+  position:absolute;inset:0;
+  background:url('./E15AB7D8-D57E-41AB-ADF3-7F1AE41AED56.png') 0 0 / 100% 100% no-repeat;
+  cursor:pointer;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1),filter .3s ease;
+  will-change:transform,filter;
+  z-index:2;
+}
+.pop-layer:hover{
+  transform:scale(1.055) translateY(-7px);
+  filter:drop-shadow(0 18px 36px rgba(0,0,0,.65)) brightness(1.12) saturate(1.25);
+  z-index:9;
+}
+.pop-zone-label{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%) translateY(8px);
+  background:rgba(8,6,4,.88);
+  border:1px solid rgba(201,169,110,.45);
+  padding:6px 14px;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.pop-layer:hover .pop-zone-label{
+  opacity:1;
+  transform:translate(-50%,-50%) translateY(0);
+}
+.pop-zone-label span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);white-space:nowrap;
+}
+
 /* SVG overlay container */
 .room-svg-overlay{
   position:absolute;inset:0;
@@ -455,6 +489,24 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 
           <img src="./E15AB7D8-D57E-41AB-ADF3-7F1AE41AED56.png" class="room-img" id="room-img" alt="Amorè N' More Studio">
 
+          <!-- Pop-out clone layers — same image, clipped per zone, lifts on hover -->
+          <div class="pop-layer" data-zone="0"
+            style="clip-path:polygon(4% 25.5%, 50% 7.5%, 57% 43.5%, 5.5% 61.5%)">
+            <div class="pop-zone-label"><span>📸 Photo Studio</span></div>
+          </div>
+          <div class="pop-layer" data-zone="1"
+            style="clip-path:polygon(47.5% 8.5%, 78.5% 16.8%, 76.8% 53%, 44% 46.2%)">
+            <div class="pop-zone-label"><span>💄 Makeup Studio</span></div>
+          </div>
+          <div class="pop-layer" data-zone="2"
+            style="clip-path:polygon(74.2% 16.5%, 98.5% 25.5%, 96% 65.8%, 71.5% 56.8%)">
+            <div class="pop-zone-label"><span>👗 Dress Rental</span></div>
+          </div>
+          <div class="pop-layer" data-zone="3"
+            style="clip-path:polygon(5.5% 61%, 70.5% 49%, 68.5% 94.5%, 5.5% 89%)">
+            <div class="pop-zone-label"><span>☕ Consultation</span></div>
+          </div>
+
           <!-- SVG zone highlight overlays -->
           <svg class="room-svg-overlay" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -690,6 +742,8 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 (function(){
   var zoneCount = 4;
   var activeZone = -1;
+  var scrollZone = -1;
+  var hoverZone  = -1;
 
   var roomOuter  = document.getElementById('room-outer');
   var zoneIntro  = document.getElementById('zone-intro');
@@ -726,19 +780,29 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 
   function onScroll(){
     var rect   = roomOuter.getBoundingClientRect();
-    var scrolled = -rect.top;          /* px scrolled past start of room-outer */
+    var scrolled = -rect.top;
     var vh     = window.innerHeight;
 
-    if(scrolled < 0){
-      setZone(-1); return;
-    }
-    /* Each zone occupies 1 × vh of scroll */
-    var idx = Math.floor(scrolled / vh);
-    setZone(Math.min(idx, zoneCount - 1));
+    if(scrolled < 0){ scrollZone = -1; }
+    else { scrollZone = Math.min(Math.floor(scrolled / vh), zoneCount - 1); }
+
+    if(hoverZone < 0) setZone(scrollZone);
   }
 
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+
+  /* Pop-layer hover → activate corresponding zone info panel */
+  document.querySelectorAll('.pop-layer').forEach(function(el){
+    el.addEventListener('mouseenter', function(){
+      hoverZone = parseInt(this.dataset.zone);
+      setZone(hoverZone);
+    });
+    el.addEventListener('mouseleave', function(){
+      hoverZone = -1;
+      setZone(scrollZone);
+    });
+  });
 
   /* Scroll-reveal service cards */
   var observer = new IntersectionObserver(function(entries){
