@@ -738,7 +738,11 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
     if(scrolled < 0){ scrollZone = -1; }
     else { scrollZone = Math.min(Math.floor(scrolled / vh), zoneCount - 1); }
 
-    if(hoverZone < 0) setZone(scrollZone);
+    if(hoverZone < 0){
+      setZone(scrollZone);
+      if(scrollZone >= 0) activateEl(scrollZone);
+      else deactivateEl();
+    }
   }
 
   window.addEventListener('scroll', onScroll, {passive:true});
