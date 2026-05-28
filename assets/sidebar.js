@@ -74,7 +74,7 @@
       color:#A8854A; opacity:.7;\
     }\
     .am-sb-ey .sb-en { font-family:"Cormorant Garamond",serif; }\
-    .am-sb-ey .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:1px; }\
+    .am-sb-ey .sb-my { font-family:"Padauk",sans-serif; letter-spacing:1px; }\
     .am-sb-nav { list-style:none; padding:0 0 6px; }\
     .am-sb-nav li a {\
       display:block;\
@@ -90,7 +90,7 @@
       border-left-color:rgba(201,169,110,.5);\
     }\
     .am-sb-nav .sb-en { font-family:"Cormorant Garamond",serif; letter-spacing:2px; text-transform:uppercase; }\
-    .am-sb-nav .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0; text-transform:none; font-size:13px; }\
+    .am-sb-nav .sb-my { font-family:"Padauk",sans-serif; letter-spacing:0; text-transform:none; font-size:13px; }\
     .am-sb-rule {\
       height:1px; margin:6px 22px 2px;\
       background:linear-gradient(90deg,rgba(201,169,110,.2),transparent);\
@@ -107,7 +107,7 @@
       color:#A8854A; opacity:.7; margin-right:2px;\
     }\
     .am-sb-ll .sb-en { font-family:"Cormorant Garamond",serif; }\
-    .am-sb-ll .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0.5px; text-transform:none; }\
+    .am-sb-ll .sb-my { font-family:"Padauk",sans-serif; letter-spacing:0.5px; text-transform:none; }\
     .am-sb-lb {\
       font-size:11px;\
       background:none; border:1px solid transparent;\
@@ -116,7 +116,7 @@
       transition:color .2s, border-color .2s, background .2s;\
     }\
     .am-sb-lb[data-l="en"] { font-family:"Cormorant Garamond",serif; letter-spacing:1px; }\
-    .am-sb-lb[data-l="my"] { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0; }\
+    .am-sb-lb[data-l="my"] { font-family:"Padauk",sans-serif; letter-spacing:0; }\
     .am-sb-lb.active { color:#A8854A; border-color:rgba(201,169,110,.4); background:rgba(201,169,110,.09); }\
     .am-sb-ls { color:rgba(180,150,100,.35); font-size:9px; }\
     .am-sb-foot {\
@@ -149,11 +149,11 @@
       color:rgba(107,82,64,.38);\
     }\
     #am-pg-foot p .sb-en { font-family:"Cormorant Garamond",serif; letter-spacing:4px; }\
-    #am-pg-foot p .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0.5px; text-transform:none; }\
+    #am-pg-foot p .sb-my { font-family:"Padauk",sans-serif; letter-spacing:0.5px; text-transform:none; }\
     html[data-lang="my"] .sb-en { display:none !important; }\
     html[data-lang="en"] .sb-my { display:none !important; }\
     .sb-my {\
-      font-family:"Noto Sans Myanmar",sans-serif !important;\
+      font-family:"Padauk",sans-serif !important;\
       letter-spacing:0 !important;\
       text-transform:none !important;\
     }\
@@ -166,7 +166,8 @@
     html[data-lang="my"] .section-title,\
     html[data-lang="my"] .hero-sub .sb-my,\
     html[data-lang="my"] .brand-sub .sb-my {\
-      font-family:"Noto Serif Myanmar",serif !important;\
+      font-family:"Padauk",sans-serif !important;\
+      font-weight:700 !important;\
       letter-spacing:0 !important;\
       text-transform:none !important;\
     }\
