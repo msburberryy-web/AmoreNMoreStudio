@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Magazine — Amorè N' More</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Sans+Myanmar:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#C9A96E; --gold-dark:#A8854A;
+  --bg:#F7F2EA; --surface:#FFFFFF;
+  --ink:#1A1208; --muted:#7A6050; --soft:#C4B09A;
+  --border:rgba(180,150,100,.22);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-serif;overflow-x:hidden;}
+
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Header ── */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:18px 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(to bottom,rgba(247,242,234,.97) 60%,rgba(247,242,234,0) 100%);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.hdr-back{
+  font-family:'Cormorant Garamond',serif;
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.hdr-back:hover{color:var(--gold-dark);}
+.hdr-brand{font-family:'Great Vibes',cursive;font-size:22px;color:var(--ink);}
+.hdr-spacer{width:80px;}
+
+/* ── Hero ── */
+.hero{
+  min-height:36vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 48px;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--surface) 100%);
+  position:relative;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:40px;height:1px;background:var(--gold);opacity:.4;
+}
+.hero-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold-dark);opacity:.7;margin-bottom:18px;
+  animation:rise .8s .1s both;
+}
+.hero-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(52px,10vw,92px);
+  color:var(--ink);line-height:1.15;margin-bottom:14px;
+  animation:rise .8s .22s both;
+}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--muted);opacity:.7;
+  animation:rise .8s .36s both;
+}
+
+/* ── Feeds ── */
+.feeds-section{
+  padding:56px 28px 100px;
+  max-width:1660px;margin:0 auto;
+}
+.feeds-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:28px;
+  align-items:start;
+}
+.feed-col{}
+.feed-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;padding:0 2px;
+}
+.feed-icon{font-size:15px;flex-shrink:0;}
+.feed-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold-dark);opacity:.85;white-space:nowrap;
+}
+.feed-rule{
+  flex:1;height:1px;
+  background:linear-gradient(to right,rgba(180,150,100,.35),transparent);
+}
+.feed-wrap{
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  overflow:hidden;
+  min-height:700px;
+  box-shadow:0 2px 16px rgba(180,150,100,.07);
+}
+.feed-wrap iframe{
+  display:block;width:100%;border:none;min-height:700px;
+}
+
+/* ── Responsive ── */
+@media(max-width:1200px){
+  .feeds-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:680px){
+  .hdr{padding:16px 20px;}.hdr-spacer{width:44px;}
+  .feeds-section{padding:36px 16px 64px;}
+  .feeds-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <a href="../" class="hdr-back">← Back</a>
+  <div class="hdr-brand">Amorè N' More</div>
+  <div class="hdr-spacer"></div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">Amorè N' More &nbsp;·&nbsp; Tokyo</div>
+  <div class="hero-title">The Magazine</div>
+  <div class="hero-sub">Stories &amp; moments from our network</div>
+</section>
+
+<section class="feeds-section">
+  <div class="feeds-grid">
+
+    <div class="feed-col">
+      <div class="feed-label">
+        <span class="feed-icon">💍</span>
+        <span class="feed-title">Wedding Studio</span>
+        <div class="feed-rule"></div>
+      </div>
+      <div class="feed-wrap">
+        <iframe
+          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fp%2FAmor%25C3%25A9wedding-Tokyo-61575756988945%2F&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+          width="380" height="700" scrolling="no" frameborder="0"
+          allowtransparency="true" allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="feed-col">
+      <div class="feed-label">
+        <span class="feed-icon">📷</span>
+        <span class="feed-title">Photography</span>
+        <div class="feed-rule"></div>
+      </div>
+      <div class="feed-wrap">
+        <iframe
+          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmmhxhmm&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+          width="380" height="700" scrolling="no" frameborder="0"
+          allowtransparency="true" allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="feed-col">
+      <div class="feed-label">
+        <span class="feed-icon">🎥</span>
+        <span class="feed-title">Videography</span>
+        <div class="feed-rule"></div>
+      </div>
+      <div class="feed-wrap">
+        <iframe
+          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fstudioeternelle&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+          width="380" height="700" scrolling="no" frameborder="0"
+          allowtransparency="true" allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="feed-col">
+      <div class="feed-label">
+        <span class="feed-icon">✨</span>
+        <span class="feed-title">Beauty &amp; Makeup</span>
+        <div class="feed-rule"></div>
+      </div>
+      <div class="feed-wrap">
+        <iframe
+          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FbeautybyNshadow&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+          width="380" height="700" scrolling="no" frameborder="0"
+          allowtransparency="true" allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
