@@ -6,7 +6,7 @@
 <title>Our People & Partners — Amorè N' More</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Serif+Myanmar:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Serif+Myanmar:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -29,8 +29,17 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Serif Myanmar',seri
   background:linear-gradient(to bottom,rgba(247,242,234,.97) 60%,rgba(247,242,234,0) 100%);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
 }
-.hdr-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
-.hdr-logo{height:38px;width:auto;mix-blend-mode:multiply;opacity:.88;}
+.hdr-brand{
+  font-family:'Playfair Display',serif;
+  font-size:15px;font-style:italic;
+  color:#7A1515;text-decoration:none;line-height:1.2;
+}
+.hdr-brand span{
+  font-family:'Cormorant Garamond',serif;
+  font-style:normal;font-size:10px;
+  letter-spacing:4px;text-transform:uppercase;
+  color:rgba(122,21,21,.42);display:block;margin-top:2px;
+}
 .hdr-back{
   font-family:'Cormorant Garamond',serif;
   font-size:11px;letter-spacing:3px;text-transform:uppercase;
@@ -250,7 +259,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Serif Myanmar',seri
 
 /* ── Responsive ── */
 @media(max-width:680px){
-  .hdr{padding:12px 20px;} .hdr-logo{height:30px;}
+  .hdr{padding:12px 20px;} .hdr-brand{font-size:13px;} .hdr-brand span{font-size:8px;letter-spacing:3px;}
   .partners-grid{grid-template-columns:1fr;}
   .founders-grid{grid-template-columns:repeat(2,1fr);gap:20px 14px;}
   .founder-avatar{width:100px;height:100px;font-size:22px;}
@@ -265,9 +274,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Serif Myanmar',seri
 <body>
 
 <header class="hdr">
-  <a href="../" class="hdr-logo-link">
-    <img src="../amore-logo.PNG" alt="Amorè N' More" class="hdr-logo">
-  </a>
+  <a href="../" class="hdr-brand">Amorè N' More<span>Wedding Studio &nbsp;·&nbsp; Tokyo</span></a>
   <a href="../" class="hdr-back">← Back</a>
 </header>
 
