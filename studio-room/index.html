@@ -23,18 +23,19 @@ body{background:#F7F2EA;color:#1A1208;font-family:'Padauk',sans-serif;overflow-x
 /* ── Header ── */
 .hdr{
   position:fixed;top:0;left:0;right:0;z-index:900;
-  padding:18px 36px;
+  padding:14px 36px;
   display:flex;align-items:center;justify-content:space-between;
   background:linear-gradient(to bottom,rgba(247,242,234,.97) 0%,rgba(247,242,234,0) 100%);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
 }
+.hdr-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.hdr-logo{height:38px;width:auto;mix-blend-mode:multiply;opacity:.88;}
 .hdr-back{
   font-family:'Cormorant Garamond',serif;
   font-size:11px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--muted);opacity:.8;text-decoration:none;transition:color .2s,opacity .2s;
+  color:var(--muted);text-decoration:none;transition:color .2s;
 }
-.hdr-back:hover{color:var(--gold);opacity:1;}
-.hdr-brand{font-family:'Great Vibes',cursive;font-size:22px;color:#1A1208;}
-.hdr-spacer{width:80px;}
+.hdr-back:hover{color:var(--gold-dark);opacity:1;}
 
 /* ══════════════════════════════════════════
    HERO SECTION
@@ -448,9 +449,10 @@ body{background:#F7F2EA;color:#1A1208;font-family:'Padauk',sans-serif;overflow-x
 
 <!-- ── Header ── -->
 <header class="hdr">
+  <a href="../" class="hdr-logo-link">
+    <img src="../amore-logo.PNG" alt="Amorè N' More" class="hdr-logo">
+  </a>
   <a href="../" class="hdr-back">← Back</a>
-  <div class="hdr-brand">Amorè N' More</div>
-  <div class="hdr-spacer"></div>
 </header>
 
 <!-- ══════════════════════════════════════════
