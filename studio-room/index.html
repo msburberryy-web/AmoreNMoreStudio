@@ -703,6 +703,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
   var hoverZone  = -1;
 
   var roomOuter  = document.getElementById('room-outer');
+  var roomWrap   = document.getElementById('room-wrap');
   var zoneIntro  = document.getElementById('zone-intro');
   var progressLabel = document.querySelector('.progress-label');
   var numerals = ['01','02','03','04'];
@@ -749,7 +750,6 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
   onScroll();
 
   /* Activate / deactivate the visual pop-out on the overlay images */
-  var roomWrap = document.getElementById('room-wrap');
   function activateEl(zone){
     roomWrap.classList.add('has-active');
     document.querySelectorAll('.room-el').forEach(function(el){
