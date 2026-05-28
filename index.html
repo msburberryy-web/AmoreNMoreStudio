@@ -11,275 +11,291 @@
 <meta property="og:url"         content="https://msburberryy-web.github.io/AmoreNMoreStudio/">
 <meta name="twitter:card"       content="summary_large_image">
 <meta name="twitter:image"      content="https://msburberryy-web.github.io/AmoreNMoreStudio/grand-opening.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Myanmar:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
   --gold:       #C9A96E;
+  --gold-dark:  #A8854A;
   --gold-light: #E8D5B0;
-  --gold-pale:  #F6EDD9;
-  --ink:        #0C0806;
-  --ivory:      #F4EDE3;
+  --ink:        #1A1208;
+  --muted:      #6B5240;
+  --bg:         #F7F2EA;
+  --surface:    #FDFAF5;
   --crimson:    #7A1515;
 }
 
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
 /* ── Keyframes ── */
-@keyframes rise {
-  from { opacity: 0; transform: translateY(26px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes draw-l  { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes shimmer {
-  0%   { background-position: -250% center; }
-  100% { background-position: 250% center; }
-}
-@keyframes breathe {
-  0%, 100% { opacity: .88; }
-  50%       { opacity: 1; }
-}
+@keyframes rise    { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fade-in { from { opacity:0; } to { opacity:1; } }
+@keyframes draw-l  { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+@keyframes shimmer { 0% { background-position:-250% center; } 100% { background-position:250% center; } }
+@keyframes breathe { 0%,100% { opacity:.88; } 50% { opacity:1; } }
 @keyframes pulse-book {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(160,39,31,.55), 0 0 18px rgba(122,21,21,.30); }
-  50%       { box-shadow: 0 0 0 7px rgba(160,39,31,.0),  0 0 32px rgba(122,21,21,.55); }
+  0%,100% { box-shadow:0 0 0 0 rgba(160,39,31,.5), 0 4px 20px rgba(122,21,21,.2); }
+  50%      { box-shadow:0 0 0 8px rgba(160,39,31,0), 0 4px 32px rgba(122,21,21,.4); }
 }
 @keyframes petal-drift {
-  0%   { transform: translateY(-30px) translateX(0)    rotate(0deg);   opacity: 0; }
-  6%   { opacity: .6; }
-  88%  { opacity: .25; }
-  100% { transform: translateY(108vh) translateX(45px) rotate(520deg); opacity: 0; }
+  0%   { transform:translateY(-30px) translateX(0)    rotate(0deg);   opacity:0; }
+  6%   { opacity:.5; }
+  88%  { opacity:.2; }
+  100% { transform:translateY(108vh) translateX(45px) rotate(520deg); opacity:0; }
 }
+@keyframes logo-in { from { opacity:0; transform:scale(.96) translateY(14px); } to { opacity:1; transform:scale(1) translateY(0); } }
 
-html { -webkit-font-smoothing: antialiased; }
-
+/* ── Base ── */
 body {
-  background: #F7F2EA;
+  background: var(--bg);
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
   font-family: 'Noto Sans Myanmar', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
 }
 
-/* Centre glow */
+/* Subtle warm glow */
 body::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 50% 50%,
-    rgba(201,169,110,.09) 0%,
-    rgba(201,169,110,.04) 50%,
-    transparent           75%);
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(ellipse 80% 70% at 50% 40%,
+    rgba(201,169,110,.08) 0%,
+    rgba(201,169,110,.03) 55%,
+    transparent 80%);
 }
 
-/* Grain texture */
-body::after {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  opacity: .10;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.04'/%3E%3C/svg%3E");
+/* Photo texture from grand-opening image, very subtle */
+.hero-photo-bg {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:url('./grand-opening.jpg') center/cover no-repeat;
+  opacity:.07;
 }
 
-/* ── Gold top line ── */
+/* Gold top bar */
 .top-line {
-  position: fixed; top: 0; left: 0; right: 0; height: 1px; z-index: 20;
-  background: linear-gradient(90deg,
+  position:fixed; top:0; left:0; right:0; height:2px; z-index:50;
+  background:linear-gradient(90deg,
     transparent 0%,
     rgba(201,169,110,.3) 20%,
-    var(--gold)          50%,
+    var(--gold) 50%,
     rgba(201,169,110,.3) 80%,
-    transparent          100%);
-  animation: fade-in 2s .4s both;
+    transparent 100%);
+  animation:fade-in 1.6s .3s both;
 }
 
-/* ── Floating petals (CSS shapes) ── */
-.petal {
-  position: fixed; pointer-events: none; z-index: 1;
-  border-radius: 50% 0 50% 0;
-  animation: petal-drift linear infinite;
-}
-.p1 { width:7px;  height:11px; left:10%; background:rgba(180,140,80,.35); animation-duration:10s; animation-delay:0s;   }
-.p2 { width:5px;  height: 8px; left:27%; background:rgba(180,140,80,.25); animation-duration:14s; animation-delay:2.5s; }
-.p3 { width:9px;  height:13px; left:52%; background:rgba(180,140,80,.20); animation-duration:12s; animation-delay:5s;   }
-.p4 { width:6px;  height: 9px; left:70%; background:rgba(180,140,80,.30); animation-duration: 9s; animation-delay:1s;   }
-.p5 { width:8px;  height:11px; left:87%; background:rgba(180,140,80,.22); animation-duration:15s; animation-delay:3.5s; }
-.p6 { width:5px;  height: 7px; left:40%; background:rgba(180,140,80,.16); animation-duration:11s; animation-delay:7s;   }
-.p7 { width:10px; height:14px; left:62%; background:rgba(180,140,80,.15); animation-duration:16s; animation-delay:4s;   }
+/* ── Floating petals ── */
+.petal { position:fixed; pointer-events:none; z-index:1; border-radius:50% 0 50% 0; animation:petal-drift linear infinite; }
+.p1 { width:7px;  height:11px; left:8%;  background:rgba(180,140,80,.32); animation-duration:11s; animation-delay:0s;   }
+.p2 { width:5px;  height: 8px; left:25%; background:rgba(180,140,80,.22); animation-duration:15s; animation-delay:2.5s; }
+.p3 { width:9px;  height:13px; left:50%; background:rgba(180,140,80,.18); animation-duration:13s; animation-delay:5s;   }
+.p4 { width:6px;  height: 9px; left:68%; background:rgba(180,140,80,.28); animation-duration: 9s; animation-delay:1s;   }
+.p5 { width:8px;  height:11px; left:85%; background:rgba(180,140,80,.20); animation-duration:16s; animation-delay:3.5s; }
+.p6 { width:5px;  height: 7px; left:38%; background:rgba(180,140,80,.14); animation-duration:12s; animation-delay:7s;   }
+.p7 { width:10px; height:14px; left:60%; background:rgba(180,140,80,.12); animation-duration:17s; animation-delay:4s;   }
 
-/* ── Stage ── */
-.stage {
-  position: relative; z-index: 2;
-  text-align: center;
-  padding: 0 36px;
-  max-width: 700px; width: 100%;
+/* ══════════════════════════
+   HERO
+══════════════════════════ */
+.hero {
+  position:relative; z-index:2;
+  min-height:100svh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center;
+  padding:60px 36px 52px;
 }
 
-/* Brand name — gold shimmer */
-.brand {
-  display: block;
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(34px, 7.5vw, 62px);
-  font-style: italic; font-weight: 400;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg,
-    var(--gold)       15%,
-    var(--gold-light) 35%,
-    #fff8e8           50%,
-    var(--gold-light) 65%,
-    var(--gold)       85%);
-  background-size: 250% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: rise .9s .1s both, shimmer 6s 2.2s ease-in-out infinite;
-  margin-bottom: 9px;
+/* ── Logo ── */
+.logo-wrap {
+  margin-bottom:28px;
+  animation:logo-in .9s .05s both;
+}
+.logo-img {
+  max-width:min(260px, 72vw);
+  height:auto;
+  mix-blend-mode:multiply;
+  opacity:.92;
+}
+/* Shown only when logo fails to load */
+.logo-fallback {
+  display:none;
+  font-family:'Playfair Display', serif;
+  font-size:clamp(32px,7vw,58px);
+  font-style:italic; font-weight:400;
+  letter-spacing:1px;
+  background:linear-gradient(90deg,
+    var(--gold-dark) 15%,
+    var(--gold) 35%,
+    #c8a050 50%,
+    var(--gold) 65%,
+    var(--gold-dark) 85%);
+  background-size:250% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 6s 2s ease-in-out infinite;
 }
 
 .brand-sub {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.8vw, 15px);
-  font-weight: 700;
-  letter-spacing: 5px; text-transform: uppercase;
-  color: #A8854A;
-  animation: rise .9s .22s both;
-  margin-bottom: 44px;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(10px,1.6vw,13px);
+  font-weight:700;
+  letter-spacing:6px; text-transform:uppercase;
+  color:var(--gold-dark);
+  opacity:.75;
+  animation:rise .8s .18s both;
+  margin-bottom:36px;
 }
 
-/* ── Animated rule ── */
+/* ── Divider ── */
 .rule-row {
-  display: flex; align-items: center; justify-content: center; gap: 14px;
-  margin-bottom: 42px;
-  animation: rise .9s .30s both;
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  margin-bottom:32px;
+  animation:rise .8s .28s both;
 }
 .rule {
-  height: 1px; width: 90px;
-  background: linear-gradient(90deg, transparent, var(--gold));
-  transform-origin: left center;
-  animation: draw-l 1.5s .65s both cubic-bezier(.4,0,.2,1);
+  height:1px; width:70px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+  transform-origin:left;
+  animation:draw-l 1.4s .6s both cubic-bezier(.4,0,.2,1);
 }
-.rule.r {
-  background: linear-gradient(90deg, var(--gold), transparent);
-  transform-origin: right center;
-}
+.rule.r { background:linear-gradient(90deg,var(--gold),transparent); transform-origin:right; }
 .rule-gem {
-  width: 7px; height: 7px;
-  background: var(--gold);
-  transform: rotate(45deg);
-  opacity: .65; flex-shrink: 0;
-  box-shadow: 0 0 10px rgba(201,169,110,.35);
+  width:6px; height:6px;
+  background:var(--gold); transform:rotate(45deg);
+  opacity:.6; flex-shrink:0;
+  box-shadow:0 0 10px rgba(201,169,110,.4);
 }
 
 /* ── Headline ── */
 .now-open {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.8vw, 15px);
-  font-weight: 700;
-  letter-spacing: 5px; text-transform: uppercase;
-  color: #A8854A;
-  animation: rise .9s .40s both;
-  margin-bottom: 10px;
+  display:block;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(10px,1.6vw,12px);
+  font-weight:700; letter-spacing:6px; text-transform:uppercase;
+  color:var(--gold-dark); opacity:.8;
+  animation:rise .8s .36s both;
+  margin-bottom:8px;
 }
-
 .headline {
-  display: block;
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(58px, 13vw, 104px);
-  color: #1A1208;
-  line-height: 1.05;
-  animation: rise .9s .48s both, breathe 5s 2.5s ease-in-out infinite;
-  margin-bottom: 40px;
+  display:block;
+  font-family:'Great Vibes', cursive;
+  font-size:clamp(52px,12vw,96px);
+  color:var(--ink); line-height:1.08;
+  animation:rise .8s .44s both, breathe 5s 2.5s ease-in-out infinite;
+  margin-bottom:32px;
 }
 
 /* ── Services ── */
-.services {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(13px, 1.9vw, 15px);
-  font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: #8B6936;
-  animation: rise .9s .55s both;
-  margin-bottom: 52px;
-  line-height: 2.2;
+.services-strip {
+  display:flex; align-items:center; justify-content:center;
+  flex-wrap:wrap; gap:0;
+  margin-bottom:44px;
+  animation:rise .8s .52s both;
+}
+.svc {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(11px,1.7vw,14px);
+  font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+  color:#8B6936;
+  padding:0 14px;
+  white-space:nowrap;
+}
+.svc-dot {
+  width:3px; height:3px;
+  background:var(--gold); border-radius:50%;
+  opacity:.5; flex-shrink:0;
 }
 
-/* ── CTAs ── */
-.cta-row {
-  display: flex; align-items: center; justify-content: center;
-  gap: 16px; flex-wrap: wrap;
-  animation: rise .9s .62s both;
-  margin-bottom: 52px;
-}
-.cta {
-  display: inline-block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(13px, 1.7vw, 15px);
-  font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase;
-  text-decoration: none;
-  padding: 16px 40px;
-  transition: background .25s, color .25s, border-color .25s, box-shadow .25s;
-}
-.cta-primary {
-  background: var(--gold);
-  border: 1px solid var(--gold);
-  color: var(--ink);
-}
-.cta-primary:hover {
-  background: var(--gold-light);
-  border-color: var(--gold-light);
-  box-shadow: 0 0 28px rgba(201,169,110,.35);
+/* ── Primary CTA ── */
+.cta-primary-wrap {
+  margin-bottom:20px;
+  animation:rise .8s .58s both;
 }
 .cta-book {
-  background: var(--crimson);
-  border: 1px solid #A0271F;
-  color: #F4EDE3;
-  animation: pulse-book 2.8s 3.5s ease-in-out infinite;
+  display:inline-block;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(12px,1.6vw,14px);
+  font-weight:700; letter-spacing:3px; text-transform:uppercase;
+  text-decoration:none;
+  padding:18px 52px;
+  background:var(--crimson);
+  border:1px solid #8a1b1b;
+  color:#FAF6F0;
+  transition:background .25s, box-shadow .25s;
+  animation:pulse-book 2.8s 3.5s ease-in-out infinite;
 }
-.cta-studio {
-  background: transparent;
-  border: 1px solid rgba(180,140,70,.55);
-  color: #8B6936;
-  letter-spacing: 4px;
-}
-.cta-studio:hover {
-  background: rgba(180,140,70,.08);
-  border-color: rgba(180,140,70,.8);
-}
-.cta-book:hover {
-  background: #A0271F;
-  border-color: #A0271F;
-  box-shadow: 0 0 32px rgba(122,21,21,.55);
-}
+.cta-book:hover { background:#A0271F; box-shadow:0 0 32px rgba(122,21,21,.4); }
 
-/* ── Location ── */
+/* ── Secondary CTAs ── */
+.cta-secondary-row {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; flex-wrap:wrap;
+  margin-bottom:16px;
+  animation:rise .8s .64s both;
+}
+.cta-ghost {
+  display:inline-block;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(11px,1.5vw,13px);
+  font-weight:700; letter-spacing:3px; text-transform:uppercase;
+  text-decoration:none;
+  padding:13px 32px;
+  background:transparent;
+  border:1px solid rgba(180,140,70,.5);
+  color:#8B6936;
+  transition:background .22s, border-color .22s;
+}
+.cta-ghost:hover { background:rgba(180,140,70,.08); border-color:rgba(180,140,70,.8); }
+
+/* ── Tertiary links ── */
+.cta-links-row {
+  display:flex; align-items:center; justify-content:center;
+  gap:6px; flex-wrap:wrap;
+  animation:rise .8s .70s both;
+  margin-bottom:36px;
+}
+.cta-link {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(10px,1.4vw,11px);
+  letter-spacing:3px; text-transform:uppercase;
+  text-decoration:none;
+  color:var(--muted); opacity:.65;
+  padding:6px 12px;
+  transition:opacity .2s;
+}
+.cta-link:hover { opacity:1; }
+.cta-link-sep { color:var(--muted); opacity:.3; font-size:10px; }
+
+/* ── Footer hint ── */
 .location {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.6vw, 14px);
-  font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: #6B5240;
-  animation: rise .9s .70s both;
-  line-height: 2.4;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(10px,1.4vw,12px);
+  font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  color:var(--muted); opacity:.55;
+  animation:rise .8s .76s both;
+  line-height:2.2;
 }
 
 /* ── Responsive ── */
-@media (max-width: 480px) {
-  .stage { padding: 0 24px; }
-  .rule { width: 56px; }
-  .cta-row { gap: 12px; }
-  .cta { padding: 14px 28px; letter-spacing: 3px; }
+@media (max-width:480px) {
+  .hero { padding:56px 22px 44px; }
+  .svc  { padding:0 10px; font-size:10px; }
+  .cta-book { padding:16px 36px; }
+  .cta-ghost { padding:12px 22px; }
 }
-@media (max-width: 360px) {
-  .cta-row { flex-direction: column; }
-  .cta { width: 100%; text-align: center; }
+@media (max-width:360px) {
+  .cta-secondary-row { flex-direction:column; }
+  .cta-ghost { width:100%; text-align:center; }
 }
 </style>
 </head>
 <body>
 
+<div class="hero-photo-bg"></div>
 <div class="top-line"></div>
 
 <div class="petal p1"></div>
@@ -290,9 +306,17 @@ body::after {
 <div class="petal p6"></div>
 <div class="petal p7"></div>
 
-<main class="stage">
+<main class="hero">
 
-  <span class="brand">Amorè N' More</span>
+  <!-- Logo — replace amore-logo.png with your file -->
+  <div class="logo-wrap">
+    <img class="logo-img"
+         src="./amore-logo.png"
+         alt="Amorè Wedding Tokyo"
+         onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
+    <span class="logo-fallback">Amorè N' More</span>
+  </div>
+
   <span class="brand-sub">Wedding Studio &nbsp;·&nbsp; Tokyo</span>
 
   <div class="rule-row">
@@ -304,25 +328,32 @@ body::after {
   <span class="now-open">Now Open</span>
   <span class="headline">Studio is Opened!</span>
 
-  <span class="services">
-    Preweddings &nbsp;·&nbsp; Dress &nbsp;·&nbsp; Hair &amp; Makeup &nbsp;·&nbsp; Photoshoot
-  </span>
-
-  <div class="cta-row">
-    <a class="cta cta-book" href="bookings/">Book an Appointment</a>
+  <div class="services-strip">
+    <span class="svc">Preweddings</span>
+    <span class="svc-dot"></span>
+    <span class="svc">Dress</span>
+    <span class="svc-dot"></span>
+    <span class="svc">Hair &amp; Makeup</span>
+    <span class="svc-dot"></span>
+    <span class="svc">Photoshoot</span>
   </div>
 
-  <div class="cta-row" style="margin-top:14px;">
-    <a class="cta cta-studio" href="studio-room/">✦ &nbsp;Explore Our Studio &nbsp;✦</a>
+  <div class="cta-primary-wrap">
+    <a class="cta-book" href="bookings/">Book an Appointment</a>
   </div>
 
-  <div class="cta-row" style="margin-top:14px;">
-    <a class="cta cta-studio" href="about/" style="opacity:.65;letter-spacing:3px;font-size:11px;">Our Business &amp; Founders</a>
-    <a class="cta cta-studio" href="magazine/" style="opacity:.65;letter-spacing:3px;font-size:11px;">The Magazine</a>
+  <div class="cta-secondary-row">
+    <a class="cta-ghost" href="studio-room/">✦ &nbsp;Explore Our Studio &nbsp;✦</a>
+  </div>
+
+  <div class="cta-links-row">
+    <a class="cta-link" href="about/">Our Business &amp; Founders</a>
+    <span class="cta-link-sep">·</span>
+    <a class="cta-link" href="magazine/">The Magazine</a>
   </div>
 
   <span class="location">
-    Appointments are recommended &nbsp;·&nbsp; Book in advance
+    Appointments recommended &nbsp;·&nbsp; Book in advance
   </span>
 
 </main>

@@ -139,8 +139,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-
         <div class="feed-rule"></div>
       </div>
       <div class="feed-wrap">
-        <iframe
-          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fp%2FAmor%25C3%25A9wedding-Tokyo-61575756988945%2F&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+        <iframe loading="lazy"
+          data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fp%2FAmor%25C3%25A9wedding-Tokyo-61575756988945%2F&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
           width="380" height="700" scrolling="no" frameborder="0"
           allowtransparency="true" allowfullscreen="true"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
@@ -155,8 +155,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-
         <div class="feed-rule"></div>
       </div>
       <div class="feed-wrap">
-        <iframe
-          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmmhxhmm&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+        <iframe loading="lazy"
+          data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmmhxhmm&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
           width="380" height="700" scrolling="no" frameborder="0"
           allowtransparency="true" allowfullscreen="true"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
@@ -171,8 +171,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-
         <div class="feed-rule"></div>
       </div>
       <div class="feed-wrap">
-        <iframe
-          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fstudioeternelle&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+        <iframe loading="lazy"
+          data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fstudioeternelle&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
           width="380" height="700" scrolling="no" frameborder="0"
           allowtransparency="true" allowfullscreen="true"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
@@ -187,8 +187,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-
         <div class="feed-rule"></div>
       </div>
       <div class="feed-wrap">
-        <iframe
-          src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FbeautybyNshadow&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
+        <iframe loading="lazy"
+          data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FbeautybyNshadow&tabs=timeline&width=380&height=700&small_header=true&adapt_container_width=false&hide_cover=true&show_facepile=false&appId="
           width="380" height="700" scrolling="no" frameborder="0"
           allowtransparency="true" allowfullscreen="true"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
@@ -199,5 +199,18 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-
   </div>
 </section>
 
+<script>
+// Load iframes only when they scroll into view
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting && e.target.dataset.src) {
+      e.target.src = e.target.dataset.src;
+      delete e.target.dataset.src;
+      observer.unobserve(e.target);
+    }
+  });
+}, { rootMargin: '200px' });
+document.querySelectorAll('iframe[data-src]').forEach(function(f) { observer.observe(f); });
+</script>
 </body>
 </html>
