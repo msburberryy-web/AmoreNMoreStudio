@@ -70,13 +70,14 @@
     .am-sb-cls:hover { color:#1A1208; }\
     .am-sb-ey {\
       padding:18px 22px 6px;\
-      font-family:"Cormorant Garamond",serif;\
       font-size:9px; letter-spacing:4px; text-transform:uppercase;\
       color:#A8854A; opacity:.7;\
     }\
+    .am-sb-ey .sb-en { font-family:"Cormorant Garamond",serif; }\
+    .am-sb-ey .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:1px; }\
     .am-sb-nav { list-style:none; padding:0 0 6px; }\
     .am-sb-nav li a {\
-      display:flex; align-items:center; gap:10px;\
+      display:block;\
       padding:13px 22px;\
       font-family:"Cormorant Garamond",serif;\
       font-size:13px; letter-spacing:2px; text-transform:uppercase;\
@@ -88,7 +89,8 @@
       color:#A8854A; background:rgba(201,169,110,.07);\
       border-left-color:rgba(201,169,110,.5);\
     }\
-    .am-sb-nav .sb-icon { font-size:14px; flex-shrink:0; }\
+    .am-sb-nav .sb-en { font-family:"Cormorant Garamond",serif; letter-spacing:2px; text-transform:uppercase; }\
+    .am-sb-nav .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0; text-transform:none; font-size:13px; }\
     .am-sb-rule {\
       height:1px; margin:6px 22px 2px;\
       background:linear-gradient(90deg,rgba(201,169,110,.2),transparent);\
@@ -101,18 +103,20 @@
       flex-shrink:0;\
     }\
     .am-sb-ll {\
-      font-family:"Cormorant Garamond",serif;\
       font-size:9px; letter-spacing:3px; text-transform:uppercase;\
       color:#A8854A; opacity:.7; margin-right:2px;\
     }\
+    .am-sb-ll .sb-en { font-family:"Cormorant Garamond",serif; }\
+    .am-sb-ll .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0.5px; text-transform:none; }\
     .am-sb-lb {\
-      font-family:"Cormorant Garamond",serif;\
-      font-size:11px; letter-spacing:1px;\
+      font-size:11px;\
       background:none; border:1px solid transparent;\
       padding:5px 10px; cursor:pointer;\
       color:#8B7A60; border-radius:1px;\
       transition:color .2s, border-color .2s, background .2s;\
     }\
+    .am-sb-lb[data-l="en"] { font-family:"Cormorant Garamond",serif; letter-spacing:1px; }\
+    .am-sb-lb[data-l="my"] { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0; }\
     .am-sb-lb.active { color:#A8854A; border-color:rgba(201,169,110,.4); background:rgba(201,169,110,.09); }\
     .am-sb-ls { color:rgba(180,150,100,.35); font-size:9px; }\
     .am-sb-foot {\
@@ -141,12 +145,31 @@
       display:block; margin:0 auto 10px;\
     }\
     #am-pg-foot p {\
-      font-family:"Cormorant Garamond",serif;\
       font-size:9px; letter-spacing:4px; text-transform:uppercase;\
       color:rgba(107,82,64,.38);\
     }\
+    #am-pg-foot p .sb-en { font-family:"Cormorant Garamond",serif; letter-spacing:4px; }\
+    #am-pg-foot p .sb-my { font-family:"Noto Sans Myanmar",sans-serif; letter-spacing:0.5px; text-transform:none; }\
     html[data-lang="my"] .sb-en { display:none !important; }\
     html[data-lang="en"] .sb-my { display:none !important; }\
+    .sb-my {\
+      font-family:"Noto Sans Myanmar",sans-serif !important;\
+      letter-spacing:0 !important;\
+      text-transform:none !important;\
+    }\
+    html[data-lang="my"] .headline,\
+    html[data-lang="my"] .hero-title,\
+    html[data-lang="my"] .cta-title,\
+    html[data-lang="my"] .zi-title,\
+    html[data-lang="my"] .zi-intro-title,\
+    html[data-lang="my"] .services-title,\
+    html[data-lang="my"] .section-title,\
+    html[data-lang="my"] .hero-sub .sb-my,\
+    html[data-lang="my"] .brand-sub .sb-my {\
+      font-family:"Noto Serif Myanmar",serif !important;\
+      letter-spacing:0 !important;\
+      text-transform:none !important;\
+    }\
   ';
   document.head.appendChild(style);
 
@@ -159,15 +182,15 @@
     '<nav id="am-sb-dr" role="navigation" aria-label="Site navigation">' +
       '<div class="am-sb-head">' +
         '<img class="am-sb-logo" src="' + R + 'amore-logo.PNG" alt="Amorè N\' More">' +
-        '<button class="am-sb-cls" id="am-sb-cls" aria-label="Close">✕</button>' +
+        '<button class="am-sb-cls" id="am-sb-cls" aria-label="Close">&#10005;</button>' +
       '</div>' +
       '<div class="am-sb-ey"><span class="sb-en">Navigation</span><span class="sb-my">လမ်းညွှန်</span></div>' +
       '<ul class="am-sb-nav">' +
-        '<li><a href="' + R + '"><span class="sb-icon">&#127968;</span><span class="sb-en">Home</span><span class="sb-my">မူလစာမျက်နှာ</span></a></li>' +
-        '<li><a href="' + R + 'bookings/"><span class="sb-icon">&#128197;</span><span class="sb-en">Book Appointment</span><span class="sb-my">ချိန်းဆိုရန်</span></a></li>' +
-        '<li><a href="' + R + 'studio-room/"><span class="sb-icon">&#129782;</span><span class="sb-en">Our Studio</span><span class="sb-my">ကျွန်ုပ်တို့ Studio</span></a></li>' +
-        '<li><a href="' + R + 'about/"><span class="sb-icon">&#128101;</span><span class="sb-en">About &amp; Partners</span><span class="sb-my">ကျွန်ုပ်တို့အကြောင်း</span></a></li>' +
-        '<li><a href="' + R + 'magazine/"><span class="sb-icon">&#128214;</span><span class="sb-en">The Magazine</span><span class="sb-my">မဂ္ဂဇင်း</span></a></li>' +
+        '<li><a href="' + R + '"><span class="sb-en">Home</span><span class="sb-my">မူလစာမျက်နှာ</span></a></li>' +
+        '<li><a href="' + R + 'bookings/"><span class="sb-en">Book Appointment</span><span class="sb-my">ချိန်းဆိုရန်</span></a></li>' +
+        '<li><a href="' + R + 'studio-room/"><span class="sb-en">Our Studio</span><span class="sb-my">ကျွန်ုပ်တို့ Studio</span></a></li>' +
+        '<li><a href="' + R + 'about/"><span class="sb-en">About &amp; Partners</span><span class="sb-my">ကျွန်ုပ်တို့အကြောင်း</span></a></li>' +
+        '<li><a href="' + R + 'magazine/"><span class="sb-en">The Magazine</span><span class="sb-my">မဂ္ဂဇင်း</span></a></li>' +
       '</ul>' +
       '<div class="am-sb-rule"></div>' +
       '<div class="am-sb-lang">' +
@@ -188,7 +211,10 @@
   foot.id = 'am-pg-foot';
   foot.innerHTML =
     '<img src="' + R + 'amore-logo.PNG" alt="Amorè N\' More">' +
-    '<p>&copy; 2025 Amorè N\' More Wedding Studio &nbsp;&middot;&nbsp; Sengoku, Tokyo</p>';
+    '<p>' +
+      '<span class="sb-en">&copy; 2025 Amorè N\' More Wedding Studio &nbsp;&middot;&nbsp; Sengoku, Tokyo</span>' +
+      '<span class="sb-my">&copy; 2025 Amorè N\' More Wedding Studio &nbsp;&middot;&nbsp; Sengoku, Tokyo</span>' +
+    '</p>';
   document.body.appendChild(foot);
 
   // ── Controls ──
