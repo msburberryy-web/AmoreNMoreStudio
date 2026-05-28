@@ -8,249 +8,209 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --gold:#C9A96E; --gold-light:#E8D5B0; --crimson:#7A1515;
-  --cream:#FAF6F0; --ivory:#F4EDE3; --ink:#080604; --muted:#7A6050;
+  --gold:#C9A96E; --gold-dark:#A8854A; --crimson:#7A1515;
+  --bg:#F7F2EA; --surface:#FFFFFF;
+  --ink:#1A1208; --muted:#7A6050; --soft:#C4B09A;
+  --border:rgba(180,150,100,.22);
 }
 html{scroll-behavior:smooth;}
-body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sans-serif;overflow-x:hidden;}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Myanmar',sans-serif;overflow-x:hidden;}
 
-@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── Header ── */
 .hdr{
   position:fixed;top:0;left:0;right:0;z-index:900;
   padding:18px 36px;
   display:flex;align-items:center;justify-content:space-between;
-  background:linear-gradient(to bottom,rgba(8,6,4,.95) 0%,rgba(8,6,4,0) 100%);
+  background:linear-gradient(to bottom,rgba(247,242,234,.97) 60%,rgba(247,242,234,0) 100%);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
 }
 .hdr-back{
   font-family:'Cormorant Garamond',serif;
   font-size:11px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);opacity:.7;text-decoration:none;transition:opacity .2s;
+  color:var(--muted);text-decoration:none;transition:color .2s;
 }
-.hdr-back:hover{opacity:1;}
-.hdr-brand{font-family:'Great Vibes',cursive;font-size:22px;color:var(--cream);}
+.hdr-back:hover{color:var(--gold-dark);}
+.hdr-brand{font-family:'Great Vibes',cursive;font-size:22px;color:var(--ink);}
 .hdr-spacer{width:80px;}
 
 /* ── Hero ── */
 .hero{
-  min-height:60vh;display:flex;flex-direction:column;
+  min-height:52vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  text-align:center;padding:120px 24px 60px;
+  text-align:center;padding:120px 24px 56px;
   position:relative;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--surface) 100%);
 }
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(201,169,110,.06) 0%,transparent 70%);
-  pointer-events:none;
+.hero::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:40px;height:1px;background:var(--gold);opacity:.4;
 }
 .hero-eyebrow{
   font-family:'Cormorant Garamond',serif;
   font-size:10px;letter-spacing:6px;text-transform:uppercase;
-  color:var(--gold);opacity:.7;margin-bottom:20px;
-  animation:rise .9s .1s both;
+  color:var(--gold-dark);opacity:.7;margin-bottom:18px;
+  animation:rise .8s .1s both;
 }
 .hero-title{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(52px,9vw,88px);
-  color:var(--cream);line-height:1.2;margin-bottom:16px;
-  animation:rise .9s .25s both;
+  font-size:clamp(48px,9vw,86px);
+  color:var(--ink);line-height:1.2;margin-bottom:14px;
+  animation:rise .8s .22s both;
 }
 .hero-sub{
   font-family:'Cormorant Garamond',serif;
   font-size:12px;letter-spacing:5px;text-transform:uppercase;
-  color:var(--gold);opacity:.55;
-  animation:rise .9s .4s both;
+  color:var(--muted);opacity:.7;
+  animation:rise .8s .36s both;
 }
 
-/* ── Section wrapper ── */
-.section{padding:80px 24px;}
-.section-inner{max-width:900px;margin:0 auto;}
+/* ── Section ── */
+.section{padding:72px 24px;}
+.section.alt{background:var(--surface);}
+.section-inner{max-width:920px;margin:0 auto;}
 .section-eyebrow{
   font-family:'Cormorant Garamond',serif;
   font-size:9px;letter-spacing:6px;text-transform:uppercase;
-  color:var(--gold);opacity:.6;margin-bottom:10px;
-  text-align:center;
+  color:var(--gold-dark);opacity:.65;margin-bottom:10px;text-align:center;
 }
 .section-title{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(36px,5vw,54px);
-  color:var(--cream);text-align:center;margin-bottom:8px;
+  font-size:clamp(34px,5vw,52px);
+  color:var(--ink);text-align:center;margin-bottom:6px;
 }
-.section-rule{
-  width:40px;height:1px;background:var(--gold);opacity:.3;
-  margin:0 auto 52px;
-}
+.section-rule{width:36px;height:1px;background:var(--gold);opacity:.35;margin:0 auto 48px;}
 
-/* ─── PARTNERS ─── */
+/* ── Partners ── */
 .partners-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-  margin-bottom:32px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:16px;margin-bottom:28px;
 }
 .partner-card{
-  border:1px solid rgba(201,169,110,.15);
-  padding:32px 28px;
-  position:relative;
-  transition:border-color .3s,background .3s;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:28px 24px 24px;
   text-decoration:none;color:inherit;
-  display:block;
+  display:block;position:relative;
+  transition:box-shadow .3s,border-color .3s,transform .25s;
 }
 .partner-card:hover{
-  border-color:rgba(201,169,110,.4);
-  background:rgba(201,169,110,.04);
+  border-color:rgba(180,150,100,.45);
+  box-shadow:0 8px 32px rgba(180,150,100,.12);
+  transform:translateY(-2px);
 }
-.partner-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,169,110,.35),transparent);
-}
-.pc-icon{
-  font-size:22px;margin-bottom:14px;opacity:.75;
-}
+.pc-icon{font-size:20px;margin-bottom:12px;}
 .pc-type{
   font-family:'Cormorant Garamond',serif;
   font-size:9px;letter-spacing:5px;text-transform:uppercase;
-  color:var(--gold);opacity:.6;margin-bottom:8px;
+  color:var(--gold-dark);opacity:.7;margin-bottom:6px;
 }
 .pc-name{
   font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:400;
-  color:var(--cream);margin-bottom:10px;line-height:1.3;
+  font-size:19px;color:var(--ink);margin-bottom:10px;line-height:1.3;
 }
 .pc-desc{
   font-family:'Noto Sans Myanmar',sans-serif;
-  font-size:11px;line-height:2;
-  color:rgba(250,246,240,.5);margin-bottom:20px;
+  font-size:11px;line-height:1.9;
+  color:var(--muted);margin-bottom:18px;
 }
 .pc-link{
   font-family:'Cormorant Garamond',serif;
   font-size:10px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);opacity:.7;
-  display:inline-flex;align-items:center;gap:6px;
-  transition:opacity .2s;
+  color:var(--gold-dark);
+  display:inline-flex;align-items:center;gap:5px;
+  transition:gap .2s;
 }
-.partner-card:hover .pc-link{opacity:1;}
-.pc-link-arrow{font-size:13px;}
+.partner-card:hover .pc-link{gap:9px;}
 
 .partners-more{
-  text-align:center;
-  font-family:'Great Vibes',cursive;
-  font-size:38px;
-  color:rgba(201,169,110,.35);
-  margin-top:8px;letter-spacing:2px;
+  text-align:center;font-family:'Great Vibes',cursive;
+  font-size:36px;color:var(--soft);letter-spacing:2px;
 }
 
-/* ─── COMPANY INFO ─── */
+/* ── Company Info ── */
 .company-card{
-  border:1px solid rgba(201,169,110,.15);
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:2px;
   padding:40px 36px;
   text-align:center;
-  position:relative;
-  margin-bottom:0;
-}
-.company-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,169,110,.35),transparent);
 }
 .company-name-jp{
   font-family:'Cormorant Garamond',serif;
-  font-size:22px;font-weight:300;
-  color:var(--cream);margin-bottom:24px;letter-spacing:2px;
+  font-size:21px;font-weight:300;
+  color:var(--ink);margin-bottom:22px;letter-spacing:2px;
 }
-.company-details{
-  display:flex;flex-direction:column;gap:10px;
-  align-items:center;
-}
+.company-details{display:flex;flex-direction:column;gap:10px;align-items:center;}
 .company-row{
   font-family:'Cormorant Garamond',serif;
-  font-size:13px;letter-spacing:1px;
-  color:rgba(250,246,240,.65);
+  font-size:13px;color:var(--muted);
   display:flex;align-items:center;gap:10px;
 }
-.company-row a{color:var(--gold);text-decoration:none;opacity:.85;transition:opacity .2s;}
-.company-row a:hover{opacity:1;}
+.company-row a{color:var(--gold-dark);text-decoration:none;transition:color .2s;}
+.company-row a:hover{color:var(--ink);}
 .company-label{
   font-size:9px;letter-spacing:4px;text-transform:uppercase;
-  color:var(--gold);opacity:.5;min-width:50px;text-align:right;
+  color:var(--soft);min-width:48px;text-align:right;
 }
 
-/* ─── FOUNDERS ─── */
-.dept-section{margin-bottom:64px;}
-.dept-label{
-  font-family:'Cormorant Garamond',serif;
-  font-size:9px;letter-spacing:6px;text-transform:uppercase;
-  color:var(--gold);opacity:.45;
-  text-align:center;margin-bottom:32px;
-  position:relative;
+/* ── Circle of 6 founders ── */
+.founders-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px 24px;
 }
-.dept-label::before,.dept-label::after{
-  content:'';display:inline-block;
-  width:40px;height:1px;
-  background:rgba(201,169,110,.2);
-  vertical-align:middle;margin:0 14px;
+.founder-card{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  padding:32px 16px 28px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:2px;
+  transition:box-shadow .3s,transform .25s,border-color .3s;
 }
-
-/* Zig-zag: each founder card alternates left / right */
-.founder-item{
-  display:flex;align-items:flex-start;gap:32px;
-  margin-bottom:40px;
-  padding:28px 32px;
-  border:1px solid rgba(201,169,110,.1);
-  background:rgba(201,169,110,.015);
-  position:relative;transition:border-color .3s,background .3s;
+.founder-card:hover{
+  box-shadow:0 8px 32px rgba(180,150,100,.13);
+  transform:translateY(-3px);
+  border-color:rgba(180,150,100,.4);
 }
-.founder-item:hover{
-  border-color:rgba(201,169,110,.28);
-  background:rgba(201,169,110,.04);
-}
-.founder-item::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,169,110,.25),transparent);
-}
-.founder-item:nth-child(even){flex-direction:row-reverse;text-align:right;}
-.founder-item:nth-child(even) .founder-depts{justify-content:flex-end;}
-
 .founder-avatar{
-  width:80px;height:80px;border-radius:50%;
-  background:linear-gradient(135deg,rgba(201,169,110,.2),rgba(201,169,110,.06));
-  border:1px solid rgba(201,169,110,.25);
+  width:100px;height:100px;border-radius:50%;
+  background:linear-gradient(135deg,#F0E6D6,#E8D9C4);
+  border:2px solid rgba(180,150,100,.3);
   display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
+  margin-bottom:18px;flex-shrink:0;
   font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:300;
-  color:rgba(201,169,110,.7);
-  letter-spacing:1px;
+  font-size:22px;font-weight:300;
+  color:var(--gold-dark);letter-spacing:1px;
+  box-shadow:0 4px 16px rgba(180,150,100,.12);
 }
-.founder-info{flex:1;}
 .founder-name{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(20px,2.5vw,26px);font-weight:400;
-  color:var(--cream);margin-bottom:10px;line-height:1.2;
+  font-size:18px;color:var(--ink);
+  margin-bottom:12px;line-height:1.3;
 }
-.founder-depts{
-  display:flex;flex-wrap:wrap;gap:6px;
-}
+.founder-depts{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
 .founder-dept{
   font-family:'Cormorant Garamond',serif;
-  font-size:9px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);
-  border:1px solid rgba(201,169,110,.25);
-  padding:4px 10px;opacity:.8;
+  font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--gold-dark);border:1px solid rgba(180,150,100,.3);
+  padding:3px 8px;opacity:.85;
 }
 
 /* ── Responsive ── */
-@media(max-width:700px){
-  .hdr{padding:16px 20px;}
-  .hdr-spacer{width:50px;}
+@media(max-width:680px){
+  .hdr{padding:16px 20px;} .hdr-spacer{width:44px;}
   .partners-grid{grid-template-columns:1fr;}
-  .founder-item,.founder-item:nth-child(even){
-    flex-direction:column;align-items:center;text-align:center;
-    padding:24px 20px;gap:16px;
-  }
-  .founder-item:nth-child(even) .founder-depts{justify-content:center;}
-  .company-card{padding:28px 20px;}
+  .founders-grid{grid-template-columns:repeat(2,1fr);gap:20px 14px;}
+  .founder-avatar{width:80px;height:80px;font-size:18px;}
+  .founder-name{font-size:15px;}
+  .company-card{padding:28px 18px;}
+}
+@media(max-width:380px){
+  .founders-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -270,7 +230,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 </section>
 
 <!-- Partners -->
-<section class="section">
+<section class="section alt">
   <div class="section-inner">
     <div class="section-eyebrow">Businesses</div>
     <div class="section-title">Our Partners</div>
@@ -282,32 +242,32 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
         <div class="pc-icon">💍</div>
         <div class="pc-type">Wedding Studio</div>
         <div class="pc-name">Amorè N' More</div>
-        <div class="pc-desc">Our main studio — bridal styling, dress rental,<br>consultation, and full wedding coordination.</div>
-        <span class="pc-link">View on Facebook <span class="pc-link-arrow">→</span></span>
+        <div class="pc-desc">Our main studio — bridal styling, dress rental, consultation, and full wedding coordination.</div>
+        <span class="pc-link">View on Facebook →</span>
       </a>
 
       <a class="partner-card" href="https://www.facebook.com/share/1U1PK99r91/?mibextid=wwXIfr" target="_blank" rel="noopener">
         <div class="pc-icon">📷</div>
         <div class="pc-type">Photography</div>
         <div class="pc-name">Photography Studio</div>
-        <div class="pc-desc">Available for contact for pre-wedding shoots.<br>Portrait, engagement, and wedding day coverage.</div>
-        <span class="pc-link">View on Facebook <span class="pc-link-arrow">→</span></span>
+        <div class="pc-desc">Available for pre-wedding shoots. Portrait, engagement, and wedding day coverage. Contact for enquiries.</div>
+        <span class="pc-link">View on Facebook →</span>
       </a>
 
       <a class="partner-card" href="https://www.facebook.com/share/14d4HS7dJcF/?mibextid=wwXIfr" target="_blank" rel="noopener">
         <div class="pc-icon">🎥</div>
         <div class="pc-type">Videography & Photography</div>
         <div class="pc-name">Film & Photo Studio</div>
-        <div class="pc-desc">Available for contact for pre-wedding films.<br>Cinematic videography alongside photography.</div>
-        <span class="pc-link">View on Facebook <span class="pc-link-arrow">→</span></span>
+        <div class="pc-desc">Cinematic videography alongside photography. Available for contact for pre-wedding films.</div>
+        <span class="pc-link">View on Facebook →</span>
       </a>
 
       <a class="partner-card" href="https://www.facebook.com/share/1DQrXRAKhW/?mibextid=wwXIfr" target="_blank" rel="noopener">
         <div class="pc-icon">✨</div>
         <div class="pc-type">Beauty & Makeup</div>
         <div class="pc-name">Makeup & Beauty Studio</div>
-        <div class="pc-desc">Bridal makeup, hair styling, and full beauty<br>services for your most beautiful moments.</div>
-        <span class="pc-link">View on Facebook <span class="pc-link-arrow">→</span></span>
+        <div class="pc-desc">Bridal makeup, hair styling, and full beauty services for your most beautiful moments.</div>
+        <span class="pc-link">View on Facebook →</span>
       </a>
 
     </div>
@@ -317,7 +277,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
 </section>
 
 <!-- Company Info -->
-<section class="section" style="padding-top:0;">
+<section class="section">
   <div class="section-inner">
     <div class="section-eyebrow">Company</div>
     <div class="section-title">Contact Us</div>
@@ -339,90 +299,66 @@ body{background:var(--ink);color:var(--cream);font-family:'Noto Sans Myanmar',sa
   </div>
 </section>
 
-<!-- Founders -->
-<section class="section">
+<!-- Founders — Circle of 6 -->
+<section class="section alt">
   <div class="section-inner">
     <div class="section-eyebrow">The Team</div>
     <div class="section-title">Our Founders</div>
     <div class="section-rule"></div>
 
-    <!-- Visual Art -->
-    <div class="dept-section">
-      <div class="dept-label">Visual Art Department</div>
+    <div class="founders-grid">
 
-      <div class="founder-item">
+      <div class="founder-card">
         <div class="founder-avatar">MM</div>
-        <div class="founder-info">
-          <div class="founder-name">Min Maung Han</div>
-          <div class="founder-depts">
-            <span class="founder-dept">Visual Art</span>
-          </div>
+        <div class="founder-name">Min Maung Han</div>
+        <div class="founder-depts">
+          <span class="founder-dept">Visual Art</span>
         </div>
       </div>
 
-      <div class="founder-item">
+      <div class="founder-card">
         <div class="founder-avatar">HZ</div>
-        <div class="founder-info">
-          <div class="founder-name">Htoo Zin Ko Ko</div>
-          <div class="founder-depts">
-            <span class="founder-dept">Visual Art</span>
-          </div>
+        <div class="founder-name">Htoo Zin Ko Ko</div>
+        <div class="founder-depts">
+          <span class="founder-dept">Visual Art</span>
         </div>
       </div>
 
-      <div class="founder-item">
+      <div class="founder-card">
         <div class="founder-avatar">S</div>
-        <div class="founder-info">
-          <div class="founder-name">Sai</div>
-          <div class="founder-depts">
-            <span class="founder-dept">Visual Art</span>
-          </div>
+        <div class="founder-name">Sai</div>
+        <div class="founder-depts">
+          <span class="founder-dept">Visual Art</span>
         </div>
       </div>
-    </div>
 
-    <!-- Produce & Planning -->
-    <div class="dept-section">
-      <div class="dept-label">Produce · Planning · Design & Decor</div>
-
-      <div class="founder-item">
+      <div class="founder-card">
         <div class="founder-avatar">EE</div>
-        <div class="founder-info">
-          <div class="founder-name">Ei Ei Hay Marn Myint</div>
-          <div class="founder-depts">
-            <span class="founder-dept">Produce & Planning</span>
-            <span class="founder-dept">Design & Decor</span>
-          </div>
+        <div class="founder-name">Ei Ei Hay Marn Myint</div>
+        <div class="founder-depts">
+          <span class="founder-dept">Produce & Planning</span>
+          <span class="founder-dept">Design & Decor</span>
         </div>
       </div>
 
-      <div class="founder-item">
+      <div class="founder-card">
         <div class="founder-avatar">MZ</div>
-        <div class="founder-info">
-          <div class="founder-name">May Zin Htut</div>
-          <div class="founder-depts">
-            <span class="founder-dept">Produce & Planning</span>
-            <span class="founder-dept">Design & Decor</span>
-          </div>
+        <div class="founder-name">May Zin Htut</div>
+        <div class="founder-depts">
+          <span class="founder-dept">Produce & Planning</span>
+          <span class="founder-dept">Design & Decor</span>
         </div>
       </div>
-    </div>
 
-    <!-- Beauty -->
-    <div class="dept-section" style="margin-bottom:0;">
-      <div class="dept-label">Beauty & Styling Department</div>
-
-      <div class="founder-item">
+      <div class="founder-card">
         <div class="founder-avatar">NL</div>
-        <div class="founder-info">
-          <div class="founder-name">Nan Lao</div>
-          <div class="founder-depts">
-            <span class="founder-dept">Beauty & Styling</span>
-          </div>
+        <div class="founder-name">Nan Lao</div>
+        <div class="founder-depts">
+          <span class="founder-dept">Beauty & Styling</span>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
 
