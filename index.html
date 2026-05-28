@@ -50,7 +50,15 @@ html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
 
 /* ── Base ── */
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(45deg,
+      rgba(201,169,110,.05) 0, rgba(201,169,110,.05) 1px,
+      transparent 1px, transparent 50%),
+    repeating-linear-gradient(-45deg,
+      rgba(201,169,110,.05) 0, rgba(201,169,110,.05) 1px,
+      transparent 1px, transparent 50%);
+  background-size: 28px 28px;
   min-height: 100vh;
   font-family: 'Noto Sans Myanmar', sans-serif;
   overflow-x: hidden;
@@ -65,13 +73,6 @@ body::before {
     rgba(201,169,110,.08) 0%,
     rgba(201,169,110,.03) 55%,
     transparent 80%);
-}
-
-/* Photo texture from grand-opening image, very subtle */
-.hero-photo-bg {
-  position:fixed; inset:0; z-index:0; pointer-events:none;
-  background:url('./grand-opening.jpg') center/cover no-repeat;
-  opacity:.07;
 }
 
 /* Gold top bar */
@@ -254,21 +255,27 @@ body::before {
 /* ── Tertiary links ── */
 .cta-links-row {
   display:flex; align-items:center; justify-content:center;
-  gap:6px; flex-wrap:wrap;
+  gap:10px; flex-wrap:wrap;
   animation:rise .8s .70s both;
   margin-bottom:36px;
 }
 .cta-link {
+  display:inline-block;
   font-family:'Cormorant Garamond', serif;
   font-size:clamp(10px,1.4vw,11px);
-  letter-spacing:3px; text-transform:uppercase;
+  letter-spacing:2.5px; text-transform:uppercase;
   text-decoration:none;
-  color:var(--muted); opacity:.65;
-  padding:6px 12px;
-  transition:opacity .2s;
+  color:var(--muted);
+  padding:10px 20px;
+  border:1px solid rgba(107,82,64,.22);
+  background:rgba(253,250,245,.6);
+  transition:color .2s, border-color .2s, background .2s;
 }
-.cta-link:hover { opacity:1; }
-.cta-link-sep { color:var(--muted); opacity:.3; font-size:10px; }
+.cta-link:hover {
+  color:var(--gold-dark);
+  border-color:rgba(180,140,70,.5);
+  background:rgba(201,169,110,.07);
+}
 
 /* ── Footer hint ── */
 .location {
@@ -295,7 +302,6 @@ body::before {
 </head>
 <body>
 
-<div class="hero-photo-bg"></div>
 <div class="top-line"></div>
 
 <div class="petal p1"></div>
@@ -348,7 +354,6 @@ body::before {
 
   <div class="cta-links-row">
     <a class="cta-link" href="about/">Our Business &amp; Founders</a>
-    <span class="cta-link-sep">·</span>
     <a class="cta-link" href="magazine/">The Magazine</a>
   </div>
 
@@ -358,5 +363,7 @@ body::before {
 
 </main>
 
+
+<script src="./assets/sidebar.js" data-root="./"></script>
 </body>
 </html>
