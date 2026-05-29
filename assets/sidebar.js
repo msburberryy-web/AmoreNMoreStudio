@@ -188,9 +188,9 @@
       '<div class="am-sb-ey"><span class="sb-en">Navigation</span><span class="sb-my">လမ်းညွှန်</span></div>' +
       '<ul class="am-sb-nav">' +
         '<li><a href="' + R + '"><span class="sb-en">Home</span><span class="sb-my">မူလစာမျက်နှာ</span></a></li>' +
-        '<li><a href="' + R + 'bookings/"><span class="sb-en">Book Appointment</span><span class="sb-my">ချိန်းဆိုရန်</span></a></li>' +
+        '<li><a href="' + R + 'bookings/"><span class="sb-en">Book Appointment</span><span class="sb-my">ကြိုတင်ရက်ချိန်း ရယူရန်</span></a></li>' +
         '<li><a href="' + R + 'studio-room/"><span class="sb-en">Our Studio</span><span class="sb-my">ကျွန်ုပ်တို့ Studio</span></a></li>' +
-        '<li><a href="' + R + 'about/"><span class="sb-en">About &amp; Partners</span><span class="sb-my">ကျွန်ုပ်တို့အကြောင်း</span></a></li>' +
+        '<li><a href="' + R + 'about/"><span class="sb-en">About &amp; Partners</span><span class="sb-my">ကျွန်ုပ်တို့အကြောင်းနှင့် တည်ထောင်သူများ</span></a></li>' +
         '<li><a href="' + R + 'magazine/"><span class="sb-en">The Magazine</span><span class="sb-my">မဂ္ဂဇင်း</span></a></li>' +
       '</ul>' +
       '<div class="am-sb-rule"></div>' +
