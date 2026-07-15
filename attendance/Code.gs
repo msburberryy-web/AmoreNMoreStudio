@@ -76,6 +76,7 @@ function handleAttendance(p) {
   try {
     if (p.action === 'lookup') return lookupUser(p.id);
     if (p.action === 'record') return recordAttendance(p);
+    if (p.action === 'guest')  return recordGuest(p);
     // Plain browser hit — friendly message instead of an error
     return { info: 'Amorè N\' More — Sheet script is running.' };
   } catch (err) {
@@ -145,6 +146,52 @@ function recordAttendance(p) {
 
     // Tell the front-end to ask the user for a Time In
     return { needTimeIn: true, message: 'No open Time In record found for this ID.' };
+  }
+
+  return { error: 'type must be "in" or "out"' };
+}
+
+// ── Guest record (matched by name, ID stored as "GUEST") ─────────────
+function recordGuest(p) {
+  var name = (p.name || '').trim(), purpose = p.purpose, type = p.type;
+  if (!name || !purpose || !type) return { error: 'Missing required fields' };
+
+  var ss    = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(RECORDS_TAB);
+  if (!sheet) return { error: 'Sheet "' + RECORDS_TAB + '" not found' };
+
+  ensureAttendanceHeaders(sheet);
+
+  var now = new Date();
+  var ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+
+  if (type === 'in') {
+    sheet.appendRow([name, 'GUEST', purpose, ts, '']);
+    return { ok: true, message: 'Time In recorded', time: ts };
+  }
+
+  if (type === 'out') {
+    var lastRow = sheet.getLastRow();
+    if (lastRow >= 2) {
+      var data = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
+      // Match by name (case-insensitive) + GUEST marker, most recent open row
+      for (var i = data.length - 1; i >= 0; i--) {
+        var sameName = String(data[i][0]).trim().toLowerCase() === name.toLowerCase();
+        var isGuest  = String(data[i][1]).trim() === 'GUEST';
+        if (sameName && isGuest && !data[i][4]) {
+          sheet.getRange(i + 2, 5).setValue(ts);
+          return { ok: true, message: 'Time Out recorded', time: ts, timeIn: data[i][3] };
+        }
+      }
+    }
+
+    if (p.manualTimeIn) {
+      var timeInStr = p.manualTimeIn.replace('T', ' ') + ':00';
+      sheet.appendRow([name, 'GUEST', purpose, timeInStr, ts]);
+      return { ok: true, message: 'Attendance recorded with manual Time In', time: ts };
+    }
+
+    return { needTimeIn: true, message: 'No open Time In record found for ' + name + '.' };
   }
 
   return { error: 'type must be "in" or "out"' };
