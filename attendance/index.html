@@ -90,9 +90,29 @@ main {
   border-radius: 16px;
   box-shadow: 0 4px 32px rgba(0,0,0,.07);
   width: 100%; max-width: 440px;
-  padding: 36px 32px;
+  padding: 0;
   position: relative;
+  overflow: hidden;
 }
+
+/* ══ TABS ══ */
+.tab-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(201,169,110,.25);
+}
+.tab-btn {
+  padding: 14px 0;
+  border: none; background: var(--ivory);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+}
+.tab-btn:first-child { border-right: 1px solid rgba(201,169,110,.25); }
+.tab-btn.active { background: var(--crimson); color: white; font-weight: 700; }
+.tab-btn:not(.active):hover { color: var(--crimson); background: var(--gold-pale); }
+
+/* ══ CARD BODY ══ */
+.card-body { padding: 32px 32px; }
 
 /* ══ STEPS ══ */
 .step { display: none; }
@@ -104,33 +124,21 @@ main {
 }
 
 /* ══ STEP HEADER ══ */
-.step-icon {
-  font-size: 32px; text-align: center; margin-bottom: 6px; line-height: 1;
-}
+.step-icon { font-size: 32px; text-align: center; margin-bottom: 6px; line-height: 1; }
 .step-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 22px; font-weight: 600; text-align: center;
   color: var(--ink); margin-bottom: 4px;
 }
-.step-desc {
-  font-size: 13px; color: var(--muted);
-  text-align: center; margin-bottom: 24px;
-}
+.step-desc { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 24px; }
 
 /* ══ QR SCANNER ══ */
 #qr-reader {
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--ink);
-  display: none;
-  position: relative;
-  aspect-ratio: 1;
-  max-height: 280px;
+  width: 100%; border-radius: 10px; overflow: hidden;
+  background: var(--ink); display: none; position: relative;
+  aspect-ratio: 1; max-height: 280px;
 }
-#qr-reader video {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
+#qr-reader video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .qr-overlay {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -144,15 +152,12 @@ main {
 }
 
 .scan-btn {
-  width: 100%;
-  padding: 12px 0;
-  background: var(--ink2);
-  color: #fff;
+  width: 100%; padding: 12px 0;
+  background: var(--ink2); color: #fff;
   font-family: 'Cormorant Garamond', serif;
   font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
   border: none; border-radius: 10px;
-  cursor: pointer; transition: background .2s;
-  margin-bottom: 8px;
+  cursor: pointer; transition: background .2s; margin-bottom: 8px;
 }
 .scan-btn:hover { background: var(--crimson); }
 .scan-btn.active { background: var(--crimson); }
@@ -163,9 +168,7 @@ main {
   font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
   color: var(--muted); margin: 18px 0 16px;
 }
-.divider::before, .divider::after {
-  content: ''; flex: 1; height: 1px; background: rgba(201,169,110,.3);
-}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(201,169,110,.3); }
 
 /* ══ INPUTS ══ */
 .field { margin-bottom: 16px; }
@@ -180,8 +183,7 @@ input[type="datetime-local"],
 select {
   width: 100%; padding: 11px 14px;
   font-family: 'Noto Serif Myanmar', serif; font-size: 14px;
-  color: var(--text);
-  background: var(--ivory);
+  color: var(--text); background: var(--ivory);
   border: 1.5px solid rgba(201,169,110,.4);
   border-radius: 8px;
   outline: none; transition: border-color .2s;
@@ -191,21 +193,16 @@ input:focus, select:focus { border-color: var(--crimson); }
 
 /* ══ PRIMARY BUTTON ══ */
 .btn-primary {
-  width: 100%;
-  padding: 14px 0;
-  background: var(--crimson);
-  color: #fff;
+  width: 100%; padding: 14px 0;
+  background: var(--crimson); color: #fff;
   font-family: 'Cormorant Garamond', serif;
   font-size: 15px; letter-spacing: 2.5px; text-transform: uppercase;
   border: none; border-radius: 10px;
-  cursor: pointer; transition: background .2s, transform .1s;
-  margin-top: 4px;
+  cursor: pointer; transition: background .2s, transform .1s; margin-top: 4px;
 }
 .btn-primary:hover { background: var(--crimson2); }
 .btn-primary:active { transform: scale(.98); }
-.btn-primary:disabled {
-  background: var(--muted); cursor: not-allowed; opacity: .6;
-}
+.btn-primary:disabled { background: var(--muted); cursor: not-allowed; opacity: .6; }
 
 /* ══ LINK BUTTON ══ */
 .btn-link {
@@ -219,33 +216,23 @@ input:focus, select:focus { border-color: var(--crimson); }
 .btn-link:hover { color: var(--crimson); }
 
 /* ══ TIME TYPE TOGGLE ══ */
-.toggle-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  margin-bottom: 20px;
-}
+.toggle-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
 .toggle-btn {
   padding: 12px 0;
   border: 1.5px solid rgba(201,169,110,.4);
   background: white; border-radius: 8px;
   font-family: 'Cormorant Garamond', serif;
   font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--muted); cursor: pointer; transition: all .2s;
-  text-align: center;
+  color: var(--muted); cursor: pointer; transition: all .2s; text-align: center;
 }
 .toggle-btn:hover { border-color: var(--crimson); color: var(--crimson); }
-.toggle-btn.selected {
-  background: var(--crimson); border-color: var(--crimson);
-  color: white; font-weight: 700;
-}
+.toggle-btn.selected { background: var(--crimson); border-color: var(--crimson); color: white; font-weight: 700; }
 
 /* ══ USER BADGE ══ */
 .user-badge {
   display: flex; align-items: center; gap: 12px;
-  background: var(--green-bg);
-  border: 1px solid rgba(46,125,82,.2);
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 22px;
+  background: var(--green-bg); border: 1px solid rgba(46,125,82,.2);
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 22px;
 }
 .badge-icon {
   width: 36px; height: 36px; border-radius: 50%;
@@ -253,30 +240,21 @@ input:focus, select:focus { border-color: var(--crimson); }
   display: flex; align-items: center; justify-content: center;
   color: white; font-size: 18px; flex-shrink: 0;
 }
-.badge-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px; font-weight: 600; color: var(--green);
-}
-.badge-id {
-  font-size: 12px; color: var(--muted); margin-top: 1px;
-}
+.badge-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--green); }
+.badge-id   { font-size: 12px; color: var(--muted); margin-top: 1px; }
 
 /* ══ ALERTS ══ */
-.alert {
-  padding: 12px 14px; border-radius: 8px;
-  font-size: 13px; margin-top: 14px; display: none;
-}
+.alert { padding: 12px 14px; border-radius: 8px; font-size: 13px; margin-top: 14px; display: none; }
 .alert.show { display: block; }
-.alert-error   { background: var(--err-bg);  color: var(--err);  border: 1px solid rgba(139,26,26,.2); }
-.alert-warn    { background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(122,92,0,.2);  }
+.alert-error { background: var(--err-bg);  color: var(--err);  border: 1px solid rgba(139,26,26,.2); }
+.alert-warn  { background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(122,92,0,.2); }
 
 /* ══ LOADING SPINNER ══ */
 .spinner {
   display: inline-block; width: 18px; height: 18px;
   border: 2px solid rgba(255,255,255,.4);
   border-top-color: white; border-radius: 50%;
-  animation: spin .7s linear infinite; vertical-align: middle;
-  margin-right: 8px;
+  animation: spin .7s linear infinite; vertical-align: middle; margin-right: 8px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -285,56 +263,30 @@ input:focus, select:focus { border-color: var(--crimson); }
   width: 72px; height: 72px; border-radius: 50%;
   background: var(--green);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px;
-  font-size: 36px; color: white;
+  margin: 0 auto 16px; font-size: 36px; color: white;
   animation: pop .4s cubic-bezier(.17,.67,.44,1.4);
 }
-@keyframes pop {
-  from { transform: scale(0); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-.success-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px; font-weight: 600; text-align: center;
-  color: var(--green); margin-bottom: 6px;
-}
-.success-msg {
-  font-size: 13px; color: var(--muted);
-  text-align: center; margin-bottom: 20px;
-}
-.record-card {
-  background: var(--ivory);
-  border: 1px solid rgba(201,169,110,.3);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 22px;
-}
-.record-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 5px 0; border-bottom: 1px solid rgba(201,169,110,.15);
-  font-size: 13px;
-}
+@keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.success-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; text-align: center; color: var(--green); margin-bottom: 6px; }
+.success-msg   { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 20px; }
+.record-card   { background: var(--ivory); border: 1px solid rgba(201,169,110,.3); border-radius: 10px; padding: 16px; margin-bottom: 22px; }
+.record-row    { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; border-bottom: 1px solid rgba(201,169,110,.15); font-size: 13px; }
 .record-row:last-child { border: none; padding-bottom: 0; }
-.record-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted);
-}
-.record-val { color: var(--text); font-weight: 700; }
+.record-label  { font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.record-val    { color: var(--text); font-weight: 700; }
 
 /* ══ WARN STEP ══ */
 .warn-circle {
   width: 64px; height: 64px; border-radius: 50%;
   background: var(--warn-bg); border: 2px solid var(--warn);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px;
-  font-size: 28px;
+  margin: 0 auto 16px; font-size: 28px;
 }
 
 /* ══ RESPONSIVE ══ */
 @media (max-width: 480px) {
-  .card { padding: 28px 20px; border-radius: 12px; }
-  .top-bar { padding: 14px 20px; }
+  .card-body { padding: 24px 20px; }
+  .top-bar   { padding: 14px 20px; }
 }
 </style>
 </head>
@@ -354,102 +306,152 @@ input:focus, select:focus { border-color: var(--crimson); }
 
   <div class="card">
 
-    <!-- ── STEP 1: Scan / Enter ID ─────────────────────────── -->
-    <div id="step-scan" class="step active">
-      <div class="step-icon">🪪</div>
-      <p class="step-title">Identify Yourself</p>
-      <p class="step-desc">Scan your QR code or type your ID below</p>
-
-      <button id="camera-btn" class="scan-btn" onclick="toggleCamera()">📷 Scan QR Code</button>
-
-      <div id="qr-reader">
-        <video id="qr-video" autoplay playsinline muted></video>
-        <div class="qr-overlay"><div class="qr-frame"></div></div>
-      </div>
-
-      <div class="divider">or enter manually</div>
-
-      <div class="field">
-        <label for="id-input">ID / QR Code</label>
-        <input id="id-input" type="text" placeholder="e.g. STF-001 or CLT-042"
-               autocomplete="off" spellcheck="false"
-               onkeydown="if(event.key==='Enter') verifyId()">
-      </div>
-
-      <button class="btn-primary" onclick="verifyId()" id="verify-btn">Verify ID</button>
-
-      <div id="scan-alert" class="alert alert-error"></div>
+    <!-- ── TAB SWITCHER ────────────────────────────────────────── -->
+    <div class="tab-row">
+      <button class="tab-btn active" id="tab-registered" onclick="switchTab('registered')">🪪 Registered</button>
+      <button class="tab-btn"        id="tab-guest"      onclick="switchTab('guest')">👤 Guest</button>
     </div>
 
-    <!-- ── STEP 2: Attendance Form ─────────────────────────── -->
-    <div id="step-form" class="step">
-      <div class="user-badge">
-        <div class="badge-icon">✓</div>
-        <div>
-          <div class="badge-name" id="badge-name">—</div>
-          <div class="badge-id"   id="badge-id">—</div>
+    <div class="card-body">
+
+      <!-- ── REGISTERED: Step 1 — Scan / Enter ID ────────────── -->
+      <div id="step-scan" class="step active">
+        <div class="step-icon">🪪</div>
+        <p class="step-title">Identify Yourself</p>
+        <p class="step-desc">Scan your QR code or type your ID below</p>
+
+        <button id="camera-btn" class="scan-btn" onclick="toggleCamera()">📷 Scan QR Code</button>
+
+        <div id="qr-reader">
+          <video id="qr-video" autoplay playsinline muted></video>
+          <div class="qr-overlay"><div class="qr-frame"></div></div>
         </div>
-      </div>
 
-      <div class="field">
-        <label for="purpose-select">Purpose</label>
-        <select id="purpose-select" onchange="onPurposeChange()">
-          <option value="">— Select Purpose —</option>
-          <option value="Wedding Consultation">Wedding Consultation</option>
-          <option value="Makeup and Hair">Makeup and Hair</option>
-          <option value="Photoshoot">Photoshoot</option>
-          <option value="Decoration">Decoration</option>
-          <option value="Cleanup">Cleanup</option>
-          <option value="Dress Rentals">Dress Rentals</option>
-          <option value="Others">Others</option>
-        </select>
-      </div>
+        <div class="divider">or enter manually</div>
 
-      <div class="field" id="other-field" style="display:none">
-        <label for="purpose-other">Specify Purpose</label>
-        <input id="purpose-other" type="text" placeholder="Describe the purpose…">
-      </div>
-
-      <div class="field">
-        <label>Time Record</label>
-        <div class="toggle-row">
-          <button class="toggle-btn selected" id="btn-in"  onclick="selectType('in')">⬆ Time In</button>
-          <button class="toggle-btn"          id="btn-out" onclick="selectType('out')">⬇ Time Out</button>
+        <div class="field">
+          <label for="id-input">ID / QR Code</label>
+          <input id="id-input" type="text" placeholder="e.g. STF-001 or CLT-042"
+                 autocomplete="off" spellcheck="false"
+                 onkeydown="if(event.key==='Enter') verifyId()">
         </div>
+
+        <button class="btn-primary" onclick="verifyId()" id="verify-btn">Verify ID</button>
+        <div id="scan-alert" class="alert alert-error"></div>
       </div>
 
-      <button class="btn-primary" id="submit-btn" onclick="submitForm()">Record Attendance</button>
-      <div id="form-alert" class="alert alert-error"></div>
-      <button class="btn-link" onclick="resetToScan()">← Change ID</button>
-    </div>
+      <!-- ── REGISTERED: Step 2 — Attendance Form ────────────── -->
+      <div id="step-form" class="step">
+        <div class="user-badge">
+          <div class="badge-icon">✓</div>
+          <div>
+            <div class="badge-name" id="badge-name">—</div>
+            <div class="badge-id"   id="badge-id">—</div>
+          </div>
+        </div>
 
-    <!-- ── STEP 3: Missing Time In ─────────────────────────── -->
-    <div id="step-missing" class="step">
-      <div class="warn-circle">⚠️</div>
-      <p class="step-title" style="color:var(--warn)">No Time In Found</p>
-      <p class="step-desc">No open Time In record exists for your ID.<br>Please enter your approximate Time In to continue.</p>
+        <div class="field">
+          <label for="purpose-select">Purpose</label>
+          <select id="purpose-select" onchange="onPurposeChange()">
+            <option value="">— Select Purpose —</option>
+            <option value="Wedding Consultation">Wedding Consultation</option>
+            <option value="Makeup and Hair">Makeup and Hair</option>
+            <option value="Photoshoot">Photoshoot</option>
+            <option value="Decoration">Decoration</option>
+            <option value="Cleanup">Cleanup</option>
+            <option value="Dress Rentals">Dress Rentals</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
 
-      <div class="field">
-        <label for="manual-timein">Time In</label>
-        <input id="manual-timein" type="datetime-local">
+        <div class="field" id="other-field" style="display:none">
+          <label for="purpose-other">Specify Purpose</label>
+          <input id="purpose-other" type="text" placeholder="Describe the purpose…">
+        </div>
+
+        <div class="field">
+          <label>Time Record</label>
+          <div class="toggle-row">
+            <button class="toggle-btn selected" id="btn-in"  onclick="selectType('in')">⬆ Time In</button>
+            <button class="toggle-btn"          id="btn-out" onclick="selectType('out')">⬇ Time Out</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="submit-btn" onclick="submitForm()">Record Attendance</button>
+        <div id="form-alert" class="alert alert-error"></div>
+        <button class="btn-link" onclick="resetToStart()">← Change ID</button>
       </div>
 
-      <button class="btn-primary" onclick="submitWithManualTimeIn()">Confirm &amp; Save</button>
-      <div id="missing-alert" class="alert alert-error"></div>
-      <button class="btn-link" onclick="showStep('step-form')">← Back</button>
-    </div>
+      <!-- ── GUEST: Form ──────────────────────────────────────── -->
+      <div id="step-guest" class="step">
+        <div class="step-icon">👤</div>
+        <p class="step-title">Guest Entry</p>
+        <p class="step-desc">No ID required — enter your name to check in</p>
 
-    <!-- ── STEP 4: Success ─────────────────────────────────── -->
-    <div id="step-success" class="step">
-      <div class="success-circle">✓</div>
-      <p class="success-title" id="success-title">Recorded!</p>
-      <p class="success-msg"   id="success-msg"></p>
+        <div class="field">
+          <label for="guest-name">Full Name</label>
+          <input id="guest-name" type="text" placeholder="e.g. Maria Santos"
+                 autocomplete="name"
+                 onkeydown="if(event.key==='Enter') submitGuest()">
+        </div>
 
-      <div class="record-card" id="record-card"></div>
+        <div class="field">
+          <label for="guest-purpose">Purpose</label>
+          <select id="guest-purpose" onchange="onGuestPurposeChange()">
+            <option value="">— Select Purpose —</option>
+            <option value="Wedding Consultation">Wedding Consultation</option>
+            <option value="Makeup and Hair">Makeup and Hair</option>
+            <option value="Photoshoot">Photoshoot</option>
+            <option value="Decoration">Decoration</option>
+            <option value="Cleanup">Cleanup</option>
+            <option value="Dress Rentals">Dress Rentals</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
 
-      <button class="btn-primary" onclick="resetToScan()">New Entry</button>
-    </div>
+        <div class="field" id="guest-other-field" style="display:none">
+          <label for="guest-purpose-other">Specify Purpose</label>
+          <input id="guest-purpose-other" type="text" placeholder="Describe the purpose…">
+        </div>
 
+        <div class="field">
+          <label>Time Record</label>
+          <div class="toggle-row">
+            <button class="toggle-btn selected" id="guest-btn-in"  onclick="selectGuestType('in')">⬆ Time In</button>
+            <button class="toggle-btn"          id="guest-btn-out" onclick="selectGuestType('out')">⬇ Time Out</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="guest-submit-btn" onclick="submitGuest()">Record Attendance</button>
+        <div id="guest-alert" class="alert alert-error"></div>
+      </div>
+
+      <!-- ── SHARED: Missing Time In ──────────────────────────── -->
+      <div id="step-missing" class="step">
+        <div class="warn-circle">⚠️</div>
+        <p class="step-title" style="color:var(--warn)">No Time In Found</p>
+        <p class="step-desc">No open Time In record exists.<br>Please enter your approximate Time In to continue.</p>
+
+        <div class="field">
+          <label for="manual-timein">Time In</label>
+          <input id="manual-timein" type="datetime-local">
+        </div>
+
+        <button class="btn-primary" onclick="submitWithManualTimeIn()">Confirm &amp; Save</button>
+        <div id="missing-alert" class="alert alert-error"></div>
+        <button class="btn-link" onclick="goBackFromMissing()">← Back</button>
+      </div>
+
+      <!-- ── SHARED: Success ──────────────────────────────────── -->
+      <div id="step-success" class="step">
+        <div class="success-circle">✓</div>
+        <p class="success-title" id="success-title">Recorded!</p>
+        <p class="success-msg"   id="success-msg"></p>
+        <div class="record-card" id="record-card"></div>
+        <button class="btn-primary" onclick="resetToStart()">New Entry</button>
+      </div>
+
+    </div><!-- /card-body -->
   </div><!-- /card -->
 </main>
 
@@ -457,20 +459,18 @@ input:focus, select:focus { border-color: var(--crimson); }
 // ═══════════════════════════════════════════════════════════════
 //  State
 // ═══════════════════════════════════════════════════════════════
-let scriptUrl  = '';
-let user       = null;   // { id, name }
-let recordType = 'in';   // 'in' | 'out'
+let scriptUrl    = '';
+let user         = null;
+let recordType   = 'in';
+let activeFlow   = 'registered';
+let guestType    = 'in';
 let cameraActive = false;
 let cameraStream = null;
 let qrInterval   = null;
 
-// ── Load config ──────────────────────────────────────────────
 fetch('../config.json')
   .then(r => r.json())
-  .then(cfg => {
-    // attendance reuses the same deployment as bookings (doGet vs doPost)
-    scriptUrl = cfg.attendanceScriptUrl || cfg.bookingScriptUrl || '';
-  })
+  .then(cfg => { scriptUrl = cfg.attendanceScriptUrl || cfg.bookingScriptUrl || ''; })
   .catch(() => {});
 
 // ── Utilities ────────────────────────────────────────────────
@@ -478,79 +478,60 @@ function showStep(id) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
-function showAlert(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.classList.add('show');
-}
-function clearAlert(id) {
-  const el = document.getElementById(id);
-  el.textContent = '';
-  el.classList.remove('show');
-}
+function showAlert(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.add('show'); }
+function clearAlert(id)     { const el = document.getElementById(id); el.textContent = '';  el.classList.remove('show'); }
 
 function setLoading(btnId, loading) {
   const btn = document.getElementById(btnId);
-  if (loading) {
-    btn.disabled = true;
-    btn._orig = btn.textContent;
-    btn.innerHTML = '<span class="spinner"></span>Please wait…';
-  } else {
-    btn.disabled = false;
-    btn.innerHTML = btn._orig || btn.textContent;
-  }
+  if (loading) { btn.disabled = true; btn._orig = btn.innerHTML; btn.innerHTML = '<span class="spinner"></span>Please wait…'; }
+  else         { btn.disabled = false; btn.innerHTML = btn._orig || btn.innerHTML; }
 }
 
 async function api(params) {
-  if (!scriptUrl) throw new Error('Attendance script URL not configured in config.json');
-  const url = scriptUrl + '?' + new URLSearchParams(params).toString();
-  const resp = await fetch(url);
+  if (!scriptUrl) throw new Error('Script URL not configured.');
+  const resp = await fetch(scriptUrl + '?' + new URLSearchParams(params).toString());
   if (!resp.ok) throw new Error('Network error ' + resp.status);
   return resp.json();
 }
 
-// ─── Format datetime-local value ─────────────────────────────
-function fmtDatetimeLocal(val) {
-  // "2026-05-27T09:30" → "2026-05-27 09:30:00"
-  return val.replace('T', ' ') + ':00';
-}
-
-// ─── Format ISO-ish string nicely ────────────────────────────
+function fmtDatetimeLocal(val) { return val.replace('T', ' ') + ':00'; }
 function fmtTime(ts) {
   if (!ts) return '—';
-  // ts is "yyyy-MM-dd HH:mm:ss"
-  const d = new Date(ts.replace(' ', 'T'));
-  if (isNaN(d)) return ts;
-  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const d = new Date(String(ts).replace(' ', 'T'));
+  return isNaN(d) ? ts : d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 function fmtDate(ts) {
   if (!ts) return '—';
-  const d = new Date(ts.replace(' ', 'T'));
-  if (isNaN(d)) return ts;
-  return d.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+  const d = new Date(String(ts).replace(' ', 'T'));
+  return isNaN(d) ? ts : d.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Tab switching
+// ═══════════════════════════════════════════════════════════════
+function switchTab(flow) {
+  activeFlow = flow;
+  document.getElementById('tab-registered').classList.toggle('active', flow === 'registered');
+  document.getElementById('tab-guest').classList.toggle('active',      flow === 'guest');
+  stopCamera();
+  if (flow === 'registered') { showStep('step-scan'); }
+  else { resetGuestForm(); showStep('step-guest'); }
 }
 
 // ═══════════════════════════════════════════════════════════════
 //  Camera / QR Scanner
 // ═══════════════════════════════════════════════════════════════
-async function toggleCamera() {
-  cameraActive ? stopCamera() : startCamera();
-}
+async function toggleCamera() { cameraActive ? stopCamera() : startCamera(); }
 
 async function startCamera() {
   const reader = document.getElementById('qr-reader');
   const video  = document.getElementById('qr-video');
   const btn    = document.getElementById('camera-btn');
-
   try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: 'environment' } }
-    });
+    cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } });
     video.srcObject = cameraStream;
     reader.style.display = 'block';
-    btn.textContent = '⏹ Stop Camera';
-    btn.classList.add('active');
+    btn.textContent = '⏹ Stop Camera'; btn.classList.add('active');
     cameraActive = true;
     startQrLoop(video);
   } catch (err) {
@@ -564,48 +545,32 @@ function stopCamera() {
   if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
   if (qrInterval)   { clearInterval(qrInterval); qrInterval = null; }
   reader.style.display = 'none';
-  btn.textContent = '📷 Scan QR Code';
-  btn.classList.remove('active');
+  btn.textContent = '📷 Scan QR Code'; btn.classList.remove('active');
   cameraActive = false;
 }
 
-// Use BarcodeDetector API (supported in Chrome/Android) or canvas fallback
 function startQrLoop(video) {
   if ('BarcodeDetector' in window) {
-    const detector = new BarcodeDetector({ formats: ['qr_code'] });
+    const det = new BarcodeDetector({ formats: ['qr_code'] });
     qrInterval = setInterval(async () => {
       try {
-        const codes = await detector.detect(video);
-        if (codes.length > 0) {
-          const val = codes[0].rawValue;
-          stopCamera();
-          document.getElementById('id-input').value = val;
-          verifyId(val);
-        }
+        const codes = await det.detect(video);
+        if (codes.length) { const v = codes[0].rawValue; stopCamera(); document.getElementById('id-input').value = v; verifyId(v); }
       } catch (_) {}
     }, 400);
   } else {
-    // Canvas-based fallback via jsQR (loaded dynamically)
     loadJsQr().then(() => {
       const canvas = document.createElement('canvas');
       const ctx    = canvas.getContext('2d', { willReadFrequently: true });
       qrInterval = setInterval(() => {
         if (!video.videoWidth) return;
-        canvas.width  = video.videoWidth;
-        canvas.height = video.videoHeight;
+        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0);
         const img  = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(img.data, img.width, img.height);
-        if (code && code.data) {
-          stopCamera();
-          document.getElementById('id-input').value = code.data;
-          verifyId(code.data);
-        }
+        if (code && code.data) { stopCamera(); document.getElementById('id-input').value = code.data; verifyId(code.data); }
       }, 400);
-    }).catch(() => {
-      showAlert('scan-alert', 'QR scanning not supported in this browser. Please enter ID manually.');
-      stopCamera();
-    });
+    }).catch(() => { showAlert('scan-alert', 'QR scanning not supported. Please enter ID manually.'); stopCamera(); });
   }
 }
 
@@ -615,20 +580,19 @@ function loadJsQr() {
   return new Promise((resolve, reject) => {
     const s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';
-    s.onload  = () => { jsQrLoaded = true; resolve(); };
+    s.onload = () => { jsQrLoaded = true; resolve(); };
     s.onerror = reject;
     document.head.appendChild(s);
   });
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  Step 1 — Verify ID
+//  Registered flow
 // ═══════════════════════════════════════════════════════════════
 async function verifyId(overrideId) {
   clearAlert('scan-alert');
   const raw = (overrideId || document.getElementById('id-input').value || '').trim();
   if (!raw) { showAlert('scan-alert', 'Please enter or scan your ID.'); return; }
-
   setLoading('verify-btn', true);
   try {
     const data = await api({ action: 'lookup', id: raw });
@@ -636,179 +600,159 @@ async function verifyId(overrideId) {
       user = { id: data.id, name: data.name };
       document.getElementById('badge-name').textContent = data.name;
       document.getElementById('badge-id').textContent   = 'ID: ' + data.id;
-      clearAlert('form-alert');
-      resetTypeToggle();
+      clearAlert('form-alert'); selectType('in');
       document.getElementById('purpose-select').value = '';
       document.getElementById('purpose-other').value  = '';
       document.getElementById('other-field').style.display = 'none';
       showStep('step-form');
-    } else {
-      showAlert('scan-alert', data.error || 'ID not found.');
-    }
-  } catch (err) {
-    showAlert('scan-alert', err.message);
-  } finally {
-    setLoading('verify-btn', false);
-  }
+    } else { showAlert('scan-alert', data.error || 'ID not found.'); }
+  } catch (err) { showAlert('scan-alert', err.message); }
+  finally { setLoading('verify-btn', false); }
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  Step 2 — Attendance Form
-// ═══════════════════════════════════════════════════════════════
 function selectType(type) {
   recordType = type;
   document.getElementById('btn-in').classList.toggle('selected',  type === 'in');
   document.getElementById('btn-out').classList.toggle('selected', type === 'out');
 }
-
-function resetTypeToggle() {
-  recordType = 'in';
-  document.getElementById('btn-in').classList.add('selected');
-  document.getElementById('btn-out').classList.remove('selected');
-}
-
 function onPurposeChange() {
-  const v = document.getElementById('purpose-select').value;
-  document.getElementById('other-field').style.display = v === 'Others' ? 'block' : 'none';
+  document.getElementById('other-field').style.display =
+    document.getElementById('purpose-select').value === 'Others' ? 'block' : 'none';
 }
-
 function getPurpose() {
   const sel = document.getElementById('purpose-select').value;
-  if (sel === 'Others') {
-    return document.getElementById('purpose-other').value.trim() || 'Others';
-  }
-  return sel;
+  return sel === 'Others' ? (document.getElementById('purpose-other').value.trim() || 'Others') : sel;
 }
 
 async function submitForm() {
   clearAlert('form-alert');
   const purpose = getPurpose();
   if (!purpose) { showAlert('form-alert', 'Please select a purpose.'); return; }
-
   setLoading('submit-btn', true);
   try {
-    const data = await api({
-      action:  'record',
-      id:      user.id,
-      name:    user.name,
-      purpose: purpose,
-      type:    recordType
-    });
-    handleRecordResponse(data, purpose);
-  } catch (err) {
-    showAlert('form-alert', err.message);
-  } finally {
-    setLoading('submit-btn', false);
-  }
+    const data = await api({ action: 'record', id: user.id, name: user.name, purpose, type: recordType });
+    handleRecordResponse(data, purpose, 'form-alert');
+  } catch (err) { showAlert('form-alert', err.message); }
+  finally { setLoading('submit-btn', false); }
 }
 
-function handleRecordResponse(data, purpose) {
+// ═══════════════════════════════════════════════════════════════
+//  Guest flow
+// ═══════════════════════════════════════════════════════════════
+function selectGuestType(type) {
+  guestType = type;
+  document.getElementById('guest-btn-in').classList.toggle('selected',  type === 'in');
+  document.getElementById('guest-btn-out').classList.toggle('selected', type === 'out');
+}
+function onGuestPurposeChange() {
+  document.getElementById('guest-other-field').style.display =
+    document.getElementById('guest-purpose').value === 'Others' ? 'block' : 'none';
+}
+function getGuestPurpose() {
+  const sel = document.getElementById('guest-purpose').value;
+  return sel === 'Others' ? (document.getElementById('guest-purpose-other').value.trim() || 'Others') : sel;
+}
+function resetGuestForm() {
+  document.getElementById('guest-name').value          = '';
+  document.getElementById('guest-purpose').value       = '';
+  document.getElementById('guest-purpose-other').value = '';
+  document.getElementById('guest-other-field').style.display = 'none';
+  clearAlert('guest-alert'); selectGuestType('in');
+}
+
+async function submitGuest() {
+  clearAlert('guest-alert');
+  const name    = document.getElementById('guest-name').value.trim();
+  const purpose = getGuestPurpose();
+  if (!name)    { showAlert('guest-alert', 'Please enter your name.'); return; }
+  if (!purpose) { showAlert('guest-alert', 'Please select a purpose.'); return; }
+  user = { id: 'GUEST', name };
+  recordType = guestType;
+  setLoading('guest-submit-btn', true);
+  try {
+    const data = await api({ action: 'guest', name, purpose, type: guestType });
+    handleRecordResponse(data, purpose, 'guest-alert');
+  } catch (err) { user = null; showAlert('guest-alert', err.message); }
+  finally { setLoading('guest-submit-btn', false); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Shared: response handler + manual Time In
+// ═══════════════════════════════════════════════════════════════
+function handleRecordResponse(data, purpose, alertId) {
   if (data.ok) {
     showSuccess(data, purpose);
   } else if (data.needTimeIn) {
-    // Pre-fill datetime-local with current time minus 1 hour as helpful default
     const now = new Date(Date.now() - 3600000);
     const pad = n => String(n).padStart(2, '0');
-    const localDefault =
+    document.getElementById('manual-timein').value =
       now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) +
       'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-    document.getElementById('manual-timein').value = localDefault;
-    clearAlert('missing-alert');
-    showStep('step-missing');
+    clearAlert('missing-alert'); showStep('step-missing');
   } else {
-    showAlert('form-alert', data.error || 'Failed to record attendance.');
+    showAlert(alertId, data.error || 'Failed to record attendance.');
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  Step 3 — Manual Time In
-// ═══════════════════════════════════════════════════════════════
+function goBackFromMissing() { showStep(activeFlow === 'guest' ? 'step-guest' : 'step-form'); }
+
 async function submitWithManualTimeIn() {
   clearAlert('missing-alert');
   const val = document.getElementById('manual-timein').value;
   if (!val) { showAlert('missing-alert', 'Please select a Time In date and time.'); return; }
-
-  const purpose = getPurpose();
-  setLoading('submit-btn', true);
-
-  // The submit button in this step doesn't have id="submit-btn";
-  // we re-use a generic approach
+  const purpose = activeFlow === 'guest' ? getGuestPurpose() : getPurpose();
   const btn = document.querySelector('#step-missing .btn-primary');
-  btn.disabled = true;
-  btn._orig = btn.textContent;
+  btn.disabled = true; btn._orig = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span>Saving…';
-
   try {
-    const data = await api({
-      action:       'record',
-      id:           user.id,
-      name:         user.name,
-      purpose:      purpose,
-      type:         'out',
-      manualTimeIn: val
-    });
-    if (data.ok) {
-      showSuccess(data, purpose, fmtDatetimeLocal(val));
-    } else {
-      showAlert('missing-alert', data.error || 'Failed to record.');
-    }
-  } catch (err) {
-    showAlert('missing-alert', err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = btn._orig;
-  }
+    const params = activeFlow === 'guest'
+      ? { action: 'guest',  name: user.name, purpose, type: 'out', manualTimeIn: val }
+      : { action: 'record', id: user.id, name: user.name, purpose, type: 'out', manualTimeIn: val };
+    const data = await api(params);
+    if (data.ok) { showSuccess(data, purpose, fmtDatetimeLocal(val)); }
+    else { showAlert('missing-alert', data.error || 'Failed to record.'); }
+  } catch (err) { showAlert('missing-alert', err.message); }
+  finally { btn.disabled = false; btn.innerHTML = btn._orig; }
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  Step 4 — Success
+//  Success screen
 // ═══════════════════════════════════════════════════════════════
 function showSuccess(data, purpose, manualTimeIn) {
-  const isIn  = recordType === 'in';
-  const label = isIn ? 'Time In' : 'Time Out';
-
-  document.getElementById('success-title').textContent = label + ' Recorded';
+  const isIn = recordType === 'in';
+  document.getElementById('success-title').textContent = (isIn ? 'Time In' : 'Time Out') + ' Recorded';
   document.getElementById('success-msg').textContent   = data.message || 'Attendance saved successfully.';
 
-  const now = new Date();
-  const nowTs = now.getFullYear() + '-' +
-    String(now.getMonth()+1).padStart(2,'0') + '-' +
-    String(now.getDate()).padStart(2,'0') + ' ' +
-    String(now.getHours()).padStart(2,'0') + ':' +
-    String(now.getMinutes()).padStart(2,'0') + ':' +
-    String(now.getSeconds()).padStart(2,'0');
+  const now   = new Date();
+  const nowTs = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' +
+                String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' +
+                String(now.getMinutes()).padStart(2,'0') + ':00';
 
-  const timeIn  = isIn  ? data.time : (data.timeIn  || manualTimeIn || '—');
+  const timeIn  = isIn  ? data.time : (data.timeIn || manualTimeIn || '—');
   const timeOut = !isIn ? data.time : '';
 
   const rows = [
     ['Name',    user.name],
-    ['ID',      user.id],
+    activeFlow === 'guest' ? ['Type', 'Guest'] : ['ID', user.id],
     ['Purpose', purpose],
     ['Date',    fmtDate(data.time || nowTs)],
     ['Time In', fmtTime(timeIn)],
   ];
   if (timeOut) rows.push(['Time Out', fmtTime(timeOut)]);
 
-  document.getElementById('record-card').innerHTML = rows.map(([l, v]) =>
-    `<div class="record-row">
-       <span class="record-label">${l}</span>
-       <span class="record-val">${v}</span>
-     </div>`
-  ).join('');
-
+  document.getElementById('record-card').innerHTML = rows
+    .map(([l, v]) => `<div class="record-row"><span class="record-label">${l}</span><span class="record-val">${v}</span></div>`)
+    .join('');
   showStep('step-success');
 }
 
 // ═══════════════════════════════════════════════════════════════
 //  Reset
 // ═══════════════════════════════════════════════════════════════
-function resetToScan() {
-  stopCamera();
-  user = null;
-  document.getElementById('id-input').value = '';
-  clearAlert('scan-alert');
-  showStep('step-scan');
+function resetToStart() {
+  stopCamera(); user = null;
+  if (activeFlow === 'guest') { resetGuestForm(); showStep('step-guest'); }
+  else { document.getElementById('id-input').value = ''; clearAlert('scan-alert'); showStep('step-scan'); }
 }
 </script>
 </body>
