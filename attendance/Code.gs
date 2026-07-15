@@ -9,16 +9,21 @@
 // ═══════════════════════════════════════════════════════════════════
 
 // ── Shared config ────────────────────────────────────────────────────
-var TIMEZONE     = 'Asia/Tokyo';
-var RECORDS_TAB  = 'AttendanceRecords';
-var USERS_TAB    = 'Users';            // columns: A = ID,  B = Name
+var SPREADSHEET_ID = '10InXMuvd8pnqPeftniAKlg4fx6M3UgduDKxstn5Km-c';
+var TIMEZONE       = 'Asia/Tokyo';
+var RECORDS_TAB    = 'AttendanceRecords';
+var USERS_TAB      = 'Users';          // columns: A = ID,  B = Name
+
+function getSheet(tabName) {
+  return SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(tabName);
+}
 
 // ════════════════════════════════════════════════════════════════════
 //  POST — Bookings  (original, unchanged)
 // ════════════════════════════════════════════════════════════════════
 function doPost(e) {
   try {
-    var ss   = SpreadsheetApp.getActiveSpreadsheet();
+    var ss   = SpreadsheetApp.openById(SPREADSHEET_ID);
     var data = e.parameter;
 
     var sheet = ss.getSheetByName('Bookings');
@@ -88,8 +93,7 @@ function handleAttendance(p) {
 function lookupUser(id) {
   if (!id) return { error: 'ID is required' };
 
-  var ss    = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(USERS_TAB);
+  var sheet = getSheet(USERS_TAB);
   if (!sheet) return {
     error: 'Sheet "' + USERS_TAB + '" not found. ' +
            'Create it with columns: A = ID, B = Name'
@@ -109,8 +113,7 @@ function recordAttendance(p) {
   var id = p.id, name = p.name, purpose = p.purpose, type = p.type;
   if (!id || !name || !purpose || !type) return { error: 'Missing required fields' };
 
-  var ss    = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(RECORDS_TAB);
+  var sheet = getSheet(RECORDS_TAB);
   if (!sheet) return { error: 'Sheet "' + RECORDS_TAB + '" not found' };
 
   ensureAttendanceHeaders(sheet);
@@ -156,8 +159,7 @@ function recordGuest(p) {
   var name = (p.name || '').trim(), purpose = p.purpose, type = p.type;
   if (!name || !purpose || !type) return { error: 'Missing required fields' };
 
-  var ss    = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(RECORDS_TAB);
+  var sheet = getSheet(RECORDS_TAB);
   if (!sheet) return { error: 'Sheet "' + RECORDS_TAB + '" not found' };
 
   ensureAttendanceHeaders(sheet);
