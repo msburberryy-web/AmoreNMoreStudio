@@ -34,6 +34,20 @@ function getCal() {
     ? CalendarApp.getCalendarById(CALENDAR_ID)
     : CalendarApp.getDefaultCalendar();
 }
+// Find the CalEventId column in AttendanceRecords by scanning headers.
+// If not found, creates it after the last existing column (hidden).
+// This handles sheets that have extra user-added columns (e.g. Usage Type, Note).
+function getAttCalCol(sheet) {
+  var lastCol = Math.max(sheet.getLastColumn(), 5);
+  var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  for (var h = 0; h < headers.length; h++) {
+    if (String(headers[h]).trim() === 'CalEventId') return h + 1;
+  }
+  var newCol = lastCol + 1;
+  sheet.getRange(1, newCol).setValue('CalEventId');
+  sheet.hideColumns(newCol);
+  return newCol;
+}
 
 // ════════════════════════════════════════════════════════════════════
 //  Quick test — run this from the Apps Script editor (▶ Run)
@@ -177,11 +191,13 @@ function recordAttendance(p) {
   var now = new Date();
   var ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
 
+  var calCol = getAttCalCol(sheet);
+
   if (type === 'in') {
     sheet.appendRow([name, id, purpose, ts, '', '']);
     var newRow  = sheet.getLastRow();
     var eventId = calCreateAttendance(name, id, purpose, ts);
-    if (eventId) sheet.getRange(newRow, 6).setValue(eventId);
+    if (eventId) sheet.getRange(newRow, calCol).setValue(eventId);
     notifyAttendance('Time In', name, id, purpose, ts, '');
     return { ok: true, message: 'Time In recorded', time: ts };
   }
@@ -189,11 +205,11 @@ function recordAttendance(p) {
   if (type === 'out') {
     var lastRow = sheet.getLastRow();
     if (lastRow >= 2) {
-      var rows = sheet.getRange(2, 1, lastRow - 1, 6).getValues();
+      var rows = sheet.getRange(2, 1, lastRow - 1, calCol).getValues();
       for (var i = rows.length - 1; i >= 0; i--) {
         if (String(rows[i][1]).trim() === String(id).trim() && !rows[i][4]) {
           sheet.getRange(i + 2, 5).setValue(ts);
-          calUpdateAttendance(rows[i][5], rows[i][3], ts);
+          calUpdateAttendance(rows[i][calCol - 1], rows[i][3], ts);
           notifyAttendance('Time Out', name, id, purpose, rows[i][3], ts);
           return { ok: true, message: 'Time Out recorded', time: ts, timeIn: rows[i][3] };
         }
@@ -224,14 +240,15 @@ function recordGuest(p) {
   if (!sheet) return { error: 'Sheet "' + RECORDS_TAB + '" not found' };
   ensureAttendanceHeaders(sheet);
 
-  var now = new Date();
-  var ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+  var now    = new Date();
+  var ts     = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+  var calCol = getAttCalCol(sheet);
 
   if (type === 'in') {
     sheet.appendRow([name, 'GUEST', purpose, ts, '', '']);
     var newRow  = sheet.getLastRow();
     var eventId = calCreateAttendance(name, 'GUEST', purpose, ts);
-    if (eventId) sheet.getRange(newRow, 6).setValue(eventId);
+    if (eventId) sheet.getRange(newRow, calCol).setValue(eventId);
     notifyAttendance('Time In', name, 'GUEST', purpose, ts, '');
     return { ok: true, message: 'Time In recorded', time: ts };
   }
@@ -239,12 +256,12 @@ function recordGuest(p) {
   if (type === 'out') {
     var lastRow = sheet.getLastRow();
     if (lastRow >= 2) {
-      var rows = sheet.getRange(2, 1, lastRow - 1, 6).getValues();
+      var rows = sheet.getRange(2, 1, lastRow - 1, calCol).getValues();
       for (var i = rows.length - 1; i >= 0; i--) {
         var sameName = String(rows[i][0]).trim().toLowerCase() === name.toLowerCase();
         if (sameName && String(rows[i][1]).trim() === 'GUEST' && !rows[i][4]) {
           sheet.getRange(i + 2, 5).setValue(ts);
-          calUpdateAttendance(rows[i][5], rows[i][3], ts);
+          calUpdateAttendance(rows[i][calCol - 1], rows[i][3], ts);
           notifyAttendance('Time Out', name, 'GUEST', purpose, rows[i][3], ts);
           return { ok: true, message: 'Time Out recorded', time: ts, timeIn: rows[i][3] };
         }
@@ -504,25 +521,79 @@ function processNewBookings() {
 }
 
 // ════════════════════════════════════════════════════════════════════
+//  processNewAttendance — scans AttendanceRecords for rows added
+//  directly to the sheet (no CalEventId yet) and creates calendar
+//  events + sends email notifications for each one.
+//  Runs every minute via time-based trigger.
+// ════════════════════════════════════════════════════════════════════
+function processNewAttendance() {
+  var sheet = getSheet(RECORDS_TAB);
+  if (!sheet || sheet.getLastRow() < 2) return;
+
+  var calCol  = getAttCalCol(sheet);
+  var lastRow = sheet.getLastRow();
+  var data    = sheet.getRange(2, 1, lastRow - 1, calCol).getValues();
+  console.log('processNewAttendance: scanning ' + data.length + ' rows, calCol=' + calCol);
+
+  for (var i = 0; i < data.length; i++) {
+    var name       = String(data[i][0] || '').trim(); // col A
+    var id         = String(data[i][1] || '').trim(); // col B (ID)
+    var purpose    = String(data[i][2] || '').trim(); // col C
+    var timeInRaw  = data[i][3];                      // col D
+    var timeOutRaw = data[i][4];                      // col E
+    var calEventId = String(data[i][calCol - 1] || '').trim();
+
+    // Skip rows with no name, no Time IN, or already processed
+    if (!name || !timeInRaw || calEventId) continue;
+
+    var timeInStr = timeInRaw instanceof Date
+      ? Utilities.formatDate(timeInRaw, TIMEZONE, 'yyyy-MM-dd HH:mm:ss')
+      : String(timeInRaw);
+    var timeOutStr = timeOutRaw instanceof Date
+      ? Utilities.formatDate(timeOutRaw, TIMEZONE, 'yyyy-MM-dd HH:mm:ss')
+      : (timeOutRaw ? String(timeOutRaw) : '');
+
+    console.log('Row ' + (i + 2) + ': processing "' + name + '" / ' + purpose);
+
+    var eventId = '';
+    try {
+      eventId = calCreateAttendance(name, id || 'GUEST', purpose, timeInStr);
+      if (eventId && timeOutStr) calUpdateAttendance(eventId, timeInStr, timeOutStr);
+      console.log('Row ' + (i + 2) + ': calendar event created → ' + eventId);
+    } catch (err) {
+      console.error('Row ' + (i + 2) + ' calendar error: ' + err);
+    }
+
+    // Stamp CalEventId column to prevent re-processing
+    sheet.getRange(i + 2, calCol).setValue(eventId || 'done');
+
+    try {
+      var type = timeOutStr ? 'Time In/Out' : 'Time In';
+      notifyAttendance(type, name, id || 'GUEST', purpose, timeInStr, timeOutStr);
+      console.log('Row ' + (i + 2) + ': email sent');
+    } catch (err) {
+      console.error('Row ' + (i + 2) + ' email error: ' + err);
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
 //  installTriggers — run ONCE from the Apps Script editor.
-//  Sets up a 1-minute time-based trigger for processNewBookings.
+//  Sets up 1-minute time-based triggers for both sheet scanners.
 // ════════════════════════════════════════════════════════════════════
 function installTriggers() {
-  // Remove all existing managed triggers to avoid duplicates
+  var MANAGED = ['processNewBookings', 'processNewAttendance', 'onBookingSheetEdit'];
   ScriptApp.getProjectTriggers().forEach(function(t) {
-    var fn = t.getHandlerFunction();
-    if (fn === 'processNewBookings' || fn === 'onBookingSheetEdit') {
-      ScriptApp.deleteTrigger(t);
-    }
+    if (MANAGED.indexOf(t.getHandlerFunction()) !== -1) ScriptApp.deleteTrigger(t);
   });
 
   ScriptApp.newTrigger('processNewBookings')
-    .timeBased()
-    .everyMinutes(1)
-    .create();
+    .timeBased().everyMinutes(1).create();
+  ScriptApp.newTrigger('processNewAttendance')
+    .timeBased().everyMinutes(1).create();
 
-  console.log('Trigger installed: processNewBookings runs every 1 minute.');
-  Logger.log('Done. Trigger installed.');
+  console.log('Both triggers installed (every 1 minute).');
+  Logger.log('Done. processNewBookings + processNewAttendance installed.');
 }
 
 // ════════════════════════════════════════════════════════════════════
