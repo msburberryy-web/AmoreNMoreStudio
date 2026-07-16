@@ -1,38 +1,35 @@
 // ═══════════════════════════════════════════════════════════════════
 //  Amorè N' More Studio — Combined Sheet Script
-//  • POST  → Bookings tab
-//  • GET   → Attendance (lookup · record · guest)
-//            + Google Calendar event per visit
-//            + Email notification on every check-in / check-out
+//
+//  POST  → Bookings tab    + calendar event + email notification
+//  GET   → Attendance tab  + calendar event + email notification
+//          (lookup · record · guest)
 // ═══════════════════════════════════════════════════════════════════
 
-// ── Core config ──────────────────────────────────────────────────────
+// ── Config ───────────────────────────────────────────────────────────
 var SPREADSHEET_ID = '10InXMuvd8pnqPeftniAKlg4fx6M3UgduDKxstn5Km-c';
 var TIMEZONE       = 'Asia/Tokyo';
 var RECORDS_TAB    = 'AttendanceRecords';
-var USERS_TAB      = 'Users';            // A = ID, B = Name
+var USERS_TAB      = 'Users';   // A = ID, B = Name
 
-// ── Calendar & notifications ─────────────────────────────────────────
-// CALENDAR_ID: 'primary'  uses the account's default calendar.
-//              Or paste a specific calendar ID from Google Calendar settings.
+// 'primary' uses the Google account's default calendar.
+// Replace with a specific Calendar ID if you have a dedicated studio calendar.
 var CALENDAR_ID   = 'primary';
 var NOTIFY_EMAILS = ['the.studioeternelle@gmail.com', 'ms.burberryy@gmail.com'];
 
-// ── Sheet columns ─────────────────────────────────────────────────────
-//  A=Name  B=ID  C=Purpose  D=TimeIn  E=TimeOut  F=CalEventId (internal)
+// Sheet columns for AttendanceRecords:
+//  A=Name  B=ID  C=Purpose  D=TimeIn  E=TimeOut  F=CalEventId (hidden)
 
-// ── Helpers ───────────────────────────────────────────────────────────
+// ── Shared helpers ────────────────────────────────────────────────────
 function getSheet(tabName) {
   return SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(tabName);
 }
-
 function toDate(ts) {
-  // ts is "yyyy-MM-dd HH:mm:ss"
   return new Date(String(ts).replace(' ', 'T'));
 }
 
 // ════════════════════════════════════════════════════════════════════
-//  POST — Bookings  (original, unchanged)
+//  POST — Bookings
 // ════════════════════════════════════════════════════════════════════
 function doPost(e) {
   try {
@@ -42,16 +39,16 @@ function doPost(e) {
     var sheet = ss.getSheetByName('Bookings');
     if (!sheet) {
       sheet = ss.insertSheet('Bookings');
-      var headers = ['Submitted At', 'Name', 'Contact', 'Facebook Name',
-                     'Service', 'Preferred Date', 'Time Slot', 'Notes'];
-      sheet.appendRow(headers);
-      var hr = sheet.getRange(1, 1, 1, headers.length);
+      var h  = ['Submitted At','Name','Contact','Facebook Name',
+                 'Service','Preferred Date','Time Slot','Notes'];
+      sheet.appendRow(h);
+      var hr = sheet.getRange(1, 1, 1, h.length);
       hr.setFontWeight('bold');
       hr.setFontColor('#F4EDE3');
       hr.setBackground('#7A1515');
       hr.setHorizontalAlignment('center');
       sheet.setFrozenRows(1);
-      sheet.setColumnWidths(1, headers.length, 160);
+      sheet.setColumnWidths(1, h.length, 160);
     }
 
     var d = data.submitted ? new Date(data.submitted) : new Date();
@@ -65,6 +62,27 @@ function doPost(e) {
       data.timeslot || '',
       data.notes    || ''
     ]);
+
+    // ── Calendar event for this booking ──────────────────────────
+    calCreateBooking(
+      data.name    || '',
+      data.contact || '',
+      data.service || '',
+      data.date    || '',
+      data.timeslot|| '',
+      data.notes   || ''
+    );
+
+    // ── Email notification ────────────────────────────────────────
+    notifyBooking(
+      data.name    || '',
+      data.contact || '',
+      data.fbName  || '',
+      data.service || '',
+      data.date    || '',
+      data.timeslot|| '',
+      data.notes   || ''
+    );
 
     return ContentService
       .createTextOutput(JSON.stringify({ result: 'success' }))
@@ -105,7 +123,6 @@ function lookupUser(id) {
   if (!id) return { error: 'ID is required' };
   var sheet = getSheet(USERS_TAB);
   if (!sheet) return { error: 'Sheet "' + USERS_TAB + '" not found. Create it with columns: A = ID, B = Name' };
-
   var rows = sheet.getDataRange().getValues();
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim() === String(id).trim()) {
@@ -116,7 +133,7 @@ function lookupUser(id) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-//  Record — Registered user
+//  Attendance — Registered user
 // ════════════════════════════════════════════════════════════════════
 function recordAttendance(p) {
   var id = p.id, name = p.name, purpose = p.purpose, type = p.type;
@@ -129,17 +146,15 @@ function recordAttendance(p) {
   var now = new Date();
   var ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
 
-  // ── Time In ──────────────────────────────────────────────────────
   if (type === 'in') {
     sheet.appendRow([name, id, purpose, ts, '', '']);
     var newRow  = sheet.getLastRow();
-    var eventId = calCreate(name, id, purpose, ts);
+    var eventId = calCreateAttendance(name, id, purpose, ts);
     if (eventId) sheet.getRange(newRow, 6).setValue(eventId);
-    notify('Time In', name, id, purpose, ts, '');
+    notifyAttendance('Time In', name, id, purpose, ts, '');
     return { ok: true, message: 'Time In recorded', time: ts };
   }
 
-  // ── Time Out ─────────────────────────────────────────────────────
   if (type === 'out') {
     var lastRow = sheet.getLastRow();
     if (lastRow >= 2) {
@@ -147,22 +162,20 @@ function recordAttendance(p) {
       for (var i = rows.length - 1; i >= 0; i--) {
         if (String(rows[i][1]).trim() === String(id).trim() && !rows[i][4]) {
           sheet.getRange(i + 2, 5).setValue(ts);
-          calUpdate(rows[i][5], rows[i][3], ts);
-          notify('Time Out', name, id, purpose, rows[i][3], ts);
+          calUpdateAttendance(rows[i][5], rows[i][3], ts);
+          notifyAttendance('Time Out', name, id, purpose, rows[i][3], ts);
           return { ok: true, message: 'Time Out recorded', time: ts, timeIn: rows[i][3] };
         }
       }
     }
-
     if (p.manualTimeIn) {
-      var timeInStr = p.manualTimeIn.replace('T', ' ') + ':00';
-      var eventId2  = calCreate(name, id, purpose, timeInStr);
-      if (eventId2) calUpdate(eventId2, timeInStr, ts);
-      sheet.appendRow([name, id, purpose, timeInStr, ts, eventId2 || '']);
-      notify('Check-In/Out (manual Time In)', name, id, purpose, timeInStr, ts);
+      var tin     = p.manualTimeIn.replace('T', ' ') + ':00';
+      var evtId   = calCreateAttendance(name, id, purpose, tin);
+      if (evtId) calUpdateAttendance(evtId, tin, ts);
+      sheet.appendRow([name, id, purpose, tin, ts, evtId || '']);
+      notifyAttendance('Check-In/Out (manual Time In)', name, id, purpose, tin, ts);
       return { ok: true, message: 'Attendance recorded with manual Time In', time: ts };
     }
-
     return { needTimeIn: true, message: 'No open Time In record found for this ID.' };
   }
 
@@ -170,7 +183,7 @@ function recordAttendance(p) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-//  Record — Guest
+//  Attendance — Guest
 // ════════════════════════════════════════════════════════════════════
 function recordGuest(p) {
   var name = (p.name || '').trim(), purpose = p.purpose, type = p.type;
@@ -183,42 +196,37 @@ function recordGuest(p) {
   var now = new Date();
   var ts  = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
 
-  // ── Time In ──────────────────────────────────────────────────────
   if (type === 'in') {
     sheet.appendRow([name, 'GUEST', purpose, ts, '', '']);
     var newRow  = sheet.getLastRow();
-    var eventId = calCreate(name, 'GUEST', purpose, ts);
+    var eventId = calCreateAttendance(name, 'GUEST', purpose, ts);
     if (eventId) sheet.getRange(newRow, 6).setValue(eventId);
-    notify('Time In', name, 'GUEST', purpose, ts, '');
+    notifyAttendance('Time In', name, 'GUEST', purpose, ts, '');
     return { ok: true, message: 'Time In recorded', time: ts };
   }
 
-  // ── Time Out ─────────────────────────────────────────────────────
   if (type === 'out') {
     var lastRow = sheet.getLastRow();
     if (lastRow >= 2) {
       var rows = sheet.getRange(2, 1, lastRow - 1, 6).getValues();
       for (var i = rows.length - 1; i >= 0; i--) {
         var sameName = String(rows[i][0]).trim().toLowerCase() === name.toLowerCase();
-        var isGuest  = String(rows[i][1]).trim() === 'GUEST';
-        if (sameName && isGuest && !rows[i][4]) {
+        if (sameName && String(rows[i][1]).trim() === 'GUEST' && !rows[i][4]) {
           sheet.getRange(i + 2, 5).setValue(ts);
-          calUpdate(rows[i][5], rows[i][3], ts);
-          notify('Time Out', name, 'GUEST', purpose, rows[i][3], ts);
+          calUpdateAttendance(rows[i][5], rows[i][3], ts);
+          notifyAttendance('Time Out', name, 'GUEST', purpose, rows[i][3], ts);
           return { ok: true, message: 'Time Out recorded', time: ts, timeIn: rows[i][3] };
         }
       }
     }
-
     if (p.manualTimeIn) {
-      var timeInStr = p.manualTimeIn.replace('T', ' ') + ':00';
-      var eventId2  = calCreate(name, 'GUEST', purpose, timeInStr);
-      if (eventId2) calUpdate(eventId2, timeInStr, ts);
-      sheet.appendRow([name, 'GUEST', purpose, timeInStr, ts, eventId2 || '']);
-      notify('Check-In/Out (manual Time In)', name, 'GUEST', purpose, timeInStr, ts);
+      var tin   = p.manualTimeIn.replace('T', ' ') + ':00';
+      var evtId = calCreateAttendance(name, 'GUEST', purpose, tin);
+      if (evtId) calUpdateAttendance(evtId, tin, ts);
+      sheet.appendRow([name, 'GUEST', purpose, tin, ts, evtId || '']);
+      notifyAttendance('Check-In/Out (manual Time In)', name, 'GUEST', purpose, tin, ts);
       return { ok: true, message: 'Attendance recorded with manual Time In', time: ts };
     }
-
     return { needTimeIn: true, message: 'No open Time In record found for ' + name + '.' };
   }
 
@@ -226,94 +234,187 @@ function recordGuest(p) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-//  Calendar helpers
+//  Calendar — Bookings
+//  Creates a timed event if the Time Slot contains a parseable time,
+//  otherwise falls back to an all-day event on the Preferred Date.
 // ════════════════════════════════════════════════════════════════════
-
-// Create event at Time In; end = Time In + 1h (updated when they check out)
-function calCreate(name, id, purpose, timeInStr) {
-  if (!CALENDAR_ID) return '';
+function calCreateBooking(name, contact, service, dateStr, timeSlot, notes) {
+  if (!CALENDAR_ID || !dateStr) return;
   try {
-    var cal   = CalendarApp.getCalendarById(CALENDAR_ID);
-    if (!cal) return '';
-    var start = toDate(timeInStr);
-    var end   = new Date(start.getTime() + 60 * 60 * 1000);
-    var label = id === 'GUEST' ? name + ' (Guest)' : name + ' [' + id + ']';
-    var event = cal.createEvent(purpose + ' — ' + label, start, end, {
-      description:
-        'Amorè N’ More Studio — Attendance\n' +
-        'Name:    ' + name + '\n' +
-        'ID:      ' + (id === 'GUEST' ? 'Guest' : id) + '\n' +
-        'Purpose: ' + purpose + '\n' +
-        'Time In: ' + timeInStr
-    });
-    return event.getId();
-  } catch (e) {
-    return '';
-  }
+    var cal = CalendarApp.getCalendarById(CALENDAR_ID);
+    if (!cal) return;
+
+    var title = '🌸 ' + (service || 'Appointment') + ' — ' + (name || 'Client');
+    var desc  =
+      'Amorè N’ More Studio — Booking\n' +
+      '============================================\n' +
+      'Name      : ' + name      + '\n' +
+      'Contact   : ' + contact   + '\n' +
+      'Service   : ' + service   + '\n' +
+      'Date      : ' + dateStr   + '\n' +
+      'Time Slot : ' + timeSlot  + '\n' +
+      (notes ? 'Notes     : ' + notes : '') + '\n' +
+      '\nView sheet → https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID;
+
+    // Try to parse date
+    var base = new Date(dateStr);
+    if (isNaN(base.getTime())) base = new Date(dateStr.replace(/-/g, '/'));
+    if (isNaN(base.getTime())) return;
+
+    // Try to extract a start time from timeSlot (e.g. "10:00 AM", "14:00", "2pm")
+    var timeMatch = String(timeSlot).match(/(\d{1,2}):?(\d{2})?\s*(am|pm)?/i);
+    if (timeMatch) {
+      var h   = parseInt(timeMatch[1], 10);
+      var m   = parseInt(timeMatch[2] || '0', 10);
+      var mer = (timeMatch[3] || '').toLowerCase();
+      if (mer === 'pm' && h < 12) h += 12;
+      if (mer === 'am' && h === 12) h = 0;
+      base.setHours(h, m, 0, 0);
+      var end = new Date(base.getTime() + 2 * 60 * 60 * 1000); // 2-hour block
+      cal.createEvent(title, base, end, { description: desc });
+    } else {
+      cal.createAllDayEvent(title, base, { description: desc });
+    }
+  } catch (e) {}
 }
 
-// Set the actual end time once Time Out is recorded
-function calUpdate(eventId, timeInStr, timeOutStr) {
+// ════════════════════════════════════════════════════════════════════
+//  Calendar — Attendance
+// ════════════════════════════════════════════════════════════════════
+function calCreateAttendance(name, id, purpose, timeInStr) {
+  if (!CALENDAR_ID) return '';
+  try {
+    var cal = CalendarApp.getCalendarById(CALENDAR_ID);
+    if (!cal) return '';
+    var start = toDate(timeInStr);
+    var end   = new Date(start.getTime() + 60 * 60 * 1000); // +1h placeholder
+    var label = id === 'GUEST' ? name + ' (Guest)' : name + ' [' + id + ']';
+    var event = cal.createEvent(
+      '📋 ' + purpose + ' — ' + label,
+      start, end,
+      {
+        description:
+          'Amorè N’ More Studio — Attendance\n' +
+          'Name    : ' + name + '\n' +
+          'ID      : ' + (id === 'GUEST' ? 'Guest' : id) + '\n' +
+          'Purpose : ' + purpose + '\n' +
+          'Time In : ' + timeInStr
+      }
+    );
+    return event.getId();
+  } catch (e) { return ''; }
+}
+
+function calUpdateAttendance(eventId, timeInStr, timeOutStr) {
   if (!CALENDAR_ID || !eventId) return;
   try {
     var cal   = CalendarApp.getCalendarById(CALENDAR_ID);
     if (!cal) return;
     var event = cal.getEventById(eventId);
-    if (!event) return;
-    event.setEndTime(toDate(timeOutStr));
+    if (event) event.setEndTime(toDate(timeOutStr));
   } catch (e) {}
 }
 
 // ════════════════════════════════════════════════════════════════════
-//  Email notification
+//  Email — Bookings
 // ════════════════════════════════════════════════════════════════════
-function notify(type, name, id, purpose, timeIn, timeOut) {
+function notifyBooking(name, contact, fbName, service, date, timeslot, notes) {
   if (!NOTIFY_EMAILS || !NOTIFY_EMAILS.length) return;
   try {
-    var idLabel  = (id === 'GUEST') ? 'Guest' : id;
-    var subject  = '\u{1F4CB} [' + type + '] ' + name + ' — ' + purpose;
-    var body     =
-      'Amorè N’ More Studio — Attendance Record\n' +
+    var subject = '🌸 New Booking: ' + name + ' — ' + service;
+    var plain   =
+      'Amorè N’ More Studio — New Booking\n' +
       '================================================\n' +
-      'Type     : ' + type    + '\n' +
-      'Name     : ' + name    + '\n' +
-      'ID       : ' + idLabel + '\n' +
-      'Purpose  : ' + purpose + '\n' +
-      'Time In  : ' + timeIn  + '\n' +
-      (timeOut ? 'Time Out : ' + timeOut + '\n' : '') +
+      'Name          : ' + name     + '\n' +
+      'Contact       : ' + contact  + '\n' +
+      'Facebook Name : ' + fbName   + '\n' +
+      'Service       : ' + service  + '\n' +
+      'Preferred Date: ' + date     + '\n' +
+      'Time Slot     : ' + timeslot + '\n' +
+      (notes ? 'Notes         : ' + notes + '\n' : '') +
       '\nView sheet → https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID;
 
-    var htmlBody =
-      '<div style="font-family:sans-serif;max-width:480px">' +
-      '<h2 style="color:#7A1515;margin-bottom:4px">Amor&egrave; N&rsquo; More Studio</h2>' +
-      '<p style="color:#7A6050;font-size:12px;margin-top:0;letter-spacing:2px">ATTENDANCE RECORD</p>' +
-      '<table style="width:100%;border-collapse:collapse;font-size:14px">' +
-      row('Type',     '<strong>' + type + '</strong>') +
-      row('Name',     name) +
-      row('ID',       idLabel) +
-      row('Purpose',  purpose) +
-      row('Time In',  timeIn) +
-      (timeOut ? row('Time Out', timeOut) : '') +
-      '</table>' +
-      '<p style="margin-top:20px">' +
-      '<a href="https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '" ' +
-      'style="background:#7A1515;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-size:13px">' +
-      'Open Attendance Sheet</a></p></div>';
+    var html =
+      emailWrap('New Booking', [
+        emailRow('Name',           name),
+        emailRow('Contact',        contact),
+        emailRow('Facebook Name',  fbName),
+        emailRow('Service',        '<strong>' + service + '</strong>'),
+        emailRow('Preferred Date', '<strong>' + date + '</strong>'),
+        emailRow('Time Slot',      timeslot),
+        notes ? emailRow('Notes', notes) : ''
+      ], SPREADSHEET_ID);
 
-    for (var i = 0; i < NOTIFY_EMAILS.length; i++) {
-      MailApp.sendEmail({
-        to:       NOTIFY_EMAILS[i],
-        subject:  subject,
-        body:     body,
-        htmlBody: htmlBody
-      });
-    }
+    NOTIFY_EMAILS.forEach(function(addr) {
+      MailApp.sendEmail({ to: addr, subject: subject, body: plain, htmlBody: html });
+    });
   } catch (e) {}
 }
 
-function row(label, value) {
-  return '<tr><td style="padding:6px 10px;color:#7A6050;font-size:11px;letter-spacing:1px;text-transform:uppercase;width:90px">' +
-         label + '</td><td style="padding:6px 10px;border-bottom:1px solid #f0e8d8">' + value + '</td></tr>';
+// ════════════════════════════════════════════════════════════════════
+//  Email — Attendance
+// ════════════════════════════════════════════════════════════════════
+function notifyAttendance(type, name, id, purpose, timeIn, timeOut) {
+  if (!NOTIFY_EMAILS || !NOTIFY_EMAILS.length) return;
+  try {
+    var idLabel = id === 'GUEST' ? 'Guest' : id;
+    var subject = '📋 [' + type + '] ' + name + ' — ' + purpose;
+    var plain   =
+      'Amorè N’ More Studio — Attendance\n' +
+      '================================================\n' +
+      'Type    : ' + type    + '\n' +
+      'Name    : ' + name    + '\n' +
+      'ID      : ' + idLabel + '\n' +
+      'Purpose : ' + purpose + '\n' +
+      'Time In : ' + timeIn  + '\n' +
+      (timeOut ? 'Time Out: ' + timeOut + '\n' : '') +
+      '\nView sheet → https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID;
+
+    var html =
+      emailWrap(type, [
+        emailRow('Name',     name),
+        emailRow('ID',       idLabel),
+        emailRow('Purpose',  purpose),
+        emailRow('Time In',  timeIn),
+        timeOut ? emailRow('Time Out', timeOut) : ''
+      ], SPREADSHEET_ID);
+
+    NOTIFY_EMAILS.forEach(function(addr) {
+      MailApp.sendEmail({ to: addr, subject: subject, body: plain, htmlBody: html });
+    });
+  } catch (e) {}
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  Email template helpers
+// ════════════════════════════════════════════════════════════════════
+function emailWrap(title, rows, sheetId) {
+  return (
+    '<div style="font-family:Georgia,serif;max-width:500px;margin:0 auto">' +
+    '<div style="background:#7A1515;padding:20px 24px">' +
+    '<p style="color:#E8D5B0;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin:0">Amorè N’ More Studio</p>' +
+    '<h2 style="color:#fff;margin:4px 0 0;font-size:20px">' + title + '</h2>' +
+    '</div>' +
+    '<div style="background:#fff;padding:24px">' +
+    '<table style="width:100%;border-collapse:collapse;font-size:14px">' +
+    rows.filter(Boolean).join('') +
+    '</table>' +
+    '<p style="margin-top:24px">' +
+    '<a href="https://docs.google.com/spreadsheets/d/' + sheetId + '" ' +
+    'style="background:#7A1515;color:#fff;padding:10px 22px;border-radius:6px;' +
+    'text-decoration:none;font-size:13px;letter-spacing:1px">Open Sheet →</a>' +
+    '</p></div></div>'
+  );
+}
+
+function emailRow(label, value) {
+  return (
+    '<tr>' +
+    '<td style="padding:8px 12px 8px 0;color:#7A6050;font-size:11px;' +
+    'letter-spacing:1px;text-transform:uppercase;white-space:nowrap;width:120px">' + label + '</td>' +
+    '<td style="padding:8px 0;border-bottom:1px solid #F4EDE3">' + (value || '—') + '</td>' +
+    '</tr>'
+  );
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -330,8 +431,7 @@ function ensureAttendanceHeaders(sheet) {
     r.setHorizontalAlignment('center');
     sheet.setFrozenRows(1);
     sheet.setColumnWidths(1, h.length, 180);
-    // Column F holds the calendar event ID — keep it narrow and hidden-ish
     sheet.setColumnWidth(6, 220);
-    sheet.hideColumns(6);
+    sheet.hideColumns(6); // hide the internal Cal Event ID column
   }
 }
