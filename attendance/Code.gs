@@ -36,6 +36,30 @@ function getCal() {
 }
 
 // ════════════════════════════════════════════════════════════════════
+//  Quick test — run this from the Apps Script editor (▶ Run)
+//  to confirm calendar access works and see results in Execution log.
+// ════════════════════════════════════════════════════════════════════
+function testCalendar() {
+  Logger.log('=== testCalendar START ===');
+  try {
+    var cal = getCal();
+    Logger.log('Calendar: ' + (cal ? cal.getName() + ' (' + cal.getId() + ')' : 'NULL — no calendar found'));
+    if (!cal) { Logger.log('FAIL: getCal() returned null'); return; }
+
+    var now  = new Date();
+    var end  = new Date(now.getTime() + 60 * 60 * 1000);
+    var evt  = cal.createEvent('TEST — Amorè Studio Script Check', now, end,
+                 { description: 'Auto-created by testCalendar(). Safe to delete.' });
+    Logger.log('SUCCESS: event created → ' + evt.getId());
+    Logger.log('Event title: ' + evt.getTitle());
+    Logger.log('Start: ' + evt.getStartTime());
+  } catch (err) {
+    Logger.log('ERROR: ' + err.toString());
+  }
+  Logger.log('=== testCalendar END ===');
+}
+
+// ════════════════════════════════════════════════════════════════════
 //  POST — Bookings
 // ════════════════════════════════════════════════════════════════════
 function doPost(e) {
