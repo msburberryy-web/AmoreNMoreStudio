@@ -418,6 +418,62 @@ function emailRow(label, value) {
 }
 
 // ════════════════════════════════════════════════════════════════════
+//  Installable trigger — fires when any cell in the Bookings sheet
+//  is edited directly (including manual row additions).
+//
+//  Run installTriggers() ONCE from the Apps Script editor to register.
+// ════════════════════════════════════════════════════════════════════
+function onBookingSheetEdit(e) {
+  try {
+    var sheet = e.range.getSheet();
+    if (sheet.getName() !== 'Bookings') return;
+
+    var row = e.range.getRow();
+    if (row <= 1) return; // skip header
+
+    var data = sheet.getRange(row, 1, 1, 8).getValues()[0];
+    var submittedAt = data[0]; // col A
+    var name        = data[1]; // col B — must be filled
+    var contact     = data[2]; // col C
+    var fbName      = data[3]; // col D
+    var service     = data[4]; // col E
+    var dateRaw     = data[5]; // col F — may be a Date object
+    var timeSlot    = data[6]; // col G
+    var notes       = data[7]; // col H
+
+    // Only process rows where Name is filled but Submitted At is still blank
+    if (!name || submittedAt) return;
+
+    // Stamp Submitted At first — acts as a write-lock against re-processing
+    var ts = Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+    sheet.getRange(row, 1).setValue(ts);
+
+    var dateStr = dateRaw instanceof Date
+      ? Utilities.formatDate(dateRaw, TIMEZONE, 'yyyy-MM-dd')
+      : String(dateRaw);
+
+    calCreateBooking(name, contact, service, dateStr, String(timeSlot), notes);
+    notifyBooking(name, contact, fbName, service, dateStr, String(timeSlot), notes);
+  } catch (err) {}
+}
+
+// Run this function ONCE from the Apps Script editor (▶ Run → installTriggers)
+// to register the onBookingSheetEdit trigger.
+function installTriggers() {
+  // Remove existing copies to avoid duplicates
+  ScriptApp.getProjectTriggers().forEach(function(t) {
+    if (t.getHandlerFunction() === 'onBookingSheetEdit') {
+      ScriptApp.deleteTrigger(t);
+    }
+  });
+  ScriptApp.newTrigger('onBookingSheetEdit')
+    .forSpreadsheet(SPREADSHEET_ID)
+    .onEdit()
+    .create();
+  Logger.log('Trigger installed successfully.');
+}
+
+// ════════════════════════════════════════════════════════════════════
 //  Sheet setup
 // ════════════════════════════════════════════════════════════════════
 function ensureAttendanceHeaders(sheet) {
