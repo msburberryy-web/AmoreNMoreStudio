@@ -448,59 +448,81 @@ function emailRow(label, value) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-//  Installable trigger — fires when any cell in the Bookings sheet
-//  is edited directly (including manual row additions).
+//  processNewBookings — scans Bookings sheet for rows where Name is
+//  filled but Submitted At is empty, then creates calendar event +
+//  sends email for each one.
 //
-//  Run installTriggers() ONCE from the Apps Script editor to register.
+//  Runs automatically every minute (time-based trigger).
+//  Can also be run manually: select it in the function dropdown → ▶ Run.
 // ════════════════════════════════════════════════════════════════════
-function onBookingSheetEdit(e) {
-  try {
-    var sheet = e.range.getSheet();
-    if (sheet.getName() !== 'Bookings') return;
+function processNewBookings() {
+  var ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('Bookings');
+  if (!sheet || sheet.getLastRow() < 2) return;
 
-    var row = e.range.getRow();
-    if (row <= 1) return; // skip header
+  var allData = sheet.getDataRange().getValues();
+  console.log('processNewBookings: scanning ' + (allData.length - 1) + ' rows');
 
-    var data = sheet.getRange(row, 1, 1, 8).getValues()[0];
-    var submittedAt = data[0]; // col A
-    var name        = data[1]; // col B — must be filled
-    var contact     = data[2]; // col C
-    var fbName      = data[3]; // col D
-    var service     = data[4]; // col E
-    var dateRaw     = data[5]; // col F — may be a Date object
-    var timeSlot    = data[6]; // col G
-    var notes       = data[7]; // col H
+  for (var i = 1; i < allData.length; i++) {
+    var row         = allData[i];
+    var submittedAt = row[0]; // col A
+    var name        = String(row[1] || '').trim(); // col B
 
-    // Only process rows where Name is filled but Submitted At is still blank
-    if (!name || submittedAt) return;
+    // Skip already-processed rows or rows with no name
+    if (!name || submittedAt) continue;
 
-    // Stamp Submitted At first — acts as a write-lock against re-processing
+    var contact  = String(row[2] || '');
+    var fbName   = String(row[3] || '');
+    var service  = String(row[4] || '');
+    var dateRaw  = row[5]; // col F — may be a Date object
+    var timeSlot = String(row[6] || '');
+    var notes    = String(row[7] || '');
+
+    // Stamp Submitted At immediately to lock this row against re-processing
     var ts = Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
-    sheet.getRange(row, 1).setValue(ts);
+    sheet.getRange(i + 1, 1).setValue(ts);
+    console.log('Row ' + (i + 1) + ': processing "' + name + '"');
 
     var dateStr = dateRaw instanceof Date
       ? Utilities.formatDate(dateRaw, TIMEZONE, 'yyyy-MM-dd')
-      : String(dateRaw);
+      : String(dateRaw || '');
 
-    calCreateBooking(name, contact, service, dateStr, String(timeSlot), notes);
-    notifyBooking(name, contact, fbName, service, dateStr, String(timeSlot), notes);
-  } catch (err) {}
+    try {
+      calCreateBooking(name, contact, service, dateStr, timeSlot, notes);
+      console.log('Row ' + (i + 1) + ': calendar event created');
+    } catch (err) {
+      console.error('Row ' + (i + 1) + ' calendar error: ' + err);
+    }
+
+    try {
+      notifyBooking(name, contact, fbName, service, dateStr, timeSlot, notes);
+      console.log('Row ' + (i + 1) + ': email sent');
+    } catch (err) {
+      console.error('Row ' + (i + 1) + ' email error: ' + err);
+    }
+  }
 }
 
-// Run this function ONCE from the Apps Script editor (▶ Run → installTriggers)
-// to register the onBookingSheetEdit trigger.
+// ════════════════════════════════════════════════════════════════════
+//  installTriggers — run ONCE from the Apps Script editor.
+//  Sets up a 1-minute time-based trigger for processNewBookings.
+// ════════════════════════════════════════════════════════════════════
 function installTriggers() {
-  // Remove existing copies to avoid duplicates
+  // Remove all existing managed triggers to avoid duplicates
   ScriptApp.getProjectTriggers().forEach(function(t) {
-    if (t.getHandlerFunction() === 'onBookingSheetEdit') {
+    var fn = t.getHandlerFunction();
+    if (fn === 'processNewBookings' || fn === 'onBookingSheetEdit') {
       ScriptApp.deleteTrigger(t);
     }
   });
-  ScriptApp.newTrigger('onBookingSheetEdit')
-    .forSpreadsheet(SPREADSHEET_ID)
-    .onEdit()
+
+  ScriptApp.newTrigger('processNewBookings')
+    .timeBased()
+    .everyMinutes(1)
     .create();
-  Logger.log('Trigger installed successfully.');
+
+  console.log('Trigger installed: processNewBookings runs every 1 minute.');
+  Logger.log('Done. Trigger installed.');
 }
 
 // ════════════════════════════════════════════════════════════════════
