@@ -12,9 +12,9 @@ var TIMEZONE       = 'Asia/Tokyo';
 var RECORDS_TAB    = 'AttendanceRecords';
 var USERS_TAB      = 'Users';   // A = ID, B = Name
 
-// 'primary' uses the Google account's default calendar.
-// Replace with a specific Calendar ID if you have a dedicated studio calendar.
-var CALENDAR_ID   = 'primary';
+// Leave CALENDAR_ID blank to use the account's default calendar,
+// or set it to a specific calendar's email address for a shared/studio calendar.
+var CALENDAR_ID   = '';
 var NOTIFY_EMAILS = ['the.studioeternelle@gmail.com', 'ms.burberryy@gmail.com'];
 
 // Sheet columns for AttendanceRecords:
@@ -26,6 +26,13 @@ function getSheet(tabName) {
 }
 function toDate(ts) {
   return new Date(String(ts).replace(' ', 'T'));
+}
+// CalendarApp.getCalendarById('primary') returns null in Apps Script.
+// Use getDefaultCalendar() when no specific ID is set.
+function getCal() {
+  return CALENDAR_ID
+    ? CalendarApp.getCalendarById(CALENDAR_ID)
+    : CalendarApp.getDefaultCalendar();
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -239,9 +246,9 @@ function recordGuest(p) {
 //  otherwise falls back to an all-day event on the Preferred Date.
 // ════════════════════════════════════════════════════════════════════
 function calCreateBooking(name, contact, service, dateStr, timeSlot, notes) {
-  if (!CALENDAR_ID || !dateStr) return;
+  if (!dateStr) return;
   try {
-    var cal = CalendarApp.getCalendarById(CALENDAR_ID);
+    var cal = getCal();
     if (!cal) return;
 
     var title = '🌸 ' + (service || 'Appointment') + ' — ' + (name || 'Client');
@@ -282,9 +289,8 @@ function calCreateBooking(name, contact, service, dateStr, timeSlot, notes) {
 //  Calendar — Attendance
 // ════════════════════════════════════════════════════════════════════
 function calCreateAttendance(name, id, purpose, timeInStr) {
-  if (!CALENDAR_ID) return '';
   try {
-    var cal = CalendarApp.getCalendarById(CALENDAR_ID);
+    var cal = getCal();
     if (!cal) return '';
     var start = toDate(timeInStr);
     var end   = new Date(start.getTime() + 60 * 60 * 1000); // +1h placeholder
@@ -306,9 +312,9 @@ function calCreateAttendance(name, id, purpose, timeInStr) {
 }
 
 function calUpdateAttendance(eventId, timeInStr, timeOutStr) {
-  if (!CALENDAR_ID || !eventId) return;
+  if (!eventId) return;
   try {
-    var cal   = CalendarApp.getCalendarById(CALENDAR_ID);
+    var cal   = getCal();
     if (!cal) return;
     var event = cal.getEventById(eventId);
     if (event) event.setEndTime(toDate(timeOutStr));
